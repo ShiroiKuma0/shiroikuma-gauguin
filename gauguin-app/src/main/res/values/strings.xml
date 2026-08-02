@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Gauguin</string>
+    <string name="app_name" translatable="false">白い熊 GNU Gauguin</string>
     <string name="main_menu_item_new">New Game</string>
     <string name="main_menu_item_load_game">Load</string>
     <string name="main_menu_item_save_game">Save</string>
