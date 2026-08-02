@@ -2,6 +2,7 @@ package org.piepmeyer.gauguin.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -11,7 +12,9 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import org.koin.android.ext.android.inject
 import org.piepmeyer.gauguin.R
+import org.piepmeyer.gauguin.ui.customui.GauguinPreferences
 import org.piepmeyer.gauguin.ui.customui.GauguinUiActivity
+import org.piepmeyer.gauguin.ui.customui.GauguinUiConfig
 
 class SettingsActivity : AppCompatActivity() {
     private val activityUtils: ActivityUtils by inject()
@@ -68,6 +71,23 @@ class SettingsActivity : AppCompatActivity() {
             findPreference<Preference>("shiroikumaUi")?.setOnPreferenceClickListener {
                 startActivity(Intent(requireContext(), GauguinUiActivity::class.java))
                 true
+            }
+
+            // 白い熊 fork: upstream's tree, in the house rows — the same layouts the fork's own UI
+            // page is built from.
+            GauguinPreferences.applyHouseLayouts(preferenceScreen)
+        }
+
+        override fun onViewCreated(
+            view: View,
+            savedInstanceState: Bundle?,
+        ) {
+            super.onViewCreated(view, savedInstanceState)
+
+            // The headings draw their own hairline; the list's dividers would double it.
+            if (GauguinUiConfig(requireContext()).customUiActive) {
+                setDivider(null)
+                setDividerHeight(0)
             }
         }
     }

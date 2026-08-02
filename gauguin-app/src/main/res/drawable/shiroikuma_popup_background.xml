@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 白い熊 GNU Gauguin: the background of every popup menu — black, with the house border. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <solid android:color="@color/shiroikuma_black" />
+
+    <stroke
+        android:width="2dp"
+        android:color="@color/shiroikuma_yellow" />
+
+    <corners android:radius="16dp" />
+
+    <!-- Keeps the rows off the border; the popup applies this drawable's padding to its content. -->
+    <padding
+        android:bottom="8dp"
+        android:left="2dp"
+        android:right="2dp"
+        android:top="8dp" />
+
+</shape>

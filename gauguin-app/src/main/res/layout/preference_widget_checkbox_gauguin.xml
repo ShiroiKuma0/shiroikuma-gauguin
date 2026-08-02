@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 白い熊 GNU Gauguin tick box: the widget's own mark in house yellow and nothing around it —
+     ticked, a filled yellow box; unticked, the bare yellow square. -->
+<CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/checkbox"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@null"
+    android:buttonTint="@color/shiroikuma_yellow"
+    android:clickable="false"
+    android:focusable="false" />

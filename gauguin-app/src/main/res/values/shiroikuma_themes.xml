@@ -43,6 +43,21 @@
         <item name="buttonBarNeutralButtonStyle">@style/Widget.Gauguin.ShiroikumaDialogButton</item>
     </style>
 
+    <!-- Popup menus — the bottom bar's overflow above all. A popup lives in a window of its own,
+         built from the context the toolbar fixes while it inflates, so it is the one surface the
+         fork has to theme in XML instead of painting at runtime. -->
+    <style name="ThemeOverlay.Gauguin.ShiroikumaPopup" parent="">
+        <item name="popupMenuBackground">@drawable/shiroikuma_popup_background</item>
+        <item name="android:colorBackground">@color/shiroikuma_black</item>
+        <item name="colorSurface">@color/shiroikuma_black</item>
+        <item name="colorSurfaceContainer">@color/shiroikuma_black</item>
+        <item name="colorOnSurface">@color/shiroikuma_yellow</item>
+        <item name="colorOnSurfaceVariant">@color/shiroikuma_yellow</item>
+        <item name="colorControlNormal">@color/shiroikuma_yellow</item>
+        <item name="android:textColorPrimary">@color/shiroikuma_yellow</item>
+        <item name="android:textColorSecondary">@color/shiroikuma_yellow</item>
+    </style>
+
     <style name="Widget.Gauguin.ShiroikumaDialogButton" parent="Widget.Material3.Button.TextButton.Dialog">
         <item name="android:textColor">@color/shiroikuma_yellow</item>
         <item name="android:textAllCaps">false</item>
