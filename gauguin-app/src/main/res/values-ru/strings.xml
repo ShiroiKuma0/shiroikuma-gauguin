@@ -100,8 +100,8 @@
     <string name="about_license_title">Лицензия</string>
     <string name="about_website_title">Домашняя страница проекта</string>
     <string name="about_developers_title">Разработчик</string>
-    <string name="about_developers_summary">Meik Piepmeyer\n\nОснован на HoloKenMod 1.6.1 от Adam Queler\n\nОснован на Holoken 1.1.1 от Amanda Chow, с большим вкладом Ben Buxton и Stephen Lee из Mathdoku</string>
-    <string name="about_changelog_summary">См. <a href="https://github.com/meikpiep/gauguin/releases">https://github.com/meikpiep/gauguin/releases</a></string>
+    <string name="about_developers_summary">白い熊\n\nMeik Piepmeyer\n\nОснован на HoloKenMod 1.6.1 от Adam Queler\n\nОснован на Holoken 1.1.1 от Amanda Chow, с большим вкладом Ben Buxton и Stephen Lee из Mathdoku</string>
+    <string name="about_changelog_summary">См. <a href="https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases">https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases</a></string>
     <string name="game_setting_single_cages_dynamic">Динамично</string>
     <string name="game_setting_new_grid_shape_rectangular">Прямоугольник</string>
     <string name="game_setting_new_grid_options_advanced_options">Расширенные</string>
@@ -142,7 +142,7 @@
     <string name="statistics_info_value_average_short">Сред</string>
     <string name="game_grid_cage_math_result_single_cell">%1$s</string>
     <string name="statistics_puzzles_solved_current_streak">Текущая серия решений</string>
-    <string name="about_website_summary">Сообщайте о любых ошибках или предложениях по адресу <a href="https://github.com/meikpiep/gauguin">https://github.com/meikpiep/gauguin</a></string>
+    <string name="about_website_summary">Сообщайте о любых ошибках или предложениях по адресу <a href="https://github.com/ShiroiKuma0/shiroikuma-gauguin">https://github.com/ShiroiKuma0/shiroikuma-gauguin</a></string>
     <string name="main_activity_application_bar_item_undo_one_step">Отменить</string>
     <string name="statistics_diagram_streaks">Серии решений</string>
     <string name="main_activity_application_bar_item_reveal_cell">Раскрыть ячейку</string>
@@ -157,7 +157,7 @@
     <string name="statistics_diagram_threshold_average_value">Средняя</string>
     <string name="statistics_info_value_minimum_short">Мин</string>
     <string name="game_grid_cage_math_result_no_operator_shown">%1$s</string>
-    <string name="help_instructions_summary">Заполните ячейки сетки с помощью числовых кнопок. Чтобы ввести число в выбранную ячейку, нажмите и удерживайте числовую кнопку. Чтобы добавить или удалить вероятное число, просто нажмите числовую кнопку.\n\nИспользуйте вопросительный знак, чтобы проверить, нет ли ошибок в заполненных ячейках.\n\nGauguin автоматически сохранит вашу игру, если вам нужно будет остановиться.</string>
+    <string name="help_instructions_summary">Заполните ячейки сетки с помощью числовых кнопок. Чтобы ввести число в выбранную ячейку, нажмите и удерживайте числовую кнопку. Чтобы добавить или удалить вероятное число, просто нажмите числовую кнопку.\n\nИспользуйте вопросительный знак, чтобы проверить, нет ли ошибок в заполненных ячейках.\n\n白い熊 GNU Gauguin автоматически сохранит вашу игру, если вам нужно будет остановиться.</string>
     <string name="dialog_restart_current_game_title">Перезапустить игру?</string>
     <string name="dialog_restart_current_game_message">Игра будет перезапущена.</string>
     <string name="new_grid_preview_banner_still_calculating">Превью...</string>
@@ -174,7 +174,7 @@
     <string name="main_menu_item_restart_game">Перезапустить игру</string>
     <string name="setting_group_assistance">Помощь в игре</string>
     <string name="setting_night_mode_title">Режим цвета</string>
-    <string name="setting_theme_entry_gauguin_own_theme">Тема Gauguin</string>
+    <string name="setting_theme_entry_gauguin_own_theme">Тема 白い熊 GNU Gauguin</string>
     <string name="game_difficulty_level_unknown_bound_at_start_or_end_of_range">–</string>
     <string name="setting_theme_entry_monochrome_theme">Монохромная</string>
     <string name="setting_theme_switch_use_plain_black_as_background">Использовать полностью чёрный фон</string>
