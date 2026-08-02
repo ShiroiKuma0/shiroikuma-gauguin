@@ -232,7 +232,7 @@ class MainNavigationViewService(
 
                 bugsAndFeaturesItem -> {
                     val intent = Intent(Intent.ACTION_VIEW)
-                    intent.data = "https://github.com/meikpiep/gauguin/issues".toUri()
+                    intent.data = "https://github.com/ShiroiKuma0/shiroikuma-gauguin/issues".toUri()
                     mainActivity.startActivity(intent)
                 }
             }
