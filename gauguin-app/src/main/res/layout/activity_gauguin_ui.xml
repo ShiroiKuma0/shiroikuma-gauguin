@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The 白い熊 GNU Gauguin UI page: the live preview is PINNED at the top, the settings list scrolls
+     under it, so every colour, size and border change is visible while it is being made. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/shiroikuma_black"
+    android:fitsSystemWindows="true">
+
+    <TextView
+        android:id="@+id/gauguinUiTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="2dp"
+        android:text="@string/gauguin_ui_title"
+        android:textColor="@color/shiroikuma_yellow"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="6dp"
+        android:background="@color/shiroikuma_yellow" />
+
+    <org.piepmeyer.gauguin.ui.customui.GauguinUiPreviewView
+        android:id="@+id/gauguinUiPreview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/shiroikuma_yellow" />
+
+    <FrameLayout
+        android:id="@+id/gauguinUiContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+</LinearLayout>

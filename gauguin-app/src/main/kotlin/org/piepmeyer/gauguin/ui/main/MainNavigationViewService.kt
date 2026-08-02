@@ -25,6 +25,7 @@ import org.piepmeyer.gauguin.game.save.SavedGamesService
 import org.piepmeyer.gauguin.ui.LoadGameListActivity
 import org.piepmeyer.gauguin.ui.MainDialogs
 import org.piepmeyer.gauguin.ui.SettingsActivity
+import org.piepmeyer.gauguin.ui.customui.GauguinUiActivity
 import org.piepmeyer.gauguin.ui.statistics.legacy.LegacyStatisticsActivity
 
 class MainNavigationViewService(
@@ -153,6 +154,18 @@ class MainNavigationViewService(
         binding.container.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
         binding.mainNavigationView.onDrawerItemClickListener = createDrawerClickListener()
+
+        // 白い熊 fork: long-pressing the Settings cog in the drawer skips the settings list and opens
+        // the 白い熊 GNU Gauguin UI page directly.
+        binding.mainNavigationView.onDrawerItemLongClickListener = { _, menuItem, _ ->
+            if (menuItem == settingsItem) {
+                mainActivity.startActivity(Intent(mainActivity, GauguinUiActivity::class.java))
+                binding.container.close()
+                true
+            } else {
+                false
+            }
+        }
 
         binding.mainBottomAppBar.setOnMenuItemClickListener(
             BottomAppBarItemClickListener(binding.mainBottomAppBar.context, viewModel),

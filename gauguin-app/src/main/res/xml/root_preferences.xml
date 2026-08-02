@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- 白い熊 fork: the house UI page, first in Settings. Long-pressing the Settings item in the
+         main screen's navigation drawer jumps straight here. -->
+    <PreferenceCategory android:title="@string/gauguin_ui_title" android:key="shiroikuma">
+        <Preference
+            android:key="shiroikumaUi"
+            app:singleLineTitle="false"
+            android:title="@string/gauguin_ui_title"
+            android:summary="@string/gauguin_ui_summary" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="@string/setting_group_display_title" android:key="Display">
         <SeekBarPreference
             android:key="maximumCellSize"
