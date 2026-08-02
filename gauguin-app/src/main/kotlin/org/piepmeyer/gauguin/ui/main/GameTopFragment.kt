@@ -28,6 +28,7 @@ import org.piepmeyer.gauguin.game.GameLifecycle
 import org.piepmeyer.gauguin.game.PlayTimeListener
 import org.piepmeyer.gauguin.options.DifficultySetting
 import org.piepmeyer.gauguin.preferences.ApplicationPreferences
+import org.piepmeyer.gauguin.ui.customui.GauguinChrome
 import org.piepmeyer.gauguin.ui.difficulty.MainGameDifficultyLevelBalloon
 import org.piepmeyer.gauguin.ui.difficulty.MainGameDifficultyLevelFragment
 import java.text.DecimalFormat
@@ -81,6 +82,9 @@ class GameTopFragment :
         binding.ratingStarTwo.setOnClickListener(onClickListener)
         binding.ratingStarThree.setOnClickListener(onClickListener)
         binding.ratingStarFour.setOnClickListener(onClickListener)
+
+        // 白い熊 fork: the panel has its own colours, and the activity-wide pass leaves it alone.
+        GauguinChrome.applyToTopPanel(binding.root)
 
         return binding.root
     }

@@ -25,6 +25,7 @@ import org.piepmeyer.gauguin.game.save.SavedGamesService
 import org.piepmeyer.gauguin.ui.LoadGameListActivity
 import org.piepmeyer.gauguin.ui.MainDialogs
 import org.piepmeyer.gauguin.ui.SettingsActivity
+import org.piepmeyer.gauguin.ui.customui.GauguinChrome
 import org.piepmeyer.gauguin.ui.customui.GauguinUiActivity
 import org.piepmeyer.gauguin.ui.statistics.legacy.LegacyStatisticsActivity
 
@@ -108,6 +109,22 @@ class MainNavigationViewService(
         savedGamesService.addSavedGamesListener(savedGamesListener)
         savedGamesListener.savedGamesChanged()
 
+        // 白い熊 fork: the drawer paints its rows from the item model on every bind, so the house
+        // colours have to live on the items rather than on their views.
+        listOf(
+            newGameItem,
+            restartGameItem,
+            loadGameItem,
+            saveGameItem,
+            saveGameWithCommentItem,
+            statisticsItem,
+            settingsItem,
+            helpItem,
+            bugsAndFeaturesItem,
+        ).forEach { GauguinChrome.applyToDrawerItem(it, mainActivity) }
+
+        GauguinChrome.applyToDrawer(binding.mainNavigationView)
+
         binding.mainNavigationView.itemAdapter.add(
             newGameItem,
             restartGameItem,
@@ -140,6 +157,7 @@ class MainNavigationViewService(
 
         binding.mainNavigationView.stickyHeaderView = header
         header.setBackgroundResource(0)
+        GauguinChrome.applyToDrawerHeader(header)
         header.setOnClickListener {
             mainActivity.supportFragmentManager.commit {
                 binding.mainNavigationView.drawerLayout?.close()

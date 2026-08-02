@@ -148,6 +148,7 @@
             android:layout_marginStart="100dp"
             app:menuAlignmentMode="auto"
             app:navigationIcon="@drawable/outline_menu_24"
+            app:popupTheme="@style/ThemeOverlay.Gauguin.ShiroikumaPopup"
             app:menu="@menu/bottom_app_bar" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
