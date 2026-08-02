@@ -1,4 +1,5 @@
 
+import java.io.File
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -7,6 +8,24 @@ plugins {
     id("io.github.takahirom.roborazzi")
     alias(libs.plugins.ktlint)
 }
+
+// --- shiroikuma fork: per-build version tail ---
+// Upstream declares its version in the manifest (android:versionCode / android:versionName), so we
+// read it straight from there — the values then flow in automatically on every upstream rebase and
+// are never edited by hand. On top of that base:
+//     versionName = "<upstreamName>+<N zero-padded to 3>"   e.g. 0.52.0+001
+//     versionCode = <upstreamCode> * 10000 + N              e.g. 76 * 10000 + 1 = 760001
+// where N = BUILD_NUMBER from gradle.properties (bumped by buildFork, reset to 1 on upstream sync).
+val upstreamManifest = file("src/main/AndroidManifest.xml").readText()
+val upstreamVersionCode =
+    Regex("""android:versionCode="(\d+)"""").find(upstreamManifest)?.groupValues?.get(1)?.toInt()
+        ?: error("No android:versionCode in gauguin-app/src/main/AndroidManifest.xml")
+val upstreamVersionName =
+    Regex("""android:versionName="([^"]+)"""").find(upstreamManifest)?.groupValues?.get(1)
+        ?: error("No android:versionName in gauguin-app/src/main/AndroidManifest.xml")
+val forkBuildNumber = (project.findProperty("BUILD_NUMBER") as String?)?.trim()?.toIntOrNull() ?: 1
+val forkVersionName = "$upstreamVersionName+${forkBuildNumber.toString().padStart(3, '0')}"
+val forkVersionCode = upstreamVersionCode * 10000 + forkBuildNumber
 
 val keystoreProperties = Properties()
 val keystoreExists = rootProject.file("keystore.properties").exists()
@@ -25,9 +44,13 @@ android {
     buildToolsVersion = "37.0.0"
 
     defaultConfig {
-        applicationId = "org.piepmeyer.gauguin"
+        // shiroikuma fork: own install identity, so it sits beside stock Gauguin.
+        // The code namespace stays org.piepmeyer.gauguin (see `namespace` below) — never rename it.
+        applicationId = "shiroikuma.gauguin"
         minSdk = 24
         targetSdk = 37
+        versionCode = forkVersionCode
+        versionName = forkVersionName
     }
 
     if (keystoreExists) {
@@ -190,5 +213,39 @@ dependencies {
 sonarqube {
     properties {
         property("sonar.androidLint.reportPaths", "$projectDir/build/reports/lint-results-debug.xml")
+    }
+}
+
+// --- shiroikuma fork: one-shot build + deliver + bump ---
+// Configuration-cache-safe: every project-derived value is captured HERE (configuration time);
+// the doLast lambda touches nothing but plain locals.
+tasks.register("buildFork") {
+    group = "build"
+    description = "Build the signed release APK, copy it to ~/tmp, and bump BUILD_NUMBER for next time."
+    dependsOn("assembleRelease")
+    val apkName = "shiroikuma-gauguin_$forkVersionName.apk"
+    val outputDirProvider = layout.buildDirectory.dir("outputs/apk/release")
+    val propsFile = rootProject.file("gradle.properties")
+    val versionCode = forkVersionCode
+    val nextBuildNumber = forkBuildNumber + 1
+    doLast {
+        val outputDir = outputDirProvider.get().asFile
+        val targetDir = File(System.getProperty("user.home"), "tmp").apply { mkdirs() }
+        val apk = outputDir.listFiles { _, name -> name.endsWith(".apk") }?.firstOrNull()
+            ?: throw GradleException("No APK found in $outputDir")
+        val target = File(targetDir, apkName)
+        apk.copyTo(target, overwrite = true)
+        println("\u001b[1;36m>>> ${target.absolutePath}\u001b[0m")
+        println("\u001b[1;36m>>> versionCode $versionCode\u001b[0m")
+
+        val text = propsFile.readText()
+        propsFile.writeText(
+            if (Regex("(?m)^BUILD_NUMBER=").containsMatchIn(text)) {
+                text.replace(Regex("(?m)^BUILD_NUMBER=.*$"), "BUILD_NUMBER=$nextBuildNumber")
+            } else {
+                text.trimEnd() + "\n\n# shiroikuma fork: per-build version tail\nBUILD_NUMBER=$nextBuildNumber\n"
+            },
+        )
+        println("\u001b[1;36m>>> BUILD_NUMBER bumped to $nextBuildNumber\u001b[0m")
     }
 }
