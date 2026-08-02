@@ -42,3 +42,7 @@ gauguin-serviceaccount-gradle-play-plugin.json
 keystore.properties
 .ruby-version
 .kotlin/
+
+# shiroikuma fork: signing material never goes into git
+*.jks
+*.keystore
