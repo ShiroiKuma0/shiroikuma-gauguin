@@ -50,11 +50,11 @@
     <string name="game_setting_digits_label">数字</string>
     <string name="game_setting_single_cages_dynamic">动态</string>
     <string name="game_setting_difficulty_easy">简单</string>
-    <string name="help_instructions_summary">使用数字按钮填格子。选择格子并长按数字按钮以输入数字。添加或删除不确定的数字，只需要单击数字按钮。 \n \n点击问号按钮以检索已填的格子中的错误。 \n \n当你需要停止时，Gauguin 会自动保存游戏。</string>
+    <string name="help_instructions_summary">使用数字按钮填格子。选择格子并长按数字按钮以输入数字。添加或删除不确定的数字，只需要单击数字按钮。 \n \n点击问号按钮以检索已填的格子中的错误。 \n \n当你需要停止时，白い熊 GNU Gauguin 会自动保存游戏。</string>
     <string name="game_setting_difficulty_hard">难</string>
     <string name="about_license_title">许可协议</string>
     <string name="game_setting_difficulty_medium">中等</string>
-    <string name="about_developers_summary">Meik Piepmeyer \n \nFork 自 Adam Queler 的 HoloKenMod 1.6.1 \n \nFork 自 Amanda Chow 的 Holoken 1.1.1 ，很大程度上归功于 Mathdoku 的 Ben Buxton 和 Stephen Lee</string>
+    <string name="about_developers_summary">白い熊\n \nMeik Piepmeyer \n \nFork 自 Adam Queler 的 HoloKenMod 1.6.1 \n \nFork 自 Amanda Chow 的 Holoken 1.1.1 ，很大程度上归功于 Mathdoku 的 Ben Buxton 和 Stephen Lee</string>
     <string name="game_setting_single_cages_no_singles">没有单独的笼子</string>
     <string name="help_dismiss_dialog_button">确认</string>
     <string name="dialog_restart_current_game_ok_button">确认</string>
@@ -62,10 +62,10 @@
     <string name="dialog_delete_all_games_ok_button">确认</string>
     <string name="game_setting_operations_label">操作</string>
     <string name="about_website_title">项目主页</string>
-    <string name="about_website_summary">请在 <a href="https://gauguin.app">https://gauguin.app</a> 查看我们的主页\n请在 <a href="https://github.com/meikpiep/gauguin">https://github.com/meikpiep/gauguin</a> 反馈问题、提出建议</string>
+    <string name="about_website_summary">请在 <a href="https://github.com/ShiroiKuma0/shiroikuma-gauguin">https://github.com/ShiroiKuma0/shiroikuma-gauguin</a> 反馈问题、提出建议</string>
     <string name="dialog_restart_current_game_title">重新开始游戏吗？</string>
     <string name="help_rules_title">规则</string>
-    <string name="about_changelog_summary">参见 <a href="https://github.com/meikpiep/gauguin/releases">https://github.com/meikpiep/gauguin/releases</a></string>
+    <string name="about_changelog_summary">参见 <a href="https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases">https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases</a></string>
     <string name="game_setting_show_operators_toggle">显示运算符</string>
     <string name="game_setting_single_cells_usage_label">单独的格子</string>
     <string name="dialog_delete_game_message">此游戏会被删除。</string>
@@ -172,7 +172,7 @@
     <string name="statistics_diagram_duration_and_scatter_plot_button_duration_only">仅用时</string>
     <string name="statistics_diagram_scatter_plot_label_difficulty">难度</string>
     <string name="statistics_diagram_scatter_plot_label_duration">用时</string>
-    <string name="setting_theme_entry_gauguin_own_theme">Gauguin 主题</string>
+    <string name="setting_theme_entry_gauguin_own_theme">白い熊 GNU Gauguin 主题</string>
     <string name="setting_night_mode_title">颜色模式</string>
     <string name="statistics_button_close">关闭</string>
     <string name="game_setting_switch_multi_selection_of_difficulties">多难度选择</string>

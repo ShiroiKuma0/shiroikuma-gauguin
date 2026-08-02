@@ -91,7 +91,7 @@
     <string name="setting_maximum_cell_size_title">Taille de case maximale</string>
     <string name="game_setting_numeral_system_chip_label_octal">Octal</string>
     <string name="statistics_dialog_reset_statistics_title">Réinitialiser les statistiques ?</string>
-    <string name="about_changelog_summary">Accédez à <a href="https://github.com/meikpiep/gauguin/releases">https://github.com/meikpiep/gauguin/releases</a>.</string>
+    <string name="about_changelog_summary">Accédez à <a href="https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases">https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases</a>.</string>
     <string name="setting_show_timer_title">Afficher le chronomètre</string>
     <string name="puzzle_solved_type_of_solution_first_game_solved">Vous venez de remporter votre première partie !</string>
     <string name="puzzle_solved_type_of_solution_best_time_of_kind_solved">Nouveau record de temps !</string>
@@ -120,7 +120,7 @@
     <string name="statistics_dialog_reset_statistics_message">Toutes les statistiques seront supprimées.</string>
     <string name="statistics_dialog_reset_statistics_ok_button">OK</string>
     <string name="help_dismiss_dialog_button">OK</string>
-    <string name="about_developers_summary">Meik Piepmeyer \n \nForké de HoloKenMod 1.6.1 par Adam Queler \n \nForké de Holoken 1.1.1 par Amanda Chow, s\'inspirant de Mathdoku par Ben Buxton et Stephen Lee</string>
+    <string name="about_developers_summary">白い熊\n \nMeik Piepmeyer \n \nForké de HoloKenMod 1.6.1 par Adam Queler \n \nForké de Holoken 1.1.1 par Amanda Chow, s\'inspirant de Mathdoku par Ben Buxton et Stephen Lee</string>
     <string name="dialog_restart_current_game_ok_button">OK</string>
     <string name="dialog_restart_current_game_message">La partie sera redémarrée.</string>
     <string name="dialog_delete_all_games_message">Toutes vos parties seront supprimées.</string>
@@ -148,8 +148,8 @@
     <string name="game_grid_cage_math_result_multiply_with_operator">%1$s×</string>
     <string name="game_grid_cage_math_result_no_operator_shown">%1$s</string>
     <string name="help_rules_summary">Remplissez chaque ligne et chaque colonne avec les nombres à votre disposition. Un nombre ne peut être utilisé qu\'une seule fois par ligne et par colonne. \n \nLes lignes épaisses indiquent les « cages ». Chaque cage est un casse-tête mathématique à résoudre. Par exemple, « 5+ » signifie que la somme des nombres de la cage doit être 5. \n \nUn nombre peut être utilisé plus d\'une fois par cage, du moment qu\'il n\'est présent qu\'une seule fois par ligne et par colonne.</string>
-    <string name="about_website_summary">Accédez à notre page d\'accueil à l\'adresse <a href="https://gauguin.app">https://gauguin.app</a>\nSignalez les bugs et envoyez vos suggestions à l\'adresse <a href="https://github.com/meikpiep/gauguin">https://github.com/meikpiep/gauguin</a></string>
-    <string name="help_instructions_summary">Remplissez les cases de la grille en utilisant les boutons numérotés. Pour saisir un nombre dans la case sélectionnée, appuyez longuement sur le nombre de votre choix. Pour ajouter ou supprimer un nombre possible, appuyez simplement sur le bouton numéroté correspondant. \n \nUtilisez le point d\'interrogation pour savoir s\'il y a des fautes dans la grille. \n \nGauguin sauvegarde automatiquement votre partie.</string>
+    <string name="about_website_summary">Signalez les bugs et envoyez vos suggestions à l\'adresse <a href="https://github.com/ShiroiKuma0/shiroikuma-gauguin">https://github.com/ShiroiKuma0/shiroikuma-gauguin</a></string>
+    <string name="help_instructions_summary">Remplissez les cases de la grille en utilisant les boutons numérotés. Pour saisir un nombre dans la case sélectionnée, appuyez longuement sur le nombre de votre choix. Pour ajouter ou supprimer un nombre possible, appuyez simplement sur le bouton numéroté correspondant. \n \nUtilisez le point d\'interrogation pour savoir s\'il y a des fautes dans la grille. \n \n白い熊 GNU Gauguin sauvegarde automatiquement votre partie.</string>
     <string name="game_grid_cage_math_result_single_cell">%1$s</string>
     <string name="game_grid_cage_math_result_subtract_with_operator">%1$s-</string>
     <string name="game_grid_cage_math_result_divide_with_operator">%1$s÷</string>
@@ -175,7 +175,7 @@
     <string name="statistics_diagram_scatter_plot_label_duration">Durée</string>
     <string name="statistics_diagram_duration_and_scatter_plot_button_duration_only">Durée uniquement</string>
     <string name="setting_night_mode_title">Mode de couleurs</string>
-    <string name="setting_theme_entry_gauguin_own_theme">Thème Gauguin</string>
+    <string name="setting_theme_entry_gauguin_own_theme">Thème 白い熊 GNU Gauguin</string>
     <string name="game_setting_switch_multi_selection_of_difficulties">Sélection multiple de difficultés</string>
     <string name="statistics_button_close">Fermer</string>
     <string name="setting_theme_entry_monochrome_theme">Monochrome</string>

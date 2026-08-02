@@ -156,7 +156,7 @@
     <string name="puzzle_solved_type_of_solution_first_game_of_kind_solved">لقد فزت باللعبة الأولى من هذا النوع!</string>
     <string name="setting_grid_takes_remaining_space_if_necessary_summary_on">استخدم خلايا الشبكة المستطيلة إذا كانت الشبكة ضخمة (طولها 10 أو أكثر) ومساحة العرض محدودة</string>
     <string name="help_rules_summary">املأ كل صف وعمود بالأرقام المتاحة. لا يجوز استخدام الأرقام إلا مرة واحدة لكل صف وعمود. \n \nتشير الخطوط السميكة إلى \"الأقفاص\"، حيث يحتوي كل قفص على لغز رياضي يجب حله. على سبيل المثال، \"5+\" يعني أن جميع الأرقام الموجودة في هذا القفص يجب أن يصل مجموعها إلى 5. \n \nيمكن استخدام الأرقام أكثر من مرة في القفص الواحد، طالما أن هناك رقمًا واحدًا فقط من كل صف أو عمود.</string>
-    <string name="help_instructions_summary">املأ خلايا الشبكة باستخدام أزرار الأرقام. لإدخال رَقَم في الخلية المحددة، اضغط مدة على زر الرَّقَم. لإضافة أو إزالة رَقَم محتمل، فقط اضغط على زر الرَّقَم. \n \nاستخدم علامة الاستفهام لمعرفة ما إذا كانت هناك أية أخطاء في الخلايا المملوءة. \n \nسيقوم Gauguin بحفظ لعبتك تلقائيًا إذا كنت بحاجة إلى التوقف.</string>
+    <string name="help_instructions_summary">املأ خلايا الشبكة باستخدام أزرار الأرقام. لإدخال رَقَم في الخلية المحددة، اضغط مدة على زر الرَّقَم. لإضافة أو إزالة رَقَم محتمل، فقط اضغط على زر الرَّقَم. \n \nاستخدم علامة الاستفهام لمعرفة ما إذا كانت هناك أية أخطاء في الخلايا المملوءة. \n \nسيقوم 白い熊 GNU Gauguin بحفظ لعبتك تلقائيًا إذا كنت بحاجة إلى التوقف.</string>
     <string name="statistics_diagram_streaks">سلسلة الإنتصارات</string>
     <string name="statistics_puzzles_longest_streak">أطول سلسلة انتصار</string>
     <string name="game_difficulty_no_difficulty_calculated_for_game_variant">لم تحسب مستويات صعوبة هذه اللعبة بعد.</string>
@@ -167,9 +167,9 @@
     <string name="dialog_save_current_game_with_comment_message">فضلا اكتب تعليقك أدناه.</string>
     <string name="main_menu_item_save_game_with_comment">احفظ مع التعليق</string>
     <string name="dialog_save_current_game_with_comment_cancel_button">إلغ</string>
-    <string name="about_changelog_summary">راجع <a href="https://github.com/meikpiep/gauguin/releases">https://github.com/meikpiep/gauguin/releases</a></string>
-    <string name="about_website_summary">زر صفحتنا الرئيسية <a href="https://gauguin.app">https://gauguin.app</a>\nبلغ عن أي أخطاء أو إقتراحات على<a href="https://github.com/meikpiep/gauguin">https://github.com/meikpiep/gauguin</a></string>
-    <string name="about_developers_summary">Meik Piepmeyer\n.\nمتشعب من HoloKenMod 1.6.1 بواسطة Adam Queler\n\nمشعب من Holoken 1.1.1 بواسطة Amanda Chow, مع الكثير من الفضل ل Ben Buxton و Stephen Lee من Mathdoku</string>
+    <string name="about_changelog_summary">راجع <a href="https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases">https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases</a></string>
+    <string name="about_website_summary">بلغ عن أي أخطاء أو إقتراحات على<a href="https://github.com/ShiroiKuma0/shiroikuma-gauguin">https://github.com/ShiroiKuma0/shiroikuma-gauguin</a></string>
+    <string name="about_developers_summary">白い熊\n\nMeik Piepmeyer\n.\nمتشعب من HoloKenMod 1.6.1 بواسطة Adam Queler\n\nمشعب من Holoken 1.1.1 بواسطة Amanda Chow, مع الكثير من الفضل ل Ben Buxton و Stephen Lee من Mathdoku</string>
     <string name="setting_maximum_cell_size_summary">الحد الأقصى لحجم الخلية في الشبكة بـ \'dp\'</string>
     <string name="statistics_diagram_duration_and_scatter_plot_button_scatter_plot">مخطط التشتت</string>
     <string name="statistics_diagram_duration_and_scatter_plot_button_duration_only">المدة فقط</string>
@@ -177,7 +177,7 @@
     <string name="statistics_diagram_scatter_plot_label_duration">المدة</string>
     <string name="about_quote_paul_gauguin_text">“الفن إما سرقة أدبية أو ثورة.”</string>
     <string name="about_quote_paul_gauguin_meta_data">Paul Gauguin\n(1848–1903)</string>
-    <string name="setting_theme_entry_gauguin_own_theme">Gauguin سمة</string>
+    <string name="setting_theme_entry_gauguin_own_theme">白い熊 GNU Gauguin سمة</string>
     <string name="setting_night_mode_title">وضع اللون</string>
     <string name="statistics_button_close">اغلق</string>
     <string name="game_setting_switch_multi_selection_of_difficulties">اختيار صعوبات متعددة</string>

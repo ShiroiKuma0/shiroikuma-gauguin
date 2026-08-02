@@ -44,11 +44,11 @@
     <string name="about_license_title">Lizenz</string>
     <string name="about_license_summary">GNU General Public Lizenz v3</string>
     <string name="about_website_title">Homepage</string>
-    <string name="about_website_summary">Besuchen Sie unsere Homepage unter <a href="https://gauguin.app">https://gauguin.app</a>\nMelden Sie Fehler oder Vorschläge unter <a href="https://github.com/meikpiep/gauguin">https://github.com/meikpiep/gauguin</a></string>
+    <string name="about_website_summary">Melden Sie Fehler oder Vorschläge unter <a href="https://github.com/ShiroiKuma0/shiroikuma-gauguin">https://github.com/ShiroiKuma0/shiroikuma-gauguin</a></string>
     <string name="about_developers_title">Entwickler</string>
-    <string name="about_developers_summary">Meik Piepmeyer \n \nGeforkt von HoloKenMod 1.6.1 von Adam Queler \n \nGeforkt von Holoken 1.1.1 von Amanda Chow, mit großem Dank an Ben Buxton und Stephen Lee von Mathdoku</string>
+    <string name="about_developers_summary">白い熊\n \nMeik Piepmeyer \n \nGeforkt von HoloKenMod 1.6.1 von Adam Queler \n \nGeforkt von Holoken 1.1.1 von Amanda Chow, mit großem Dank an Ben Buxton und Stephen Lee von Mathdoku</string>
     <string name="about_changelog_title">Changelog</string>
-    <string name="about_changelog_summary">Siehe <a href="https://github.com/meikpiep/gauguin/releases">https://github.com/meikpiep/gauguin/releases</a></string>
+    <string name="about_changelog_summary">Siehe <a href="https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases">https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases</a></string>
     <string name="dialog_restart_current_game_ok_button">OK</string>
     <string name="dialog_restart_current_game_cancel_button">Abbrechen</string>
     <string name="dialog_restart_current_game_title">Spiel neustarten?</string>
@@ -174,7 +174,7 @@
     <string name="statistics_diagram_scatter_plot_label_difficulty">Schwierigkeit</string>
     <string name="statistics_diagram_scatter_plot_label_duration">Spielzeit</string>
     <string name="setting_night_mode_title">Farbmodus</string>
-    <string name="setting_theme_entry_gauguin_own_theme">Gauguin-Thema</string>
+    <string name="setting_theme_entry_gauguin_own_theme">白い熊 GNU Gauguin-Thema</string>
     <string name="game_setting_switch_multi_selection_of_difficulties">Mehrere Schwierigkeitsstufen</string>
     <string name="statistics_button_close">Schließen</string>
     <string name="setting_theme_entry_monochrome_theme">Monochrom</string>

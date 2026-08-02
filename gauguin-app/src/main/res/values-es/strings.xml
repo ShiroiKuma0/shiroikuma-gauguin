@@ -58,7 +58,7 @@
     <string name="main_menu_item_new">Nuevo juego</string>
     <string name="statistics_label_no_statistics_available_yet">Después de resolver un primer juego, encontrará diagramas aquí tratando sobre: \n- la complejidad de los juegos resueltos \n- el tiempo de juego</string>
     <string name="statistics_dialog_reset_statistics_ok_button">Aceptar</string>
-    <string name="about_website_summary">Reporta errores o sugerencias en <a href="https://github.com/meikpiep/gauguin">https://github.com/meikpiep/gauguin</a></string>
+    <string name="about_website_summary">Reporta errores o sugerencias en <a href="https://github.com/ShiroiKuma0/shiroikuma-gauguin">https://github.com/ShiroiKuma0/shiroikuma-gauguin</a></string>
     <string name="about_developers_title">Desarrollador</string>
     <string name="main_menu_item_restart_game">Reiniciar juego</string>
     <string name="load_game_screen_title">Cargar juego</string>
@@ -149,7 +149,7 @@
     <string name="game_grid_cage_math_result_subtract_with_operator">%1$s-</string>
     <string name="dialog_save_current_game_with_comment_cancel_button">Cancelar</string>
     <string name="main_menu_item_save_game_with_comment">Guardar con un comentario</string>
-    <string name="about_changelog_summary">Ver <a href="https://github.com/meikpiep/gauguin/releases">https://github.com/meikpiep/gauguin/releases</a></string>
+    <string name="about_changelog_summary">Ver <a href="https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases">https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases</a></string>
     <string name="dialog_restart_current_game_message">Este juego se restablecerá.</string>
     <string name="dialog_save_current_game_with_comment_message">Por favor, escribe tu comentario a continuación.</string>
     <string name="dialog_save_current_game_with_comment_title">¿Guardar partida con un comentario?</string>
@@ -158,8 +158,8 @@
     <string name="dialog_delete_all_games_title">¿Borrar todas las partidas?</string>
     <string name="game_setting_new_game_activity_start_new_game">Iniciar nueva partida</string>
     <string name="setting_show_timer_title">Mostrar temporizador del juego</string>
-    <string name="about_developers_summary">Meik Piepmeyer \n \nBifurcado de HoloKenMod 1.6.1 por Adam Queler \n \nBifurcado de Holoken 1.1.1 por Amanda Chow, con mucho crédito a Ben Buxton y Stephen Lee de Mathdoku</string>
-    <string name="help_instructions_summary">Completa las celdas de la cuadrícula utilizando los botones con números. Para ingresar un número en la celda seleccionada, mantenga presionado el botón del número correspondiente. Para agregar o quitar un número posible, simplemente toque el botón del número. \n \nUtilice el signo de interrogación para verificar si hay errores en las celdas completadas \n \nGauguin guarda el progreso del juego automáticamente por si necesitas detenerte.</string>
+    <string name="about_developers_summary">白い熊\n \nMeik Piepmeyer \n \nBifurcado de HoloKenMod 1.6.1 por Adam Queler \n \nBifurcado de Holoken 1.1.1 por Amanda Chow, con mucho crédito a Ben Buxton y Stephen Lee de Mathdoku</string>
+    <string name="help_instructions_summary">Completa las celdas de la cuadrícula utilizando los botones con números. Para ingresar un número en la celda seleccionada, mantenga presionado el botón del número correspondiente. Para agregar o quitar un número posible, simplemente toque el botón del número. \n \nUtilice el signo de interrogación para verificar si hay errores en las celdas completadas \n \n白い熊 GNU Gauguin guarda el progreso del juego automáticamente por si necesitas detenerte.</string>
     <string name="about_website_title">Inicio del proyecto</string>
     <string name="game_grid_cage_math_result_divide_with_operator">%1$s÷</string>
     <string name="setting_remove_pencils_summary">En la misma fila o columna que un número marcado</string>

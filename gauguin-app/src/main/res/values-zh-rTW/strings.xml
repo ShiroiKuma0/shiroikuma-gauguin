@@ -76,14 +76,14 @@
     <string name="statistics_info_value_average_short">Avg</string>
     <string name="statistics_dialog_reset_statistics_ok_button">確認</string>
     <string name="help_rules_summary">用可用的數字填寫每一行和每一列。每行和每列只能使用一次數字。 \n \n粗線表示“籠子”，每個籠子都有一個需要解決的數學題。例如，“5+”意味著籠子裡的所有數字必須加起來為 5。 \n \n每個籠子可以使用多個數字，只要每行或每列只有一個數字。</string>
-    <string name="help_instructions_summary">使用數字按鈕填格子。選擇格子並長按數字按鈕以輸入數字。添加或刪除不確定的數字，只需要單機數字按鈕。 \n \n點擊問號按鈕以檢索已填的格子中的錯誤。 \n \n當你需要停止時，Gauguin 會自動保存遊戲。</string>
+    <string name="help_instructions_summary">使用數字按鈕填格子。選擇格子並長按數字按鈕以輸入數字。添加或刪除不確定的數字，只需要單機數字按鈕。 \n \n點擊問號按鈕以檢索已填的格子中的錯誤。 \n \n當你需要停止時，白い熊 GNU Gauguin 會自動保存遊戲。</string>
     <string name="help_dismiss_dialog_button">確認</string>
     <string name="about_version_title">版本</string>
     <string name="about_license_title">許可協議</string>
     <string name="about_website_title">項目主頁</string>
-    <string name="about_developers_summary">Meik Piepmeyer \n \nFork 自 Adam Queler 的 HoloKenMod 1.6.1 \n \nFork 自 Amanda Chow 的 Holoken 1.1.1， 很大程度上歸功於 Mathdoku 的 Ben Buxton 和 Stephen Lee</string>
-    <string name="about_website_summary">反饋一些問題和建議於 <a href="https://github.com/meikpiep/gauguin">https://github.com/meikpiep/gauguin</a></string>
-    <string name="about_changelog_summary">參見 <a href="https://github.com/meikpiep/gauguin/releases">https://github.com/meikpiep/gauguin/releases</a></string>
+    <string name="about_developers_summary">白い熊\n \nMeik Piepmeyer \n \nFork 自 Adam Queler 的 HoloKenMod 1.6.1 \n \nFork 自 Amanda Chow 的 Holoken 1.1.1， 很大程度上歸功於 Mathdoku 的 Ben Buxton 和 Stephen Lee</string>
+    <string name="about_website_summary">反饋一些問題和建議於 <a href="https://github.com/ShiroiKuma0/shiroikuma-gauguin">https://github.com/ShiroiKuma0/shiroikuma-gauguin</a></string>
+    <string name="about_changelog_summary">參見 <a href="https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases">https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases</a></string>
     <string name="dialog_restart_current_game_title">重新開始遊戲嗎？</string>
     <string name="dialog_delete_game_title">刪除遊戲嗎？</string>
     <string name="dialog_delete_game_message">此遊戲會被刪除。</string>

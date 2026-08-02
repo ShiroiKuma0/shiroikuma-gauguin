@@ -35,14 +35,14 @@
     <string name="help_rules_title">Правила</string>
     <string name="help_rules_summary">Заповніть кожен рядок і стовпець наявними числами. Числа можуть бути використані лише один раз у кожному рядку та стовпці.\n\nЖирні лінії вказують на «області» (cages), у кожній з яких є математична головоломка, яку потрібно розв\'язати. Наприклад, «5+» означає, що сума всіх чисел у цій області повинна дорівнювати 5.\n\nЧисла можуть використовуватися в одній області більше ніж один раз, за умови, що кожне число зустрічається лише один раз у кожному рядку або стовпці.</string>
     <string name="help_instructions_title">Як грати</string>
-    <string name="help_instructions_summary">Заповніть клітинки сітки, використовуючи кнопки з числами. Щоб ввести число в обрану клітинку, натисніть і утримуйте кнопку з числом. Щоб додати або видалити можливе число, просто натисніть кнопку з числом.\n\nВикористовуйте знак питання, щоб перевірити, чи є помилки в заповнених клітинках.\n\nGauguin автоматично збереже вашу гру, якщо вам потрібно перерватися.</string>
+    <string name="help_instructions_summary">Заповніть клітинки сітки, використовуючи кнопки з числами. Щоб ввести число в обрану клітинку, натисніть і утримуйте кнопку з числом. Щоб додати або видалити можливе число, просто натисніть кнопку з числом.\n\nВикористовуйте знак питання, щоб перевірити, чи є помилки в заповнених клітинках.\n\n白い熊 GNU Gauguin автоматично збереже вашу гру, якщо вам потрібно перерватися.</string>
     <string name="about_version_title">Версія</string>
     <string name="about_license_title">Ліцензія</string>
-    <string name="about_website_summary">Відвідайте нашу домашню сторінку <a href="https://gauguin.app">https://gauguin.app</a>\nПовідомляйте про будь-які помилки чи пропозиції <a href="https://github.com/meikpiep/gauguin">https://github.com/meikpiep/gauguin</a></string>
+    <string name="about_website_summary">Повідомляйте про будь-які помилки чи пропозиції <a href="https://github.com/ShiroiKuma0/shiroikuma-gauguin">https://github.com/ShiroiKuma0/shiroikuma-gauguin</a></string>
     <string name="about_developers_title">Розробник</string>
-    <string name="about_developers_summary">Мейк Пайпмайєр\n\nФорк від HoloKenMod 1.6.1 від Адама Квелера\n\nФорк від Holoken 1.1.1 від Аманди Чоу, з великою подякою Бену Бакстону та Стівену Лі з Mathdoku</string>
+    <string name="about_developers_summary">白い熊\n\nМейк Пайпмайєр\n\nФорк від HoloKenMod 1.6.1 від Адама Квелера\n\nФорк від Holoken 1.1.1 від Аманди Чоу, з великою подякою Бену Бакстону та Стівену Лі з Mathdoku</string>
     <string name="about_changelog_title">Журнал змін</string>
-    <string name="about_changelog_summary">Дивіться <a href="https://github.com/meikpiep/gauguin/releases">https://github.com/meikpiep/gauguin/releases</a></string>
+    <string name="about_changelog_summary">Дивіться <a href="https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases">https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases</a></string>
     <string name="dialog_restart_current_game_title">Перезапустити гру?</string>
     <string name="dialog_restart_current_game_message">Гру буде перезапущено.</string>
     <string name="dialog_restart_current_game_cancel_button">Скасувати</string>
