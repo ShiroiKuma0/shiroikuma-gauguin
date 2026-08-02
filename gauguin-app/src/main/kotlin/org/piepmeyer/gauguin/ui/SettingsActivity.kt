@@ -1,14 +1,17 @@
 package org.piepmeyer.gauguin.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.commit
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import org.koin.android.ext.android.inject
 import org.piepmeyer.gauguin.R
+import org.piepmeyer.gauguin.ui.customui.GauguinUiActivity
 
 class SettingsActivity : AppCompatActivity() {
     private val activityUtils: ActivityUtils by inject()
@@ -58,6 +61,14 @@ class SettingsActivity : AppCompatActivity() {
             rootKey: String?,
         ) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
+
+            // 白い熊 fork: open the house UI page. Wired here rather than via an <intent> in the XML
+            // because applicationId (shiroikuma.gauguin) differs from the namespace, so the target
+            // package cannot be written literally in the resource without hard-coding it.
+            findPreference<Preference>("shiroikumaUi")?.setOnPreferenceClickListener {
+                startActivity(Intent(requireContext(), GauguinUiActivity::class.java))
+                true
+            }
         }
     }
 }

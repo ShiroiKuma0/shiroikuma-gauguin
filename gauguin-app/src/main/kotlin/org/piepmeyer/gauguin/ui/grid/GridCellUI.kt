@@ -116,12 +116,19 @@ class GridCellUI(
             val averageCellLength = min(cellSize.first, cellSize.second)
 
             val paint: Paint = paintHolder.cellValuePaint(cell, fastFinishMode)
+            // 白い熊 fork: the entered number's size follows the house UI setting (1.0 at its default).
+            val valueSizeFactor =
+                if (paintHolder.uiConfig.customUiActive) {
+                    paintHolder.uiConfig.int(org.piepmeyer.gauguin.ui.customui.GauguinUiConfig.VALUE_SIZE) / 100f
+                } else {
+                    1f
+                }
             val textSize =
                 when (number.length) {
                     1 -> (averageCellLength * 3f / 4)
                     2 -> (averageCellLength * 5f / 8)
                     else -> (averageCellLength * 7f / 6 / number.length)
-                }
+                } * valueSizeFactor
 
             paint.textSize = textSize
             paint.textAlign = Paint.Align.CENTER

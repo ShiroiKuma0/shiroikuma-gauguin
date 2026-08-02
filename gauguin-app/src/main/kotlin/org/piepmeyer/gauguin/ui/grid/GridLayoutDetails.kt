@@ -42,7 +42,36 @@ class GridLayoutDetails(
         return paint
     }
 
-    fun innerGridPaint(): Paint = painterHolder.innerGridPaint().apply { strokeWidth = 0.01f * averageLengthOfCell() }
+    fun innerGridPaint(): Paint =
+        painterHolder.innerGridPaint().apply {
+            strokeWidth = 0.01f * averageLengthOfCell() * cellBorderFactor()
+        }
+
+    // --- 白い熊 fork: the board's line weights and clue size follow the house UI settings. Each
+    // factor is 1.0 at the slider's default, so an untouched config draws exactly as upstream does,
+    // and every thickness slider bottoms out at 0 — the line goes away entirely.
+    private fun uiConfig() = painterHolder.uiConfig
+
+    private fun cageBorderFactor(): Float =
+        if (!uiConfig().customUiActive) {
+            1f
+        } else {
+            uiConfig().int(org.piepmeyer.gauguin.ui.customui.GauguinUiConfig.CAGE_BORDER_WIDTH) / 4f
+        }
+
+    private fun cellBorderFactor(): Float =
+        if (!uiConfig().customUiActive) {
+            1f
+        } else {
+            uiConfig().int(org.piepmeyer.gauguin.ui.customui.GauguinUiConfig.CELL_BORDER_WIDTH).toFloat()
+        }
+
+    private fun cageTextFactor(): Float =
+        if (!uiConfig().customUiActive) {
+            1f
+        } else {
+            uiConfig().int(org.piepmeyer.gauguin.ui.customui.GauguinUiConfig.CAGE_TEXT_SIZE) / 100f
+        }
 
     fun gridPaintRadius(): Float = 0.21f * averageLengthOfCell()
 
@@ -56,9 +85,11 @@ class GridLayoutDetails(
 
     fun yOffsetFromSevenOn(): Int = (cellSize.second / 3.9).toInt() + 1
 
-    fun gridPaintStrokeWidth(): Float = max((if (useBroaderCageFrames) 0.05f else 0.02f) * averageLengthOfCell(), 1f)
+    fun gridPaintStrokeWidth(): Float =
+        max((if (useBroaderCageFrames) 0.05f else 0.02f) * averageLengthOfCell(), 1f) * cageBorderFactor()
 
-    private fun gridSelectedPaintStrokeWidth(): Float = max((if (useBroaderCageFrames) 0.05f else 0.03f) * averageLengthOfCell(), 1f)
+    private fun gridSelectedPaintStrokeWidth(): Float =
+        max((if (useBroaderCageFrames) 0.05f else 0.03f) * averageLengthOfCell(), 1f) * cageBorderFactor()
 
     fun offsetDistance(): Int = max(5f / 119f * averageLengthOfCell(), 1f).toInt()
 
@@ -74,7 +105,7 @@ class GridLayoutDetails(
 
     fun cageTextMarginY(): Int = max(10f / 119f * averageLengthOfCell(), 1f).toInt()
 
-    fun cageTextSize(): Float = averageLengthOfCell() / 3.5f
+    fun cageTextSize(): Float = averageLengthOfCell() / 3.5f * cageTextFactor()
 
     fun cageTextStrokeWidth(): Float = averageLengthOfCell() / 25f
 

@@ -14,6 +14,7 @@ import org.piepmeyer.gauguin.R
 import org.piepmeyer.gauguin.preferences.ApplicationPreferences
 import org.piepmeyer.gauguin.preferences.NightMode
 import org.piepmeyer.gauguin.preferences.Theme
+import org.piepmeyer.gauguin.ui.customui.GauguinUi
 
 class ActivityUtils : KoinComponent {
     private val applicationPreferences: ApplicationPreferences by inject()
@@ -40,6 +41,9 @@ class ActivityUtils : KoinComponent {
 
     fun configureRootView(root: View) {
         ViewGroupCompat.installCompatInsetsDispatch(root)
+        // 白い熊 fork: every activity funnels its content view through here, so this is the one place
+        // the house look has to be applied from.
+        GauguinUi.applyTo(root)
     }
 
     fun configureMainContainerBackground(mainContainer: View) {
