@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:installLocation="auto"
     android:versionCode="77"
     android:versionName="0.52.1">
+
+    <!-- 白い熊 fork: the Export/Import page writes its backup ZIP to a folder 白い熊 chooses, and the
+         保存復元 automation contract may be handed an absolute path to write to. Both need
+         all-files access; the code checks the grant with Environment.isExternalStorageManager()
+         rather than discovering it by failing. -->
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:icon="@mipmap/ic_launcher"
@@ -32,6 +43,30 @@
         <activity
             android:name=".ui.SettingsActivity"
             android:exported="false" />
+
+        <!-- 白い熊 fork: the house UI page (colours, fonts, sizes, borders, export/import). -->
+        <activity
+            android:name=".ui.customui.GauguinUiActivity"
+            android:exported="false"
+            android:label="@string/gauguin_ui_title" />
+
+        <!-- 白い熊 fork: the 保存復元 automation contract. No android:permission — the caller cannot
+             hold one; the token is the gate. The cancel action must live on this EXPORTED receiver,
+             because the service it signals is (correctly) not exported. -->
+        <receiver
+            android:name=".ui.customui.StateExportReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="shiroikuma.gauguin.action.EXPORT_STATE" />
+                <action android:name="shiroikuma.gauguin.action.LIST_CATEGORIES" />
+                <action android:name="shiroikuma.gauguin.action.CANCEL_EXPORT" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".ui.customui.StateExportService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
     </application>
 
 </manifest>

@@ -9,6 +9,8 @@ import com.google.android.material.color.MaterialColors
 import org.piepmeyer.gauguin.R
 import org.piepmeyer.gauguin.grid.GridCage
 import org.piepmeyer.gauguin.grid.GridCell
+import org.piepmeyer.gauguin.ui.customui.GauguinFonts
+import org.piepmeyer.gauguin.ui.customui.GauguinUiConfig
 
 class GridPaintHolder(
     gridUI: GridUI,
@@ -48,6 +50,9 @@ class GridPaintHolder(
 
     private val previewPaint: Paint = Paint()
     private val previewTextPaint: Paint = Paint()
+
+    /** 白い熊 fork: the board's share of the house UI settings. Also read by [GridLayoutDetails]. */
+    val uiConfig = GauguinUiConfig(context)
 
     init {
         val fontHolder = GridFontHolder(context)
@@ -179,7 +184,86 @@ class GridPaintHolder(
         cheatedPaint.color = getColor(com.google.android.material.R.attr.colorSurfaceVariant)
 
         errorBackgroundPaint.color = semiTransparentErrorBackgroundColor
+
+        applyShiroikumaLook(context)
     }
+
+    /**
+     * 白い熊 fork: override the board's colours and fonts from the 白い熊 GNU Gauguin UI settings.
+     *
+     * Applied as a final pass over the paints upstream has just built, rather than woven into their
+     * construction — that keeps the fork's diff to one block, so an upstream rebase that reworks the
+     * theming above still leaves this intact and re-appliable.
+     */
+    private fun applyShiroikumaLook(context: android.content.Context) {
+        if (!uiConfig.customUiActive) return
+
+        val valueFont =
+            GauguinFonts.typeface(
+                context,
+                uiConfig.string(GauguinUiConfig.VALUE_FONT).ifEmpty { uiConfig.fontFamily },
+                uiConfig.int(GauguinUiConfig.VALUE_WEIGHT),
+                uiConfig.fontItalic,
+            )
+        val cageFont =
+            GauguinFonts.typeface(
+                context,
+                uiConfig.string(GauguinUiConfig.CAGE_TEXT_FONT).ifEmpty { uiConfig.fontFamily },
+                uiConfig.fontWeight,
+                uiConfig.fontItalic,
+            )
+        val possiblesFont =
+            GauguinFonts.typeface(
+                context,
+                uiConfig.string(GauguinUiConfig.POSSIBLES_FONT).ifEmpty { uiConfig.fontFamily },
+                uiConfig.fontWeight,
+                uiConfig.fontItalic,
+            )
+
+        backgroundPaint.color = uiConfig.int(GauguinUiConfig.GRID_BACKGROUND)
+
+        gridPaint.color = uiConfig.int(GauguinUiConfig.CAGE_BORDER_COLOR)
+        selectedGridPaint.color = uiConfig.accentColor
+        innerGridPaint.color = uiConfig.int(GauguinUiConfig.CELL_BORDER_COLOR)
+        warningGridPaint.color = uiConfig.int(GauguinUiConfig.WARNING_COLOR)
+
+        listOf(cageTextPaint, cageTextSelectedPaint, cageTextPreviewModePaint).forEach {
+            it.color = uiConfig.int(GauguinUiConfig.CAGE_TEXT_COLOR)
+            it.typeface = cageFont
+        }
+        cageTextSelectedFastFinishModePaint.color = uiConfig.int(GauguinUiConfig.GRID_CELL_BACKGROUND)
+        cageTextSelectedFastFinishModePaint.typeface = cageFont
+
+        valuePaint.color = uiConfig.int(GauguinUiConfig.VALUE_COLOR)
+        valuePaint.typeface = valueFont
+        valueSelectedPaint.color = uiConfig.int(GauguinUiConfig.VALUE_SELECTED_COLOR)
+        valueSelectedPaint.typeface = valueFont
+        textOnSelectedFastFinishModePaint.color = uiConfig.int(GauguinUiConfig.VALUE_SELECTED_COLOR)
+
+        listOf(possiblesPaint, possiblesSelectedPaint, possiblesSelectedFastFinishModePaint).forEach {
+            it.color = uiConfig.int(GauguinUiConfig.POSSIBLES_COLOR)
+            it.typeface = possiblesFont
+        }
+        previewTextPaint.typeface = possiblesFont
+
+        val errorColor = uiConfig.int(GauguinUiConfig.ERROR_COLOR)
+        possiblesInvalidTextPaint.color = errorColor
+        possiblesInvalidFramePaint.color = errorColor
+        warningTextPaint.color = errorColor
+        warningTextPaint.typeface = valueFont
+        possiblesInvalidBackgroundPaint.color = withAlpha(errorColor, 128)
+        errorBackgroundPaint.color = withAlpha(errorColor, 128)
+
+        selectedPaint.color = uiConfig.accentColor
+        selectedFastFinishModePaint.color = uiConfig.int(GauguinUiConfig.GRID_SELECTED_BACKGROUND)
+        lastModifiedPaint.color = uiConfig.int(GauguinUiConfig.LAST_MODIFIED_COLOR)
+        cheatedPaint.color = uiConfig.int(GauguinUiConfig.CHEATED_COLOR)
+    }
+
+    private fun withAlpha(
+        color: Int,
+        alpha: Int,
+    ): Int = (color and 0x00FFFFFF) or (alpha shl 24)
 
     fun possiblesPaint(
         cell: GridCell,

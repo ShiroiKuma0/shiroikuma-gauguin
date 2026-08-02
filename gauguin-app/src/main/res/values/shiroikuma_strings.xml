@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Strings for the 白い熊 GNU Gauguin UI page, kept in their own file so upstream rebases never
+     conflict on them. -->
+<resources>
+
+    <string name="gauguin_ui_title">白い熊 GNU Gauguin UI</string>
+    <string name="gauguin_ui_summary">Colours, fonts, sizes, borders — the whole look, with a live preview.</string>
+
+    <!-- preview -->
+    <string name="gauguin_ui_preview_heading">Preview</string>
+    <string name="gauguin_ui_preview_sample">白い熊 GNU Gauguin — 1234567890</string>
+
+    <!-- section headings -->
+    <string name="gauguin_ui_cat_export">Export / Import</string>
+    <string name="gauguin_ui_cat_global">Global</string>
+    <string name="gauguin_ui_cat_grid">Grid</string>
+    <string name="gauguin_ui_cat_keypad">Keypad</string>
+    <string name="gauguin_ui_cat_top">Top panel</string>
+    <string name="gauguin_ui_cat_drawer">Navigation drawer</string>
+    <string name="gauguin_ui_cat_dialog">Dialogs</string>
+    <string name="gauguin_ui_cat_lists">Lists &amp; statistics</string>
+
+    <!-- sub-headings -->
+    <string name="gauguin_ui_sub_global">Colours, font, shape</string>
+    <string name="gauguin_ui_sub_grid">Surface, lines, numbers</string>
+    <string name="gauguin_ui_sub_keypad">Buttons</string>
+    <string name="gauguin_ui_sub_top">Bar above the grid</string>
+    <string name="gauguin_ui_sub_drawer">Side menu</string>
+    <string name="gauguin_ui_sub_dialog">Popups</string>
+    <string name="gauguin_ui_sub_lists">Rows and dividers</string>
+
+    <!-- global -->
+    <string name="gauguin_ui_enabled">Use the 白い熊 look</string>
+    <string name="gauguin_ui_background">Background colour</string>
+    <string name="gauguin_ui_surface">Surface colour</string>
+    <string name="gauguin_ui_accent">Accent colour</string>
+    <string name="gauguin_ui_text">Text colour</string>
+    <string name="gauguin_ui_border_color">Border colour</string>
+    <string name="gauguin_ui_border_width">Border width (dp)</string>
+    <string name="gauguin_ui_corner">Corner roundness (dp)</string>
+    <string name="gauguin_ui_font_family">Font</string>
+    <string name="gauguin_ui_font_weight">Font weight (0 = the font\'s own)</string>
+    <string name="gauguin_ui_font_size">Font size (%)</string>
+    <string name="gauguin_ui_font_italic">Italic</string>
+
+    <!-- grid -->
+    <string name="gauguin_ui_grid_background">Grid background</string>
+    <string name="gauguin_ui_grid_cell_background">Cell background</string>
+    <string name="gauguin_ui_grid_selected_background">Selected cell background</string>
+    <string name="gauguin_ui_grid_corner">Grid corner roundness (dp)</string>
+    <string name="gauguin_ui_cage_border_color">Cage border colour</string>
+    <string name="gauguin_ui_cage_border_width">Cage border width (dp)</string>
+    <string name="gauguin_ui_cell_border_color">Cell border colour</string>
+    <string name="gauguin_ui_cell_border_width">Cell border width (dp)</string>
+    <string name="gauguin_ui_value_color">Number colour</string>
+    <string name="gauguin_ui_value_selected_color">Number colour (selected)</string>
+    <string name="gauguin_ui_value_size">Number size (%)</string>
+    <string name="gauguin_ui_value_font">Number font</string>
+    <string name="gauguin_ui_value_weight">Number weight</string>
+    <string name="gauguin_ui_cage_text_color">Cage clue colour</string>
+    <string name="gauguin_ui_cage_text_size">Cage clue size (%)</string>
+    <string name="gauguin_ui_cage_text_font">Cage clue font</string>
+    <string name="gauguin_ui_possibles_color">Pencil-mark colour</string>
+    <string name="gauguin_ui_possibles_size">Pencil-mark size (%)</string>
+    <string name="gauguin_ui_possibles_font">Pencil-mark font</string>
+    <string name="gauguin_ui_error_color">Mistake colour</string>
+    <string name="gauguin_ui_warning_color">Warning colour</string>
+    <string name="gauguin_ui_cheated_color">Revealed-cell colour</string>
+    <string name="gauguin_ui_last_modified_color">Last-changed cell colour</string>
+
+    <!-- keypad -->
+    <string name="gauguin_ui_key_background">Button background</string>
+    <string name="gauguin_ui_key_text_color">Button text colour</string>
+    <string name="gauguin_ui_key_text_size">Button text size (%)</string>
+    <string name="gauguin_ui_key_font">Button font</string>
+    <string name="gauguin_ui_key_weight">Button text weight</string>
+    <string name="gauguin_ui_key_border_color">Button border colour</string>
+    <string name="gauguin_ui_key_border_width">Button border width (dp)</string>
+    <string name="gauguin_ui_key_corner">Button roundness (dp)</string>
+
+    <!-- top panel -->
+    <string name="gauguin_ui_top_background">Panel background</string>
+    <string name="gauguin_ui_top_foreground">Panel foreground</string>
+    <string name="gauguin_ui_top_text_size">Panel text size (%)</string>
+    <string name="gauguin_ui_top_font">Panel font</string>
+    <string name="gauguin_ui_top_show_logo">Show the 白い熊 mark</string>
+
+    <!-- drawer -->
+    <string name="gauguin_ui_drawer_background">Drawer background</string>
+    <string name="gauguin_ui_drawer_text_color">Drawer text colour</string>
+    <string name="gauguin_ui_drawer_text_size">Drawer text size (%)</string>
+    <string name="gauguin_ui_drawer_font">Drawer font</string>
+    <string name="gauguin_ui_drawer_icon_size">Drawer icon size (dp)</string>
+    <string name="gauguin_ui_drawer_show_header">Show the drawer header picture</string>
+
+    <!-- dialogs -->
+    <string name="gauguin_ui_dialog_background">Dialog background</string>
+    <string name="gauguin_ui_dialog_text_color">Dialog text colour</string>
+    <string name="gauguin_ui_dialog_border_color">Dialog border colour</string>
+    <string name="gauguin_ui_dialog_border_width">Dialog border width (dp)</string>
+    <string name="gauguin_ui_dialog_corner">Dialog roundness (dp)</string>
+
+    <!-- lists -->
+    <string name="gauguin_ui_list_text_color">Row text colour</string>
+    <string name="gauguin_ui_list_text_size">Row text size (%)</string>
+    <string name="gauguin_ui_list_font">Row font</string>
+    <string name="gauguin_ui_list_divider_color">Divider colour</string>
+    <string name="gauguin_ui_list_divider_width">Divider width (dp)</string>
+    <string name="gauguin_ui_list_row_padding">Row padding (dp)</string>
+
+    <!-- fonts -->
+    <string name="gauguin_ui_font_system">System default</string>
+    <string name="gauguin_ui_font_sans">Sans-serif</string>
+    <string name="gauguin_ui_font_serif">Serif</string>
+    <string name="gauguin_ui_font_monospace">Monospace</string>
+    <string name="gauguin_ui_font_import">Import a font…</string>
+    <string name="gauguin_ui_font_imported">Imported %1$s</string>
+    <string name="gauguin_ui_font_import_failed">Could not import that font — it must be a .ttf or .otf file.</string>
+    <string name="gauguin_ui_pick_colour">Pick a colour</string>
+
+    <!-- reset -->
+    <string name="gauguin_ui_reset">Reset this section to defaults</string>
+    <string name="gauguin_ui_reset_all">Reset everything to the 白い熊 defaults</string>
+    <string name="gauguin_ui_reset_done">Reset to defaults.</string>
+
+    <!-- export / import -->
+    <string name="gauguin_ui_export_entry">Export / Import…</string>
+    <string name="gauguin_ui_export_entry_summary">Back up and restore every setting in this app.</string>
+    <string name="gauguin_ui_export_dir_row">Backup folder</string>
+    <string name="export_import_title">Export / Import</string>
+    <string name="export_import_intro">Back up everything this app can be set to, and restore it later. Backups are written as one timestamped .zip in the folder below.</string>
+    <string name="export_import_dir_label">Backup folder</string>
+    <string name="export_import_dir_unset">Not set — choose a folder before exporting</string>
+    <string name="export_import_dir_dialog_title">Backup folder</string>
+    <string name="export_import_dir_dialog_message">The absolute path of the folder backups are written to and read from.</string>
+    <string name="export_import_dir_hint">/storage/emulated/0/…</string>
+    <string name="export_import_browse">Browse…</string>
+    <string name="export_import_pick_here">Use this folder</string>
+    <string name="export_import_save">Save</string>
+    <string name="export_import_cancel">Cancel</string>
+    <string name="export_import_import">Import</string>
+    <string name="export_import_export">Export</string>
+    <string name="export_import_select_all">Select all</string>
+    <string name="export_import_last">Last backup: %1$s</string>
+    <string name="export_import_last_none">No backup in this folder yet.</string>
+    <string name="export_import_last_nodir">No backup folder set.</string>
+    <string name="export_import_need_access">All-files access is needed to write to a folder of your choosing.</string>
+    <string name="export_import_grant_access">Grant all-files access</string>
+    <string name="export_import_none_selected">No categories selected.</string>
+    <string name="export_import_exporting">Exporting…</string>
+    <string name="export_import_importing">Importing…</string>
+    <string name="export_import_export_done_title">Export finished</string>
+    <string name="export_import_export_ok">Wrote %1$s\n\n%2$s</string>
+    <string name="export_import_export_failed">Export failed: %1$s</string>
+    <string name="export_import_no_backups">No backups found in that folder.</string>
+    <string name="export_import_pick_backup">Pick a backup to restore</string>
+    <string name="export_import_import_done_title">Import finished</string>
+    <string name="export_import_import_failed">Import failed: %1$s</string>
+    <string name="export_import_restart_hint">Restart the app for everything to take effect.</string>
+    <string name="export_import_restart_now">Restart now</string>
+    <string name="export_import_restart_later">Later</string>
+
+    <!-- backup categories -->
+    <string name="backup_cat_ui">白い熊 UI look</string>
+    <string name="backup_cat_fonts">Imported fonts</string>
+    <string name="backup_cat_settings">Game settings</string>
+    <string name="backup_cat_statistics">Statistics</string>
+    <string name="backup_cat_savedgames">Saved games</string>
+
+    <!-- automation (the 保存復元 contract) -->
+    <string name="gauguin_ui_automation_switch">Automation export</string>
+    <string name="gauguin_ui_automation_switch_summary">Let a sister-app task trigger this app\'s export through a token-gated intent.</string>
+    <string name="gauguin_ui_automation_token">Automation token</string>
+    <string name="gauguin_ui_automation_token_copied">Token copied to the clipboard.</string>
+    <string name="gauguin_ui_automation_regenerate">Regenerate</string>
+    <string name="gauguin_ui_automation_regenerate_warning">A new token was generated. Any copy pasted elsewhere must be updated.</string>
+    <string name="gauguin_ui_automation_notification">Exporting 白い熊 GNU Gauguin…</string>
+    <string name="gauguin_ui_automation_channel">Automation export</string>
+</resources>

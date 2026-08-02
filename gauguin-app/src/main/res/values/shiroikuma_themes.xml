@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 白い熊 GNU Gauguin house themes: black surfaces, pure yellow #FFFF00 on top. -->
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- The 白い熊 GNU Gauguin UI settings page. Dark, black-backed, yellow accents. -->
+    <style name="Theme.Gauguin.ShiroikumaUi" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:colorBackground">@color/shiroikuma_black</item>
+        <item name="colorSurface">@color/shiroikuma_black</item>
+        <item name="colorSurfaceContainer">@color/shiroikuma_black</item>
+        <item name="colorPrimary">@color/shiroikuma_yellow</item>
+        <item name="colorSecondary">@color/shiroikuma_yellow</item>
+        <item name="colorAccent">@color/shiroikuma_yellow</item>
+        <item name="colorOnSurface">@color/shiroikuma_yellow</item>
+        <item name="colorOnBackground">@color/shiroikuma_yellow</item>
+        <item name="android:textColorPrimary">@color/shiroikuma_yellow</item>
+        <item name="android:textColorSecondary">@color/shiroikuma_yellow_dim</item>
+        <item name="android:windowBackground">@color/shiroikuma_black</item>
+        <item name="android:statusBarColor">@color/shiroikuma_black</item>
+        <item name="android:navigationBarColor">@color/shiroikuma_black</item>
+        <item name="preferenceTheme">@style/Theme.Gauguin.ShiroikumaPreference</item>
+        <item name="alertDialogTheme">@style/Theme.Gauguin.ShiroikumaDialog</item>
+        <item name="materialAlertDialogTheme">@style/Theme.Gauguin.ShiroikumaDialog</item>
+    </style>
+
+    <style name="Theme.Gauguin.ShiroikumaPreference" parent="@style/PreferenceThemeOverlay">
+        <item name="android:textColorPrimary">@color/shiroikuma_yellow</item>
+        <item name="android:textColorSecondary">@color/shiroikuma_yellow_dim</item>
+    </style>
+
+    <!-- Every dialog the fork raises. The border/corner themselves are drawn in GauguinDialogs from
+         the configured values; this supplies the colours the widgets inside pick up. -->
+    <style name="Theme.Gauguin.ShiroikumaDialog" parent="Theme.Material3.Dark.Dialog.Alert">
+        <item name="android:colorBackground">@color/shiroikuma_black</item>
+        <item name="colorSurface">@color/shiroikuma_black</item>
+        <item name="colorPrimary">@color/shiroikuma_yellow</item>
+        <item name="colorAccent">@color/shiroikuma_yellow</item>
+        <item name="colorOnSurface">@color/shiroikuma_yellow</item>
+        <item name="android:textColorPrimary">@color/shiroikuma_yellow</item>
+        <item name="android:textColorSecondary">@color/shiroikuma_yellow_dim</item>
+        <item name="android:textColorAlertDialogListItem">@color/shiroikuma_yellow</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.Gauguin.ShiroikumaDialogButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.Gauguin.ShiroikumaDialogButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Widget.Gauguin.ShiroikumaDialogButton</item>
+    </style>
+
+    <style name="Widget.Gauguin.ShiroikumaDialogButton" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/shiroikuma_yellow</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="rippleColor">@color/shiroikuma_yellow_dim</item>
+    </style>
+</resources>
