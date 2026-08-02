@@ -8,6 +8,7 @@ import org.koin.core.component.inject
 import org.piepmeyer.gauguin.R
 import org.piepmeyer.gauguin.databinding.ActivityMainBinding
 import org.piepmeyer.gauguin.game.Game
+import org.piepmeyer.gauguin.ui.customui.GauguinChrome
 
 class MainBottomAppBarService(
     private val mainActivity: MainActivity,
@@ -22,6 +23,10 @@ class MainBottomAppBarService(
     private var eraserMenuItem: MenuItem? = null
 
     fun initialize() {
+        // 白い熊 fork: the bar's own surface and icons. Its overflow popup is a window of its own
+        // and is themed in XML — see app:popupTheme on the bar in activity_main.xml.
+        GauguinChrome.applyToBottomBar(binding.mainBottomAppBar)
+
         undoButton = mainActivity.findViewById(R.id.undo)
 
         /*

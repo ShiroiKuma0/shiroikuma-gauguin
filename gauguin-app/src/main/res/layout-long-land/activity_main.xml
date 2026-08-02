@@ -137,6 +137,7 @@
             app:menuAlignmentMode="auto"
             app:fabCradleVerticalOffset="0dp"
             app:navigationIcon="@drawable/outline_menu_24"
+            app:popupTheme="@style/ThemeOverlay.Gauguin.ShiroikumaPopup"
             app:menu="@menu/bottom_app_bar" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -2,18 +2,21 @@ package org.piepmeyer.gauguin.ui.main
 
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.drawable.GradientDrawable
 import android.view.ContextThemeWrapper
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.Insets
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.color.MaterialColors
+import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.createBalloon
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.piepmeyer.gauguin.R
 import org.piepmeyer.gauguin.databinding.ActivityMainBinding
 import org.piepmeyer.gauguin.game.Game
+import org.piepmeyer.gauguin.ui.customui.GauguinUiConfig
 import kotlin.math.min
 
 private val logger = KotlinLogging.logger {}
@@ -51,18 +54,23 @@ class BalloonHintPopup(
             400,
         )
 
+    // 白い熊 fork: the flash is a popup of its own, out of reach of the activity-wide pass, so it
+    // takes the house dialog colours here. It is a dialog in everything but name.
+    private val uiConfig = GauguinUiConfig(context)
+    private val houseLook = uiConfig.customUiActive
+
     private val foregroundColor =
-        if (mistakes == 0) {
-            MaterialColors.getColor(binding.root, R.attr.colorMainHintPopupSuccessForeground)
-        } else {
-            MaterialColors.getColor(binding.root, R.attr.colorMainHintPopupErrorsForeground)
+        when {
+            houseLook -> uiConfig.int(GauguinUiConfig.DIALOG_TEXT_COLOR)
+            mistakes == 0 -> MaterialColors.getColor(binding.root, R.attr.colorMainHintPopupSuccessForeground)
+            else -> MaterialColors.getColor(binding.root, R.attr.colorMainHintPopupErrorsForeground)
         }
 
     private val backgroundColor =
-        if (mistakes == 0) {
-            MaterialColors.getColor(binding.root, R.attr.colorMainHintPopupSuccessBackground)
-        } else {
-            MaterialColors.getColor(binding.root, R.attr.colorMainHintPopupErrorsBackground)
+        when {
+            houseLook -> uiConfig.dialogBackgroundColor
+            mistakes == 0 -> MaterialColors.getColor(binding.root, R.attr.colorMainHintPopupSuccessBackground)
+            else -> MaterialColors.getColor(binding.root, R.attr.colorMainHintPopupErrorsBackground)
         }
 
     private val balloonMarginBottom =
@@ -94,7 +102,8 @@ class BalloonHintPopup(
                 paddingLeft = 16
                 paddingRight = 16 + iconWidth + iconSpace
                 // marginLeft = startMarginOfBottomAppBar / 2
-                setCornerRadius(8f)
+                setCornerRadius(if (houseLook) uiConfig.dialogCornerDp.toFloat() else 8f)
+                houseBorder()
                 setBalloonAnimation(BalloonAnimation.NONE)
 
                 autoDismissDuration = duration
@@ -111,6 +120,24 @@ class BalloonHintPopup(
             binding.mainBottomAppBar,
             0,
             (-(balloonHeight + balloonMarginBottom) * resources.displayMetrics.density).toInt() - insets.bottom,
+        )
+    }
+
+    /**
+     * The house fill and border. A plain background colour cannot carry a border, so the whole
+     * background goes in as one drawable — the same fill, border and corner the fork's dialogs use.
+     */
+    private fun Balloon.Builder.houseBorder() {
+        if (!houseLook) return
+
+        val density = this@BalloonHintPopup.resources.displayMetrics.density
+
+        setBackgroundDrawable(
+            GradientDrawable().apply {
+                setColor(this@BalloonHintPopup.backgroundColor)
+                setStroke((uiConfig.dialogBorderWidthDp * density).toInt(), uiConfig.dialogBorderColor)
+                cornerRadius = uiConfig.dialogCornerDp * density
+            },
         )
     }
 }
