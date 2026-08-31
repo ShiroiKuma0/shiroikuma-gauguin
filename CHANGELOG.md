@@ -1,3 +1,159 @@
+# 白い熊 GNU Gauguin — changelog
+
+This file carries **two** histories. This fork's releases come first, newest first; upstream
+Gauguin's own changelog follows below it, unchanged.
+
+Fork versions read `<upstream version>+<NNN>`, where `NNN` is the fork build counter — it restarts
+at 1 on every new upstream release.
+
+---
+
+## 白い熊 GNU Gauguin 0.52.1+001 — 2026-08-31
+
+Built on upstream **0.52.1** (versionCode 77); fork versionCode `770001`. The first fork build on
+the 0.52.1 line. This is a sync release: the fork's own features are unchanged from `0.52.0+006`,
+and every customization was carried across the rebase intact.
+
+### Inherited from upstream 0.52.1
+
+* **The grid-size slider on the New Game screen was unusable on some displays.** The width and
+  height sliders and the square/rectangular toggle were constrained on top of one another, so on
+  some screen sizes the slider could not be grabbed at all. The toggle group now sits below the
+  sliders instead of beside them.
+* **The pre-computed next grid was discarded in some circumstances**, so starting a new game
+  recalculated the grid from scratch instead of using the cache.
+* The New Game screen's landscape layout is now qualified by width (≥ 500 dp) rather than by
+  orientation alone, so narrow landscape devices get the sane layout.
+* The New Game screen's grid-size controls use a filled card rather than an elevated one.
+* Toolchain: Gradle 9.7.0 and Android Gradle Plugin 9.3.1; ktlint is applied per module rather than
+  from the root build script. Kotest, Roborazzi, KSP and SonarQube version bumps, and internal
+  Kotlin tidying across the core, human-solver and merge modules.
+
+### Fork
+
+* Rebased onto upstream 0.52.1 — all 85 patched files intact, no conflicts.
+* Build counter reset to 1 for the new upstream line.
+* Toolchain documentation brought in line with Gradle 9.7.0 / AGP 9.3.1.
+
+---
+
+## 白い熊 GNU Gauguin 0.52.0+006 — 2026-08-02
+
+First release of the fork, built on upstream **0.52.0** (versionCode 76); fork versionCode `760006`.
+Everything below is what this fork adds on top of stock Gauguin.
+
+### Fork identity & packaging
+
+* `applicationId` changed to `shiroikuma.gauguin` so the fork coexists with upstream; the namespace
+  `org.piepmeyer.gauguin` is deliberately left alone, so leading-dot manifest entries keep resolving.
+* App label **白い熊 GNU Gauguin**.
+* Fork versioning: `versionName = <upstream version>+<NNN>`, `versionCode = <upstream code> * 10000 + N`.
+  The upstream base is read out of upstream's own `AndroidManifest.xml`, so it flows in on every
+  rebase and is never hand-edited. The counter is zero-padded to three digits, so APK names, tags and
+  release lists sort in build order.
+* Own release signing through a gitignored `keystore.properties`, using upstream's existing
+  `keystoreExists` block.
+* `buildFork` Gradle task: signed release build, APK copied out as `shiroikuma-gauguin_<versionName>.apk`,
+  build counter bumped. No ABI suffix — the app has no native code, so the APK is universal.
+
+### The 白い熊 GNU Gauguin UI page
+
+A house settings page reachable from Settings, or directly by long-pressing the Settings cog in the
+main screen's navigation drawer.
+
+* **~60 knobs** over Global, Grid, Keypad, Top panel, Drawer, Dialogs and Lists, declared once in
+  `GauguinUiConfig.SPECS` — the page, the backup and "reset to defaults" are all generated from that
+  one list, so a knob is added in exactly one place.
+* **Live preview pinned at the top**, redrawn on every change: a miniature board with cages, cell
+  lines, a filled number, a cage clue, pencil marks and a selected cell, plus a keypad row and a
+  sample text line.
+* **Colour picker** with A/R/G/B sliders, a live hex readout, and one-click swatches prefilled with
+  previously chosen colours.
+* **Font picker** listing the built-in families plus every imported `.ttf`/`.otf`, each row rendered
+  in its own glyphs, with an import button; imported fonts land in the app's private `files/fonts`.
+* Every size, weight, thickness and roundness is a slider, and every thickness and radius bottoms out
+  at 0, so a border can be removed entirely.
+* Visual grammar: a big bold heading per top-level group with a word-width underline, a thin
+  full-width hairline between groups, a sub-heading one indent in, rows indented again under that,
+  tight vertical padding throughout.
+* Per-section fonts fall back to the global font when unset.
+
+### The house look, applied
+
+Defaults are pure black and pure `#FFFF00` yellow — never Material's amber — with no user action
+needed on a fresh install.
+
+* `GauguinUi` paints every activity's view tree from `ActivityUtils.configureRootView`: backgrounds,
+  text colours, fonts, size scale, and button borders, colours and corner radii.
+* The **board** reads the config directly: `GridPaintHolder` for colours and fonts,
+  `GridLayoutDetails` for line weights and clue size, `GridCellUI` for number size.
+* **Top panel** — its own background, foreground, font, text scale and logo toggle. It is tinted
+  rather than backgrounded, so a text colour alone left the theme's tertiary container showing
+  through; the tint is set too, and the global pass steps over the subtree.
+* **Navigation drawer** — black panel with an accent border drawn as a foreground (a stroke on the
+  background would sit under the row list). The header shows the fork's mark, name and version on
+  black rather than upstream's Gauguin painting, which the accent tint flattened into one solid
+  yellow block. Row colours and font are set on the drawer items, so they survive every rebind.
+* **Bottom bar** — house surface, accent navigation, action and overflow icons.
+* **Overflow menu** — black, yellow border, yellow text and icons. Themed in XML, because a popup's
+  context is fixed when the toolbar inflates its menu and `setPopupTheme` afterwards comes too late.
+* **Dialogs** — black fill, accent border of the configured width, configured corner radius, accent
+  text throughout.
+* **Hint flash** ("0 mistakes") — a Balloon in a window of its own, out of reach of any view walk, so
+  it takes the house dialog colours directly: black fill, yellow text, icon and border.
+* **Floating action buttons** — black with a border built from the button's own shape appearance.
+* **Settings page** — upstream's preference tree is re-laid out through `GauguinPreferences` with the
+  same layouts the fork's own page uses: yellow bold underlined headings, tight yellow rows, yellow
+  tick boxes, and no list dividers doubling the headings' own hairline.
+
+### Export / Import
+
+* The first section of the UI page: one bordered rounded box, a bordered folder box that is **red
+  while unset** and yellow once set, the last-backup line, thin dividers around the category
+  checklist, then Cancel alone on the left with Import and Export grouped right as round pills.
+* Backups are one timestamped category ZIP, `shiroikuma-gauguin_<yyyy-MM-dd_HH-mm-ss>.zip`, written
+  atomically through a `.part` file and deleted on failure or cancel.
+* Import merges a backup key by key, skipping unknown or wrongly-typed entries.
+* A successful export or import raises a yellow-bordered black dialog whose acknowledgement closes
+  the dialog, the panel and the settings page; "Restart now" restarts the app instead; failures leave
+  everything open.
+
+### The 保存復元 automation contract
+
+* `EXPORT_STATE`, `LIST_CATEGORIES` and `CANCEL_EXPORT` on one exported receiver, gated by a
+  lazily-minted 24-byte token compared in constant time. The switch is **off by default**.
+* The receiver only gates and hands off — the export runs in a foreground service, because
+  `goAsync()` does not extend the broadcast window. Cancel lives on the exported receiver because the
+  service it signals is (correctly) not exported.
+* Exactly one terminal reply per request, guarded by an `AtomicBoolean`, sent as a fresh broadcast
+  with `FLAG_INCLUDE_STOPPED_PACKAGES`.
+* Progress broadcasts carry real counts and the category id, never a percentage.
+* No-storage-access is reported by checking the grant with `Environment.isExternalStorageManager()`,
+  not by discovering it through a failure.
+
+### Icon & de-branding
+
+* Black-and-yellow traced launcher mark (`#FFFF00` line art on black), across the adaptive
+  foreground, the monochrome layer, every `mipmap` density and the Play-store asset; the mark is
+  scaled up 20% for optical size.
+* The app's name, About and Help screens, and all user-visible links point at this fork; the bug
+  report item opens this repo's issue tracker.
+
+### Fixes
+
+* **Tick boxes were boxed in.** A `CheckBox` is a `Button`, so the paint pass's button branch matched
+  first and gave every tick box a filled, bordered button background — which also left the branch
+  that tints the mark unreachable. Tick boxes now match ahead of buttons, as `CompoundButton`, so
+  switches and radio buttons are covered too.
+* **The FAB ignored its new colour.** `FloatingActionButton` overrides `setBackgroundTintList` to
+  recolour its own shape and never forwards to `View`, so the layout's `android:backgroundTint` kept
+  painting over it. The background drawable is now told separately.
+* **Settings rows below the fold stayed stock.** The paint pass runs once, when the window attaches,
+  so it only ever reached the rows bound at that moment; the settings page now carries its colours in
+  its row layouts instead.
+
+---
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
