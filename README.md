@@ -10,7 +10,7 @@ A fork of [Gauguin](https://github.com/meikpiep/gauguin) with **major additions*
 
 Installs **side-by-side** with upstream Gauguin (app id `shiroikuma.gauguin`).
 
-**📥 Latest release: [`0.52.0+006`](https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases/latest)** — [all releases & APK downloads »](https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases)
+**📥 Latest release: [`0.52.1+001`](https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases/latest)** — [all releases & APK downloads »](https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases)
 
 </div>
 
@@ -56,7 +56,7 @@ The gate is a 24-byte token, minted lazily and compared in constant time, with t
 
 ## 📦 Side-by-side, and honest version numbers
 
-The app id is `shiroikuma.gauguin`, so it installs alongside official Gauguin without touching it. Versions read `<upstream version>+<NNN>` — `0.52.0+006` is the sixth fork build on top of upstream's 0.52.0 — and the upstream base is read straight out of upstream's manifest, so it can never drift from what the fork is actually built on. The counter is zero-padded, so release lists and file managers sort in build order.
+The app id is `shiroikuma.gauguin`, so it installs alongside official Gauguin without touching it. Versions read `<upstream version>+<NNN>` — `0.52.1+001` is the first fork build on top of upstream's 0.52.1 — and the upstream base is read straight out of upstream's manifest, so it can never drift from what the fork is actually built on. The counter is zero-padded, so release lists and file managers sort in build order.
 
 The launcher mark is black-and-yellow line art, and the app's name, links and issue tracker point at this fork rather than upstream.
 
@@ -81,7 +81,7 @@ JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 ./gradlew :gauguin-app:assembleRele
 JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 ./gradlew buildFork
 ```
 
-JDK 21, Android SDK 37, Gradle 9.3.1, AGP 9.1.1. No native code, so the APK is universal.
+JDK 21, Android SDK 37, Gradle 9.7.0, AGP 9.3.1. No native code, so the APK is universal.
 
 ## Art & font licences
 
