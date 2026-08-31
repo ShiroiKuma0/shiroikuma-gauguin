@@ -63,7 +63,7 @@ JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 ./gradlew :gauguin-app:assembleRele
 - JDK **21** at `/usr/lib/jvm/java-21-openjdk-amd64` (the host default `java` is older; AGP 9.x
   aborts on it — always set `JAVA_HOME`).
 - Android SDK at `~/android-sdk`; `compileSdk android-37`, `buildToolsVersion 37.0.0`,
-  `targetSdk 37`, `minSdk 24`. Gradle wrapper 9.3.1, AGP 9.1.1.
+  `targetSdk 37`, `minSdk 24`. Gradle wrapper 9.7.0, AGP 9.3.1.
 - Release is **not** minified upstream (`isMinifyEnabled = false`) — leave it that way unless asked.
 
 ## Architecture (upstream Gauguin)
