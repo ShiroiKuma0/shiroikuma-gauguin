@@ -8,6 +8,68 @@ at 1 on every new upstream release.
 
 ---
 
+## 白い熊 GNU Gauguin 0.52.1+004 — 2026-09-04
+
+Built on upstream **0.52.1** (versionCode 77); fork versionCode `770004`. The 保存復元 automation
+contract moves to **v2**: the token becomes optional, and a new data door lets 白い熊 応用管理 back
+this app up *with its data* and put that data back on a wiped phone.
+
+### The gate is open out of the box
+
+* **`automation_enabled` now defaults to on**, and a new **`automation_require_token` defaults to
+  off.** v1 shipped the app closed — automation off, and a caller had also to present a token 白い熊
+  had pasted from this app's settings into the caller's. A pasted secret cannot survive a wipe, and
+  restoring a clean phone is precisely the case where nothing has been configured yet: a gate that
+  only works once the phone is set up is no gate for setting the phone up.
+* **A token sent to the app while it is not asking for one is ignored, never refused.** Tokens
+  outlive the settings they were pasted for, and refusing them would turn one switch being off into
+  half a backup batch mysteriously failing.
+* **Both checks live in one `AutomationAuth.refuse()`**, which answers either nothing or the exact
+  `ERROR:` line to reply with, so "automation disabled" and "bad token" cannot drift apart across
+  the three broadcast actions and the provider.
+* **The UI page gains 「Use authorization token?」**, below the automation switch and inside the
+  existing Export/Import section rather than in a section of its own. The token and Regenerate rows
+  appear only while a token is actually being asked for — and none is generated until then, since a
+  48-character secret sitting under an off switch only invites pasting it somewhere it does nothing.
+
+### A data door that knows who is calling
+
+* **A `ContentProvider` at `shiroikuma.gauguin.automation`** answering `describe`, `export`,
+  `import` and `cancel`. A broadcast cannot say who sent it, which is what the shared secret used to
+  paper over; a provider gets the caller's identity from the framework.
+* **The caller is checked three ways**: an **exact** package name — never a prefix, which is not an
+  identity, since any sideloaded app may call itself `shiroikuma.evil` — a uid cross-check answered
+  by the kernel rather than by the caller, and a **pinned signing certificate**, which is what
+  covers a caller package being absent from a device that has just been wiped.
+* **The backup travels through a `ParcelFileDescriptor` the caller opens**, never a path or a URI.
+  The caller can then encrypt and checksum the archive as one of its own files, and a descriptor is
+  a capability that expires when it is closed. It is duplicated inside the provider call and closed
+  on every path out, including a background start the system refuses.
+* **`describe` answers a header without exporting anything** — app id, version, archive format, the
+  oldest format this build can still read, and the human names of what it would export — so a caller
+  can judge compatibility before streaming tens of megabytes at an app that would reject them.
+* **Restoring exists only here**, and never as a broadcast action: the broadcast receiver is
+  exported with no permission, so an import there would let any app on the phone wipe any other.
+* **Long work runs in a foreground service** that goes foreground before every decision, including
+  the decision to do nothing — a caller retrying a stale job id has to be quietly ignored, not kill
+  the app.
+* The app now advertises its capabilities as manifest metadata, which a caller can read without
+  waking it, so it can be listed for backup even while frozen.
+
+### Fixes
+
+* **The app had no `<queries>` element at all**, so every automation reply it has ever sent was
+  `setPackage()`d at a package it was not allowed to see. On Android 11+ that resolution fails
+  **silently**: the export ran, wrote its ZIP correctly, and was never heard of.
+* **Preference edits from an import are committed rather than posted.** The caller force-stops this
+  app the instant an import reports success — deliberately, because a live process flushes its
+  cached preferences at shutdown and would undo the restore — but a posted write has no orderly
+  shutdown left either, so the very kill that protected the import was what truncated it.
+* **An automated import is spooled to a file** instead of read into memory, since the backup carries
+  every font 白い熊 has imported and nothing bounds how many.
+
+---
+
 ## 白い熊 GNU Gauguin 0.52.1+001 — 2026-08-31
 
 Built on upstream **0.52.1** (versionCode 77); fork versionCode `770001`. The first fork build on
