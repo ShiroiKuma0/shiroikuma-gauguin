@@ -167,9 +167,14 @@
     <string name="backup_cat_statistics">Statistics</string>
     <string name="backup_cat_savedgames">Saved games</string>
 
-    <!-- automation (the 保存復元 contract) -->
+    <!-- automation (the 保存復元 contract, v2) -->
     <string name="gauguin_ui_automation_switch">Automation export</string>
-    <string name="gauguin_ui_automation_switch_summary">Let a sister-app task trigger this app\'s export through a token-gated intent.</string>
+    <string name="gauguin_ui_automation_switch_summary">Let sister apps trigger this app\'s export and back its data up. On by default; turn it off to close this app off entirely.</string>
+    <string name="gauguin_ui_automation_require_token">Use authorization token?</string>
+    <string name="gauguin_ui_automation_require_token_summary">Off: any sister app may drive the automation. On: a caller must also present the token below. Either way the data door checks the caller\'s package name and signing certificate.</string>
+    <string name="gauguin_ui_automation_data_channel">Automation data</string>
+    <string name="gauguin_ui_automation_data_exporting">Backing up 白い熊 GNU Gauguin data…</string>
+    <string name="gauguin_ui_automation_data_importing">Restoring 白い熊 GNU Gauguin data…</string>
     <string name="gauguin_ui_automation_token">Automation token</string>
     <string name="gauguin_ui_automation_token_copied">Token copied to the clipboard.</string>
     <string name="gauguin_ui_automation_regenerate">Regenerate</string>
