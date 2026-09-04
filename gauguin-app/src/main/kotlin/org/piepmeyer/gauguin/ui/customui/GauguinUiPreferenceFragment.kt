@@ -37,6 +37,7 @@ class GauguinUiPreferenceFragment : PreferenceFragmentCompat() {
 
     private var dirPreference: Preference? = null
     private var tokenPreference: Preference? = null
+    private var regeneratePreference: Preference? = null
 
     /** Where a freshly imported font lands — set just before the picker launches. */
     private var onFontImported: (String) -> Unit = {}
@@ -118,8 +119,11 @@ class GauguinUiPreferenceFragment : PreferenceFragmentCompat() {
             },
         )
 
-        // The 保存復元 automation contract's two rows live here — inside Export/Import, never as a
-        // section of their own, so every sister app puts them in the same place.
+        // The 保存復元 automation contract's rows live here — inside Export/Import, never as a
+        // section of their own, so every sister app puts them in the same place. Contract v2 makes
+        // it three: the master switch (ON), the token requirement (OFF), and the token itself,
+        // which is shown only when it is actually being asked for. A 48-character secret sitting
+        // under an off switch only invites 白い熊 to paste it somewhere it will do nothing.
         category.addPreference(
             SwitchPreferenceCompat(preferenceManager.context).apply {
                 layoutResource = R.layout.preference_item_gauguin
@@ -129,6 +133,22 @@ class GauguinUiPreferenceFragment : PreferenceFragmentCompat() {
                 isChecked = AutomationAuth.enabled(requireContext())
                 setOnPreferenceChangeListener { _, newValue ->
                     AutomationAuth.setEnabled(requireContext(), newValue as Boolean)
+                    true
+                }
+            },
+        )
+
+        category.addPreference(
+            SwitchPreferenceCompat(preferenceManager.context).apply {
+                layoutResource = R.layout.preference_item_gauguin
+                isPersistent = false
+                title = getString(R.string.gauguin_ui_automation_require_token)
+                summary = getString(R.string.gauguin_ui_automation_require_token_summary)
+                isSingleLineTitle = false
+                isChecked = AutomationAuth.requireToken(requireContext())
+                setOnPreferenceChangeListener { _, newValue ->
+                    AutomationAuth.setRequireToken(requireContext(), newValue as Boolean)
+                    refreshTokenRow()
                     true
                 }
             },
@@ -150,7 +170,7 @@ class GauguinUiPreferenceFragment : PreferenceFragmentCompat() {
             }
         category.addPreference(tokenPreference!!)
 
-        category.addPreference(
+        regeneratePreference =
             Preference(preferenceManager.context).apply {
                 layoutResource = R.layout.preference_item_gauguin_l2
                 isPersistent = false
@@ -165,8 +185,10 @@ class GauguinUiPreferenceFragment : PreferenceFragmentCompat() {
                     )
                     true
                 }
-            },
-        )
+            }
+        category.addPreference(regeneratePreference!!)
+
+        refreshTokenRow()
     }
 
     private fun buildCategory(
@@ -340,8 +362,18 @@ class GauguinUiPreferenceFragment : PreferenceFragmentCompat() {
             }
     }
 
+    /**
+     * The token rows exist only while the token is being asked for. Reading [AutomationAuth.token]
+     * mints one on first read, so this only touches it when the rows are actually shown — an app
+     * that never requires a token never generates one.
+     */
     private fun refreshTokenRow() {
-        tokenPreference?.summary = AutomationAuth.abbreviate(AutomationAuth.token(requireContext()))
+        val shown = AutomationAuth.requireToken(requireContext())
+        tokenPreference?.isVisible = shown
+        regeneratePreference?.isVisible = shown
+        if (shown) {
+            tokenPreference?.summary = AutomationAuth.abbreviate(AutomationAuth.token(requireContext()))
+        }
     }
 
     private fun colored(

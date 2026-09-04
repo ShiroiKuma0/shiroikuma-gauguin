@@ -185,6 +185,33 @@ object GauguinBackup {
         return ImportResult(lines, errors)
     }
 
+    /**
+     * Which categories an archive actually carries, read from its `manifest.json`.
+     *
+     * The data door restores exactly these rather than everything this build knows about: asking to
+     * restore a category the archive lacks is how a restore ends up reporting success over nothing.
+     * An archive without a readable manifest yields an empty set, which the caller refuses.
+     *
+     * Takes a stream rather than a `ByteArray` so a caller reading a large archive can spool it to
+     * disk and walk it twice instead of holding all of it in memory.
+     */
+    fun categoriesIn(source: InputStream): Set<Cat> {
+        ZipInputStream(source.buffered()).use { zip ->
+            var entry: ZipEntry? = zip.nextEntry
+            while (entry != null) {
+                if (entry.name == "manifest.json") {
+                    return runCatching {
+                        val ids = JSONObject(String(zip.readBytes())).optJSONArray("categories")
+                        (0 until (ids?.length() ?: 0)).mapNotNull { Cat.byId(ids!!.optString(it)) }.toSet()
+                    }.getOrDefault(emptySet())
+                }
+                zip.closeEntry()
+                entry = zip.nextEntry
+            }
+        }
+        return emptySet()
+    }
+
     // ---- category storage -----------------------------------------------------------------------
 
     private fun uiPrefs(context: Context): SharedPreferences =
@@ -268,7 +295,15 @@ object GauguinBackup {
             }
             applied++
         }
-        editor.apply()
+        // commit(), not apply(). 応用管理 force-stops this app with SIGKILL the instant an automated
+        // import reports success — deliberately, because a running process writes its cached
+        // SharedPreferences back out at orderly shutdown and would silently undo the import. But an
+        // apply() still in flight has no orderly shutdown left to flush it either, so the very kill
+        // that protects the import is what truncates it, and the restore reports success over data
+        // that is gone. Both callers already run off the main thread (the data service on its own
+        // IO scope, the Export/Import panel inside withContext(Dispatchers.IO)), so the synchronous
+        // write costs nothing here.
+        editor.commit()
         return applied
     }
 
