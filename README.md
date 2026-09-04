@@ -6,11 +6,11 @@
 
 **A KenKen-style calculation puzzle, rebuilt in pure black and pure yellow.**
 
-A fork of [Gauguin](https://github.com/meikpiep/gauguin) with **major additions**: a settings page that puts some sixty colour, font, size and border knobs under a live preview, a black-and-yellow house look painted onto every surface of the app, a category backup written as one timestamped ZIP, and a token-gated broadcast contract that lets an automation tool export the app's state without touching the screen.
+A fork of [Gauguin](https://github.com/meikpiep/gauguin) with **major additions**: a settings page that puts some sixty colour, font, size and border knobs under a live preview, a black-and-yellow house look painted onto every surface of the app, a category backup written as one timestamped ZIP, and an automation contract that lets a sister app export the state without touching the screen — and back the app's data up and put it back on a wiped phone.
 
 Installs **side-by-side** with upstream Gauguin (app id `shiroikuma.gauguin`).
 
-**📥 Latest release: [`0.52.1+001`](https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases/latest)** — [all releases & APK downloads »](https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases)
+**📥 Latest release: [`0.52.1+004`](https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases/latest)** — [all releases & APK downloads »](https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases)
 
 </div>
 
@@ -48,9 +48,13 @@ Import merges a backup back in key by key, skipping anything it does not recogni
 
 ## 🤖 The 保存復元 automation contract
 
-Three broadcast actions — `EXPORT_STATE`, `LIST_CATEGORIES`, `CANCEL_EXPORT` — let an automation tool drive a backup with no UI at all.
+Three broadcast actions — `EXPORT_STATE`, `LIST_CATEGORIES`, `CANCEL_EXPORT` — let a sister app drive a backup with no UI at all, and a content provider lets one back the app's **data** up and put it back.
 
-The gate is a 24-byte token, minted lazily and compared in constant time, with the switch **off by default**. The receiver only gates and hands off: the export itself runs in a foreground service, because a broadcast's window cannot be stretched to cover it. Every request gets **exactly one terminal reply**, guarded against duplicates; progress broadcasts carry real counts and the category id rather than a percentage; a missing storage grant is reported by checking the grant, not by failing.
+The switch is **on out of the box** and the token is optional, because the case this exists to serve is a phone that has just been wiped, where nothing has been configured and nobody has pasted a secret anywhere. Turning 「Use authorization token?」 on restores the old behaviour; the token row appears only while it is being asked for, and a token sent to the app while it is not is ignored rather than refused.
+
+The data door does not take the app's word for who is calling. The caller is identified by the framework and checked three ways — an **exact** package name, a uid cross-check the kernel answers, and a **pinned signing certificate** — because a package name can be taken freely while the real package is missing, which is exactly the state a clean phone is in. The backup travels through a file descriptor the caller opens, not a path: a descriptor is a capability that expires when it is closed, and it lets the caller encrypt and checksum the archive as its own file. Restoring is reachable **only** here, never as a broadcast.
+
+The receiver itself only gates and hands off: the export runs in a foreground service, because a broadcast's window cannot be stretched to cover it. Every request gets **exactly one terminal reply**, guarded against duplicates; progress broadcasts carry real counts and the category id rather than a percentage; a missing storage grant is reported by checking the grant, not by failing.
 
 ---
 
