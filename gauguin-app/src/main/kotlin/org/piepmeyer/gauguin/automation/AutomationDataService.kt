@@ -19,6 +19,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import org.piepmeyer.gauguin.R
 import org.piepmeyer.gauguin.ui.customui.GauguinBackup
+import org.piepmeyer.gauguin.ui.customui.StateExportReceiver
 import java.io.File
 import java.io.OutputStream
 import java.util.concurrent.ConcurrentHashMap
@@ -55,17 +56,47 @@ class AutomationDataService : Service() {
         flags: Int,
         startId: Int,
     ): Int {
-        // Going foreground comes before every decision — INCLUDING the decision to do nothing.
-        // Once a caller has invoked startForegroundService the platform requires startForeground
-        // inside its window whatever this service then concludes, and enforces that by killing the
-        // process with ForegroundServiceDidNotStartInTimeException. Returning early on an unknown
-        // job without it means a caller retrying a stale job id kills this app instead of being
-        // quietly ignored. Guarded, because by the time we are here the start may itself have been
-        // refused and going foreground would then throw in its own right.
+        // Extras first, then the guarded foreground start, then every decision.
         val importing = intent?.getBooleanExtra(EXTRA_IMPORTING, false) == true
-        runCatching { startForeground(NOTIFICATION_ID, notification(importing)) }
+        val jobId = intent?.getStringExtra(EXTRA_JOB)
+        val replyAction = intent?.getStringExtra(AutomationProvider.KEY_REPLY_ACTION)
+        val replyPackage = intent?.getStringExtra(AutomationProvider.KEY_REPLY_PACKAGE)
+        val progressAction = intent?.getStringExtra(AutomationProvider.KEY_PROGRESS_ACTION)
 
-        val jobId = intent?.getStringExtra(EXTRA_JOB) ?: return stop(startId)
+        // Going foreground precedes every decision, INCLUDING the decision to do nothing: once a
+        // caller invoked startForegroundService the platform demands startForeground inside its
+        // window whatever this service concludes, and enforces that by killing the process. A
+        // caller retrying a stale job id must therefore be quietly ignored, not fatal.
+        //
+        // But the extras are read first, because the start can itself be REFUSED and a refusal
+        // raised before we know where to reply has nothing to answer with. And it is answered
+        // rather than swallowed: closing the descriptor and stopping quietly is not enough, since
+        // the provider has already handed the caller `OK:<job_id>` — a silent stop leaves it
+        // waiting out its timeout on a job that no longer exists, which reads as an app that never
+        // implemented the contract rather than one that was refused.
+        val started = runCatching { startForeground(NOTIFICATION_ID, notification(importing)) }
+        started.exceptionOrNull()?.let { failure ->
+            jobId?.let { id ->
+                HANDOVER.remove(id)?.let { orphan -> runCatching { orphan.close() } }
+                AutomationJobs.finish(id)
+                if (!replyAction.isNullOrEmpty() && !replyPackage.isNullOrEmpty()) {
+                    sendBroadcast(
+                        Intent(replyAction).apply {
+                            setPackage(replyPackage)
+                            addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
+                            putExtra(AutomationProvider.KEY_JOB_ID, id)
+                            putExtra(
+                                AutomationProvider.KEY_RESULT,
+                                StateExportReceiver.refusal(applicationContext, failure),
+                            )
+                        },
+                    )
+                }
+            }
+            return stop(startId)
+        }
+
+        if (jobId == null) return stop(startId)
         val fd = HANDOVER.remove(jobId) ?: return stop(startId)
 
         // From here the descriptor is ours and nothing else will ever close it: it is out of the

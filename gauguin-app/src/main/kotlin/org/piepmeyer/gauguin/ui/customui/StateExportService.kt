@@ -38,20 +38,23 @@ class StateExportService : Service() {
         flags: Int,
         startId: Int,
     ): Int {
-        startForeground(NOTIFICATION_ID, buildNotification())
+        // Where to reply is read BEFORE going foreground, and going foreground is guarded.
+        //
+        // Two rules meet here and the order satisfies both. Once the receiver called
+        // startForegroundService the platform demands startForeground whatever this service then
+        // concludes, so it must precede every early return — including the return that does
+        // nothing. But startForeground can itself be refused, and a refusal raised before we know
+        // reply_action/reply_package/reply_id has nothing to answer with: it dies silently and the
+        // caller waits out its whole timeout for a reply that was never possible. Reading three
+        // extras is instant, so it costs nothing against the 5 s window and buys us somewhere to
+        // send the refusal.
+        val replyAction = intent?.getStringExtra("reply_action")
+        val replyPackage = intent?.getStringExtra("reply_package")
+        val replyId = intent?.getStringExtra("reply_id")
 
-        val request = intent ?: run {
-            stopSelf()
-            return START_NOT_STICKY
-        }
+        val started = runCatching { startForeground(NOTIFICATION_ID, buildNotification()) }
 
-        val replyAction = request.getStringExtra("reply_action")
-        val replyPackage = request.getStringExtra("reply_package")
-        val replyId = request.getStringExtra("reply_id")
-        if (replyAction == null || replyPackage == null || replyId == null) {
-            stopSelf()
-            return START_NOT_STICKY
-        }
+        if (replyAction == null || replyPackage == null || replyId == null) return stop()
 
         val replied = AtomicBoolean(false)
         fun reply(result: String) {
@@ -59,16 +62,22 @@ class StateExportService : Service() {
             StateExportReceiver.reply(applicationContext, replyAction, replyPackage, replyId, result)
         }
 
+        started.exceptionOrNull()?.let {
+            // The service never ran, so nothing else can fire: this refusal is safely the one
+            // terminal reply this request is owed.
+            reply(StateExportReceiver.refusal(applicationContext, it))
+            return stop()
+        }
+
         if (!running.compareAndSet(false, true)) {
             reply("ERROR:export already running")
-            stopSelf()
-            return START_NOT_STICKY
+            return stop()
         }
         cancelled = false
 
-        val progressAction = request.getStringExtra("progress_action")
-        val pathOverride = request.getStringExtra("path")
-        val items = request.getStringExtra("items")
+        val progressAction = intent?.getStringExtra("progress_action")
+        val pathOverride = intent?.getStringExtra("path")
+        val items = intent?.getStringExtra("items")
 
         scope.launch {
             try {
@@ -187,6 +196,12 @@ class StateExportService : Service() {
             .setSmallIcon(R.drawable.ic_launcher_monochrome)
             .setOngoing(true)
             .build()
+    }
+
+    private fun stop(): Int {
+        stopForeground(STOP_FOREGROUND_REMOVE)
+        stopSelf()
+        return START_NOT_STICKY
     }
 
     override fun onDestroy() {

@@ -3,6 +3,7 @@ package org.piepmeyer.gauguin.ui.customui
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.PowerManager
 import androidx.core.content.ContextCompat
 
 /**
@@ -52,7 +53,24 @@ class StateExportReceiver : BroadcastReceiver() {
                         putExtra("reply_package", replyPackage)
                         putExtra("reply_id", replyId)
                     }
-                ContextCompat.startForegroundService(app, service)
+                // A broadcast IS a background start. Unless this app happens to hold a
+                // foreground-start allowance — which the system grants only when it has been
+                // interacted with recently — API 31+ refuses with
+                // ForegroundServiceStartNotAllowedException, and an exception escaping onReceive
+                // takes the whole process down. The exposure is exactly inverted from when it
+                // matters: open the app and run a backup by hand and the allowance is there; leave
+                // it cold for the unattended batch, or restore onto a clean phone, which is the
+                // case this contract exists for, and it is not. So every hands-on test passes.
+                //
+                // Catching it silently would be no improvement from the caller's side — a
+                // no-export it can only report as a timeout, indistinguishable from an app that
+                // never implemented the contract. The refusal is therefore answered as this
+                // request's one terminal reply, which 自由作業盤 renders verbatim.
+                try {
+                    ContextCompat.startForegroundService(app, service)
+                } catch (e: Exception) {
+                    reply(app, replyAction, replyPackage, replyId, refusal(app, e))
+                }
             }
 
             "$pkg.action.LIST_CATEGORIES" -> {
@@ -89,6 +107,35 @@ class StateExportReceiver : BroadcastReceiver() {
          * `FLAG_INCLUDE_STOPPED_PACKAGES` is what lets a backgrounded caller still hear us, and the
          * manifest's `<queries>` is what lets `setPackage` resolve at all on Android 11+.
          */
+
+        /**
+         * The one-line refusal for a foreground start the system would not allow.
+         *
+         * `ERROR:no-foreground-start` is a **keyed** string: 保存中核 matches it exactly and puts a
+         * 「電池最適化を除外」 button on the failed row. So it is reserved for the one case that
+         * button can actually fix — this app not being exempt from battery optimisation. On EMUI
+         * the identical refusal also arises from アプリ起動管理 being left on 自動管理, which no app
+         * can change for itself, and a button that cannot fix the fault is worse than one that
+         * simply names the exception. When we are already exempt, the cause is therefore something
+         * else and the caller gets the description instead of the key.
+         *
+         * The message is flattened to one line: a reply is a single line, and `LIST_CATEGORIES`
+         * answers are newline-delimited, so an embedded newline would be read as another category.
+         */
+        fun refusal(
+            context: Context,
+            failure: Throwable?,
+        ): String {
+            val power = context.getSystemService(PowerManager::class.java)
+            val exempt =
+                runCatching {
+                    power?.isIgnoringBatteryOptimizations(context.packageName) == true
+                }.getOrDefault(false)
+            if (!exempt) return "ERROR:no-foreground-start"
+            val text = failure?.message ?: failure?.javaClass?.simpleName ?: "foreground start refused"
+            return "ERROR:" + text.replace('\n', ' ').replace('\r', ' ')
+        }
+
         fun reply(
             context: Context,
             replyAction: String,
