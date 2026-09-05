@@ -10,7 +10,7 @@ A fork of [Gauguin](https://github.com/meikpiep/gauguin) with **major additions*
 
 Installs **side-by-side** with upstream Gauguin (app id `shiroikuma.gauguin`).
 
-**📥 Latest release: [`0.52.1+004`](https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases/latest)** — [all releases & APK downloads »](https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases)
+**📥 Latest release: [`0.52.1+006`](https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases/latest)** — [all releases & APK downloads »](https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases)
 
 </div>
 
