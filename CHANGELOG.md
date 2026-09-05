@@ -8,6 +8,51 @@ at 1 on every new upstream release.
 
 ---
 
+## 白い熊 GNU Gauguin 0.52.1+006 — 2026-09-05
+
+Built on upstream **0.52.1** (versionCode 77); fork versionCode `770006`. A crash fix for the
+automation contract shipped in `0.52.1+004`, which could take the app down instead of answering.
+
+### Four unguarded foreground starts
+
+Starting the export's foreground service from a broadcast, or from inside a provider call, is a
+**background start**. On API 31+ the system refuses one unless the app has been interacted with
+recently, and an exception escaping `onReceive` takes the whole process down.
+
+The exposure was exactly inverted from when it mattered: open the app and run a backup by hand and
+the allowance is there, so every hands-on test passed. Leave the app cold for an unattended batch —
+or restore onto a freshly wiped phone, which is the case this contract exists for — and it threw.
+
+* All four promotion sites are now guarded and **answer** rather than dying: the receiver's
+  `startForegroundService`, the export service's own `startForeground`, the data service's
+  `startForeground`, and the provider's start of the data service. The two pairs are spelled
+  differently, so a search for either name alone finds only half of them.
+* **A refusal is now this request's one terminal reply.** Catching one silently would have been no
+  better from the caller's side — a no-export it could only report as a timeout, indistinguishable
+  from an app that never implemented the contract. Since the service never ran, nothing else can
+  fire, so the refusal is safely the single reply the request is owed.
+* The export service now reads **where to reply before** going foreground. Its `startForeground` sat
+  above those extras, so a refusal there had nothing to answer with and died silently.
+* The data service's refusal now replies too. It previously closed the descriptor and stopped
+  quietly, but the provider had already handed the caller an `OK:<job_id>` — so the caller was left
+  waiting out its timeout on a job that no longer existed.
+
+### A refusal you can act on
+
+* A refused start answers **`ERROR:no-foreground-start`**, a keyed string the caller matches to put
+  a battery-optimisation button on the failed row — but **only when this app is not already exempt**
+  from battery optimisation. When it is exempt the cause must be something else (on EMUI, typically
+  アプリ起動管理 left on 自動管理, which no app can change for itself), and the caller gets the real
+  exception text instead: a button that cannot fix the fault is worse than one that names it.
+* Reply text is flattened to a single line, since a reply is one line and `LIST_CATEGORIES` answers
+  are newline-delimited.
+
+**Being straight about what this does and does not do:** on a cold phone the foreground start is
+still refused, and the export still does not run. What changed is that the app now reports why
+instead of dying, so the failure is visible and repairable rather than silent.
+
+---
+
 ## 白い熊 GNU Gauguin 0.52.1+004 — 2026-09-04
 
 Built on upstream **0.52.1** (versionCode 77); fork versionCode `770004`. The 保存復元 automation
