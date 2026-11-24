@@ -1,10 +1,8 @@
 package org.piepmeyer.gauguin.ui.customui
 
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.RippleDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -16,14 +14,12 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -31,18 +27,25 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.piepmeyer.gauguin.R
+import org.piepmeyer.gauguin.ui.customui.chrome.Pills
+import org.piepmeyer.gauguin.ui.customui.chrome.SkActionList
+import org.piepmeyer.gauguin.ui.customui.chrome.SkIcons
+import org.piepmeyer.gauguin.ui.customui.chrome.SkRole
+import org.piepmeyer.gauguin.ui.customui.chrome.SkRoles
+import org.piepmeyer.gauguin.ui.customui.chrome.SkToast
+import org.piepmeyer.gauguin.ui.customui.chrome.SkWidgets
 import java.io.File
 
 /**
  * The Export / Import panel, in the Kōjiki sheet format with the ArcaneChat button bar: the whole
- * page sits in one bordered rounded box — centred bold title, dim intro, a bordered tappable folder
+ * page sits in one bordered rounded box — centred bold title, dim intro, a bordered tappable directory
  * box (red while unset, house yellow once set), the last-backup line, thin dividers around the
  * checkbox list, then Cancel alone on the left with Import and Export grouped on the right, all as
  * fully round pills.
  *
  * The close chain is 白い熊's: a **successful** export or import shows a bordered black-yellow result
  * dialog, and acknowledging it closes the dialog, this panel and the UI settings page behind it. A
- * failure ("Export failed…", "No categories selected.") leaves everything open so the folder or the
+ * failure ("Export failed…", "No categories selected.") leaves everything open so the directory or the
  * selection can be corrected on the spot.
  */
 class ExportImportFragment : Fragment() {
@@ -53,9 +56,12 @@ class ExportImportFragment : Fragment() {
     private val selectedParts: MutableSet<GauguinBackup.Cat> =
         GauguinBackup.Cat.entries.filter { it.defaultSelected }.toMutableSet()
 
-    private val yellow = GauguinUiConfig.YELLOW
-    private val dim = 0xFFCCCC66.toInt()
-    private val red = 0xFFFF5555.toInt()
+    // every colour of the panel is a role: the panel is a dialog in everything but name
+    private val yellow get() = SkRoles[SkRole.DIALOG_TEXT]
+    private val frame get() = SkRoles[SkRole.DIALOG_FRAME]
+    private val ground get() = SkRoles[SkRole.DIALOG_GROUND]
+    private val dim get() = SkRoles[SkRole.NOTE]
+    private val red get() = SkRoles[SkRole.ERROR]
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,7 +71,7 @@ class ExportImportFragment : Fragment() {
         config = GauguinUiConfig(requireContext())
         val scroll =
             ScrollView(requireContext()).apply {
-                setBackgroundColor(config.backgroundColor)
+                setBackgroundColor(SkRoles[SkRole.BACKGROUND])
                 isFillViewport = true
                 clipToPadding = false
             }
@@ -106,9 +112,9 @@ class ExportImportFragment : Fragment() {
                 clipChildren = false
                 background =
                     GradientDrawable().apply {
-                        setColor(config.backgroundColor)
-                        setStroke(dp(2), yellow)
-                        cornerRadius = dp(16).toFloat()
+                        setColor(ground)
+                        setStroke(dp(config.dialogBorderWidthDp), frame)
+                        cornerRadius = dp(config.dialogCornerDp).toFloat()
                     }
             }
         root.addView(
@@ -126,7 +132,11 @@ class ExportImportFragment : Fragment() {
 
         if (!hasAllFilesAccess()) {
             box.addView(caption(getString(R.string.export_import_need_access), color = red))
-            box.addView(pillButton(getString(R.string.export_import_grant_access)) { requestAllFilesAccess() })
+            box.addView(
+                pillButton(getString(R.string.export_import_grant_access), SkIcons.Icon.PRIVACY, SkIcons.Does.BLOCK, opens = true) {
+                    requestAllFilesAccess()
+                },
+            )
             box.addView(spacer(6))
         }
 
@@ -143,7 +153,7 @@ class ExportImportFragment : Fragment() {
 
     // ---- rows -----------------------------------------------------------------------------------
 
-    /** The folder box: small label over the bold path, red while nothing is set. */
+    /** The directory box: small label over the bold path, red while nothing is set. */
     private fun dirRow(path: String?): View =
         LinearLayout(requireContext()).apply {
             orientation = LinearLayout.VERTICAL
@@ -152,8 +162,8 @@ class ExportImportFragment : Fragment() {
             setPadding(dp(12), dp(10), dp(12), dp(10))
             background =
                 GradientDrawable().apply {
-                    setColor(config.backgroundColor)
-                    setStroke(dp(2), if (path == null) red else yellow)
+                    setColor(ground)
+                    setStroke(dp(2), if (path == null) red else frame)
                     cornerRadius = dp(10).toFloat()
                 }
             setOnClickListener { editDir(path) }
@@ -220,8 +230,7 @@ class ExportImportFragment : Fragment() {
                 LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(1)).apply {
                     topMargin = dp(topGap)
                 }
-            setBackgroundColor(yellow)
-            alpha = 0.4f
+            setBackgroundColor(SkRoles[SkRole.MENU_DIVIDER])
         }
 
     /** The ArcaneChat bar: Cancel alone on the left, Import + Export grouped on the right. */
@@ -232,17 +241,18 @@ class ExportImportFragment : Fragment() {
             clipToPadding = false
             setPadding(0, dp(14), 0, 0)
             addView(
-                pillButton(getString(R.string.export_import_cancel)) {
+                pillButton(getString(R.string.export_import_cancel), SkIcons.Icon.CLOSE, SkIcons.Does.VIEW) {
                     (activity as? GauguinUiActivity)?.closeExportPanel()
                 },
             )
             addView(View(requireContext()).also { it.layoutParams = LinearLayout.LayoutParams(0, 0, 1f) })
             addView(
-                pillButton(getString(R.string.export_import_import)) { onImport() }.also {
+                pillButton(getString(R.string.export_import_import), SkIcons.Icon.IMPORT, SkIcons.Does.SHARE, opens = true) { onImport() }.also {
                     (it.layoutParams as LinearLayout.LayoutParams).marginEnd = dp(8)
                 },
             )
-            addView(pillButton(getString(R.string.export_import_export)) { onExport() })
+            // the one thing the panel is for: its main pill
+            addView(pillButton(getString(R.string.export_import_export), SkIcons.Icon.EXPORT, SkIcons.Does.SHARE, main = true) { onExport() })
         }
 
     // ---- export ---------------------------------------------------------------------------------
@@ -279,7 +289,7 @@ class ExportImportFragment : Fragment() {
                         (activity as? GauguinUiActivity)?.closeAfterSuccess()
                     }
                 }.onFailure {
-                    // A failure leaves the panel open so the folder or selection can be fixed here.
+                    // A failure leaves the panel open so the directory or selection can be fixed here.
                     GauguinDialogs.info(
                         requireContext(),
                         getString(R.string.export_import_export_done_title),
@@ -305,12 +315,13 @@ class ExportImportFragment : Fragment() {
         val names = backups.map { it.name }.toTypedArray()
         val dialog =
             AlertDialog
-                .Builder(requireContext(), R.style.Theme_Gauguin_ShiroikumaDialog)
+                .Builder(requireContext())
                 .setTitle(R.string.export_import_pick_backup)
-                .setItems(names) { _, which -> runImport(backups[which]) }
+                .setAdapter(
+                    SkActionList.adapter(requireContext(), names.map { SkActionList.Row(it, SkIcons.Icon.HISTORY, SkIcons.Does.SHARE) }),
+                ) { _, which -> runImport(backups[which]) }
                 .setNegativeButton(R.string.export_import_cancel, null)
                 .create()
-        GauguinDialogs.style(dialog)
         dialog.show()
     }
 
@@ -367,7 +378,7 @@ class ExportImportFragment : Fragment() {
         Runtime.getRuntime().exit(0)
     }
 
-    // ---- folder ---------------------------------------------------------------------------------
+    // ---- directory ---------------------------------------------------------------------------------
 
     private fun listBackups(): List<File> {
         val directory = exportDir?.let { File(it) } ?: return emptyList()
@@ -405,13 +416,11 @@ class ExportImportFragment : Fragment() {
                 setText(current ?: "")
                 hint = getString(R.string.export_import_dir_hint)
                 setSingleLine()
-                setTextColor(yellow)
-                setHintTextColor(dim)
             }
         val box = FrameLayout(requireContext()).apply { setPadding(dp(20), dp(8), dp(20), 0); addView(input) }
         val dialog =
             AlertDialog
-                .Builder(requireContext(), R.style.Theme_Gauguin_ShiroikumaDialog)
+                .Builder(requireContext())
                 .setTitle(R.string.export_import_dir_dialog_title)
                 .setMessage(R.string.export_import_dir_dialog_message)
                 .setView(box)
@@ -420,10 +429,9 @@ class ExportImportFragment : Fragment() {
                     val start =
                         current?.takeIf { it.isNotBlank() }?.let { File(it) }?.takeIf { it.isDirectory }
                             ?: Environment.getExternalStorageDirectory()
-                    browseForFolder(start) { picked -> saveDir(picked.absolutePath) }
+                    browseForDirectory(start) { picked -> saveDir(picked.absolutePath) }
                 }.setNegativeButton(R.string.export_import_cancel, null)
                 .create()
-        GauguinDialogs.style(dialog)
         dialog.show()
     }
 
@@ -432,7 +440,7 @@ class ExportImportFragment : Fragment() {
         rebuild()
     }
 
-    private fun browseForFolder(
+    private fun browseForDirectory(
         directory: File,
         onPick: (File) -> Unit,
     ) {
@@ -441,28 +449,27 @@ class ExportImportFragment : Fragment() {
             return
         }
         val subDirectories = directory.listFiles { file -> file.isDirectory }?.sortedBy { it.name.lowercase() } ?: emptyList()
-        val labels = mutableListOf<String>()
+        val labels = mutableListOf<SkActionList.Row>()
         val targets = mutableListOf<File?>()
-        labels.add("✓ ${getString(R.string.export_import_pick_here)}")
+        labels.add(SkActionList.Row(getString(R.string.export_import_pick_here), SkIcons.Icon.CHECK, SkIcons.Does.CONNECT))
         targets.add(null)
         directory.parentFile?.let {
-            labels.add(".. (${it.name.ifBlank { "/" }})")
+            labels.add(SkActionList.Row(".. (${it.name.ifBlank { "/" }})", SkIcons.Icon.UP, SkIcons.Does.VIEW))
             targets.add(it)
         }
         subDirectories.forEach {
-            labels.add("📁 ${it.name}")
+            labels.add(SkActionList.Row(it.name, SkIcons.Icon.DIRECTORY, SkIcons.Does.SHARE))
             targets.add(it)
         }
         val dialog =
             AlertDialog
-                .Builder(requireContext(), R.style.Theme_Gauguin_ShiroikumaDialog)
+                .Builder(requireContext())
                 .setTitle(directory.absolutePath)
-                .setItems(labels.toTypedArray()) { _, which ->
+                .setAdapter(SkActionList.adapter(requireContext(), labels)) { _, which ->
                     val target = targets[which]
-                    if (target == null) onPick(directory) else browseForFolder(target, onPick)
+                    if (target == null) onPick(directory) else browseForDirectory(target, onPick)
                 }.setNegativeButton(R.string.export_import_cancel, null)
                 .create()
-        GauguinDialogs.style(dialog)
         dialog.show()
     }
 
@@ -507,7 +514,8 @@ class ExportImportFragment : Fragment() {
             setTextColor(yellow)
             if (bold) setTypeface(typeface, Typeface.BOLD)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
-            buttonTintList = ColorStateList.valueOf(yellow)
+            // a mark that chooses entries of a list: a selection mark in its own roles, never a switch
+            SkWidgets.mark(this)
             setPadding(dp(8), dp(7), 0, dp(7))
         }
 
@@ -516,42 +524,40 @@ class ExportImportFragment : Fragment() {
             layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(height))
         }
 
-    /** A fully round ArcaneChat pill: black fill, thin yellow stroke, yellow text, yellow ripple. */
+    /**
+     * An outlined pill with its icon inside at the left, coloured by what the pill does. [main] is
+     * the panel's one main action (3 dp, bold); every other pill is 1.25 dp and normal.
+     */
     private fun pillButton(
         text: String,
+        icon: SkIcons.Icon,
+        does: SkIcons.Does,
+        main: Boolean = false,
+        opens: Boolean = false,
         onClick: () -> Unit,
-    ): Button =
-        Button(requireContext()).apply {
-            this.text = text
-            isAllCaps = false
-            setTextColor(yellow)
-            background =
-                RippleDrawable(
-                    ColorStateList.valueOf((yellow and 0x00FFFFFF) or 0x33000000),
-                    GradientDrawable().apply {
-                        setColor(config.backgroundColor)
-                        setStroke((1.5f * resources.displayMetrics.density).toInt(), yellow)
-                        cornerRadius = dp(50).toFloat()
-                    },
-                    null,
-                )
-            // Explicit padding + zeroed minimums so the rounded stroke is never clipped at the edge.
-            minHeight = 0
-            minimumHeight = 0
-            setPadding(dp(20), dp(6), dp(20), dp(6))
-            stateListAnimator = null
-            setOnClickListener { onClick() }
-            layoutParams =
-                LinearLayout
-                    .LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                    .apply {
-                        topMargin = dp(8)
-                        gravity = Gravity.CENTER
-                    }
-        }
+    ): View =
+        Pills
+            .iconPill(
+                requireContext(),
+                text,
+                icon,
+                iconColor = SkIcons.color(does),
+                main = main,
+                color = SkRoles[SkRole.DIALOG_BUTTON_FRAME],
+                opens = opens,
+                onClick = onClick,
+            ).apply {
+                layoutParams =
+                    LinearLayout
+                        .LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                        .apply {
+                            topMargin = dp(8)
+                            gravity = Gravity.CENTER
+                        }
+            }
 
     private fun flash(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        SkToast.show(requireContext(), message)
     }
 
     private fun dp(value: Int): Int = (value * resources.displayMetrics.density).toInt()

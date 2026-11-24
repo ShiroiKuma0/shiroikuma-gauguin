@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fork: the ids and the one attribute the black-yellow machinery needs. -->
+<resources>
+    <!-- set by ThemeOverlay.Shiroikuma: tells our own views that the overlay is on their context -->
+    <attr name="skThemed" format="boolean" />
+    <item name="tag_sk_dialog_styled" type="id" />
+    <item name="tag_sk_dialog_keep" type="id" />
+    <item name="tag_sk_font" type="id" />
+    <item name="tag_sk_list" type="id" />
+    <item name="sk_preference_action" type="id" />
+    <!-- a drawer row's own text size and height, kept so that a size knob is applied once -->
+    <item name="sk_main_menu" type="id" />
+    <item name="sk_tag_base_text" type="id" />
+    <item name="sk_tag_base_height" type="id" />
+</resources>

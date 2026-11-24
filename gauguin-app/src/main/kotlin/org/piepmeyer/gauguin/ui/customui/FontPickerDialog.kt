@@ -8,6 +8,9 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import org.piepmeyer.gauguin.R
+import org.piepmeyer.gauguin.ui.customui.chrome.SkDialogs
+import org.piepmeyer.gauguin.ui.customui.chrome.SkRole
+import org.piepmeyer.gauguin.ui.customui.chrome.SkRoles
 
 /**
  * The font picker: a black-yellow list of the built-in families plus every imported font, **each row
@@ -23,8 +26,7 @@ object FontPickerDialog {
         onImport: () -> Unit,
     ) {
         val fonts = GauguinFonts.availableFonts(context)
-        val config = GauguinUiConfig(context)
-        val accent = config.accentColor
+        val accent = SkRoles[SkRole.DIALOG_TEXT]
         val density = context.resources.displayMetrics.density
 
         val adapter =
@@ -41,7 +43,8 @@ object FontPickerDialog {
                     parent: ViewGroup,
                 ): View {
                     val option = fonts[position]
-                    val view = (convertView as? TextView) ?: TextView(context)
+                    // each row is drawn in its own font: the dialog's font pass leaves it alone
+                    val view = (convertView as? TextView) ?: TextView(context).also { SkDialogs.keep(it) }
                     val selected = option.fileName == current
                     // Sample text after the name so an imported display face shows real glyphs even
                     // when its own name is short — Gauguin is a number game, so digits matter.
@@ -58,13 +61,12 @@ object FontPickerDialog {
 
         val dialog =
             AlertDialog
-                .Builder(context, R.style.Theme_Gauguin_ShiroikumaDialog)
+                .Builder(context)
                 .setTitle(titleRes)
                 .setAdapter(adapter) { _, position -> onPick(fonts[position].fileName) }
                 .setNeutralButton(R.string.gauguin_ui_font_import) { _, _ -> onImport() }
                 .setNegativeButton(android.R.string.cancel, null)
                 .create()
-        GauguinDialogs.style(dialog)
         dialog.show()
     }
 }

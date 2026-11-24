@@ -15,6 +15,7 @@ import org.piepmeyer.gauguin.preferences.ApplicationPreferences
 import org.piepmeyer.gauguin.preferences.NightMode
 import org.piepmeyer.gauguin.preferences.Theme
 import org.piepmeyer.gauguin.ui.customui.GauguinUi
+import org.piepmeyer.gauguin.ui.customui.chrome.SkTheme
 
 class ActivityUtils : KoinComponent {
     private val applicationPreferences: ApplicationPreferences by inject()
@@ -62,6 +63,9 @@ class ActivityUtils : KoinComponent {
 
     fun configureTheme(activity: Activity) {
         activity.setTheme(theme(activity))
+        // 白い熊 fork: the black-yellow overlay on top of upstream's theme — every colour attribute
+        // then names a role. A no-op while the house look is switched off.
+        SkTheme.install(activity)
     }
 
     fun theme(context: Context) =

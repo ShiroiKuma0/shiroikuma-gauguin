@@ -13,8 +13,10 @@ import androidx.preference.PreferenceFragmentCompat
 import org.koin.android.ext.android.inject
 import org.piepmeyer.gauguin.R
 import org.piepmeyer.gauguin.ui.customui.GauguinPreferences
+import org.piepmeyer.gauguin.ui.customui.GauguinUi
 import org.piepmeyer.gauguin.ui.customui.GauguinUiActivity
 import org.piepmeyer.gauguin.ui.customui.GauguinUiConfig
+import org.piepmeyer.gauguin.ui.customui.chrome.SkPreferences
 
 class SettingsActivity : AppCompatActivity() {
     private val activityUtils: ActivityUtils by inject()
@@ -84,10 +86,12 @@ class SettingsActivity : AppCompatActivity() {
         ) {
             super.onViewCreated(view, savedInstanceState)
 
-            // The headings draw their own hairline; the list's dividers would double it.
+            // The headings draw their own hairline; the list's dividers would double it. Every row
+            // is painted from the roles, and takes the page's font, as it is attached.
             if (GauguinUiConfig(requireContext()).customUiActive) {
                 setDivider(null)
                 setDividerHeight(0)
+                SkPreferences.attach(listView) { GauguinUi.fonts(it) }
             }
         }
     }

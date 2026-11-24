@@ -1,43 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 白い熊 GNU Gauguin settings item row (indent level 2): indented under its heading,
-     tight vertical padding, yellow text. -->
+<!-- Fork: a row of the 白い熊 GNU Gauguin UI page: its icon, the label with its explanation beneath,
+     and the control (switch, swatch) at the right. Only as tall as its content: 2 dp above
+     and below, no minimum height. Colours, the pill of an action row and the left rule of an
+     explained row are applied in code (chrome/SkPreferences.styleRow). -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:background="?android:attr/selectableItemBackground"
     android:minHeight="0dp"
-    android:paddingStart="90dp"
+    android:paddingStart="50dp"
     android:paddingEnd="16dp"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp">
-
+    android:paddingTop="2dp"
+    android:paddingBottom="2dp"
+    android:baselineAligned="false">
+    <FrameLayout
+        android:id="@+id/icon_frame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp">
+        <ImageView
+            android:id="@android:id/icon"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:importantForAccessibility="no" />
+    </FrameLayout>
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
-
         <TextView
             android:id="@android:id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/shiroikuma_yellow"
             android:textSize="16sp" />
-
         <TextView
             android:id="@android:id/summary"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/shiroikuma_yellow_dim"
             android:textSize="13sp" />
     </LinearLayout>
-
     <LinearLayout
         android:id="@android:id/widget_frame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_marginStart="12dp"
+        android:gravity="center_vertical"
         android:orientation="vertical" />
 </LinearLayout>

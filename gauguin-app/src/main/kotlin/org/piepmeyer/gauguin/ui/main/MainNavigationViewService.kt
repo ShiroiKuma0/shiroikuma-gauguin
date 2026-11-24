@@ -29,6 +29,7 @@ import org.piepmeyer.gauguin.ui.MainDialogs
 import org.piepmeyer.gauguin.ui.SettingsActivity
 import org.piepmeyer.gauguin.ui.customui.GauguinChrome
 import org.piepmeyer.gauguin.ui.customui.GauguinUiActivity
+import org.piepmeyer.gauguin.ui.customui.chrome.SkIcons
 import org.piepmeyer.gauguin.ui.statistics.legacy.LegacyStatisticsActivity
 
 class MainNavigationViewService(
@@ -113,17 +114,19 @@ class MainNavigationViewService(
 
         // 白い熊 fork: the drawer paints its rows from the item model on every bind, so the house
         // colours have to live on the items rather than on their views.
+        // Each icon takes the colour of what its row does: starting is green, saving and loading
+        // orange, the statistics light blue, writing a report blue, plain views the accent.
         listOf(
-            newGameItem,
-            restartGameItem,
-            loadGameItem,
-            saveGameItem,
-            saveGameWithCommentItem,
-            statisticsItem,
-            settingsItem,
-            helpItem,
-            bugsAndFeaturesItem,
-        ).forEach { GauguinChrome.applyToDrawerItem(it, mainActivity) }
+            newGameItem to SkIcons.Does.CONNECT,
+            restartGameItem to SkIcons.Does.CONNECT,
+            loadGameItem to SkIcons.Does.SHARE,
+            saveGameItem to SkIcons.Does.SHARE,
+            saveGameWithCommentItem to SkIcons.Does.SHARE,
+            statisticsItem to SkIcons.Does.CONTACT,
+            settingsItem to SkIcons.Does.VIEW,
+            helpItem to SkIcons.Does.VIEW,
+            bugsAndFeaturesItem to SkIcons.Does.MESSAGE,
+        ).forEach { (item, does) -> GauguinChrome.applyToDrawerItem(item, mainActivity, does) }
 
         GauguinChrome.applyToDrawer(binding.mainNavigationView)
 
@@ -193,6 +196,8 @@ class MainNavigationViewService(
             BottomAppBarItemClickListener(binding.mainBottomAppBar.context, viewModel),
         )
         binding.mainBottomAppBar.setNavigationOnClickListener { binding.container.open() }
+        // 白い熊 fork: the menu button lives in the top panel, out of the system's bottom gesture strip.
+        GauguinChrome.moveMenuButtonAway(binding.mainBottomAppBar)
 
         binding.mainNavigationView.findViewById<Button>(R.id.navigation_drawer_choose_theme).setOnClickListener {
             binding.container.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)

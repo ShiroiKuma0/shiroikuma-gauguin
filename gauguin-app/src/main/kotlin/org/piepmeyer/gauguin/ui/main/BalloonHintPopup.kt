@@ -16,6 +16,8 @@ import org.piepmeyer.gauguin.R
 import org.piepmeyer.gauguin.databinding.ActivityMainBinding
 import org.piepmeyer.gauguin.game.Game
 import org.piepmeyer.gauguin.ui.customui.GauguinUiConfig
+import org.piepmeyer.gauguin.ui.customui.chrome.SkRole
+import org.piepmeyer.gauguin.ui.customui.chrome.SkRoles
 import kotlin.math.min
 
 private val logger = KotlinLogging.logger {}
@@ -51,21 +53,23 @@ class BalloonHintPopup(
             400,
         )
 
-    // 白い熊 fork: the flash is a popup of its own, out of reach of the activity-wide pass, so it
-    // takes the house dialog colours here. It is a dialog in everything but name.
+    // 白い熊 fork: the flash is a popup of its own, out of reach of the theme's view inflater, so it
+    // takes its colours here: the ground, and an ink that is the text colour when nothing is wrong
+    // and the warning colour when mistakes were found. The ink is the frame's colour too.
     private val uiConfig = GauguinUiConfig(context)
     private val houseLook = uiConfig.customUiActive
 
     private val foregroundColor =
         when {
-            houseLook -> uiConfig.int(GauguinUiConfig.DIALOG_TEXT_COLOR)
+            houseLook && mistakes == 0 -> SkRoles[SkRole.HINT_TEXT]
+            houseLook -> SkRoles[SkRole.HINT_ERROR]
             mistakes == 0 -> MaterialColors.getColor(binding.root, R.attr.colorMainHintPopupSuccessForeground)
             else -> MaterialColors.getColor(binding.root, R.attr.colorMainHintPopupErrorsForeground)
         }
 
     private val backgroundColor =
         when {
-            houseLook -> uiConfig.dialogBackgroundColor
+            houseLook -> SkRoles[SkRole.HINT_GROUND]
             mistakes == 0 -> MaterialColors.getColor(binding.root, R.attr.colorMainHintPopupSuccessBackground)
             else -> MaterialColors.getColor(binding.root, R.attr.colorMainHintPopupErrorsBackground)
         }
@@ -125,7 +129,7 @@ class BalloonHintPopup(
         setBackgroundDrawable(
             GradientDrawable().apply {
                 setColor(this@BalloonHintPopup.backgroundColor)
-                setStroke((uiConfig.dialogBorderWidthDp * density).toInt(), uiConfig.dialogBorderColor)
+                setStroke((uiConfig.dialogBorderWidthDp * density).toInt(), this@BalloonHintPopup.foregroundColor)
                 cornerRadius = uiConfig.dialogCornerDp * density
             },
         )

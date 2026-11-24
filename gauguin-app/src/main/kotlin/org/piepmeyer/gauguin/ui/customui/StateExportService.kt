@@ -129,7 +129,7 @@ class StateExportService : Service() {
         return if (resolved.any { it == null }) null else resolved.filterNotNull().toSet()
     }
 
-    /** Precedence: the `path` extra → the app's configured folder → an error. */
+    /** Precedence: the `path` extra → the app's configured directory → an error. */
     private fun resolveDirectory(pathOverride: String?): File? {
         if (!pathOverride.isNullOrBlank()) {
             // Check the grant rather than discovering it by failing: 自由作業盤 keys on the exact

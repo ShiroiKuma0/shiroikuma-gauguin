@@ -28,7 +28,7 @@ commit/push still waits for 白い熊's explicit **"Push"**.
    grep -E '^BUILD_NUMBER' gradle.properties      # the N used for THIS build, before the task bumps it
    ```
    - APK will be `shiroikuma-gauguin_<versionName>+<NNN>.apk`, the counter **zero-padded to three
-     digits** — `BUILD_NUMBER=7` → `0.52.0+007`. The padding is applied in
+     digits** — `BUILD_NUMBER=7` → `0.53.4+007`. The padding is applied in
      `gauguin-app/build.gradle.kts`; `gradle.properties` stores the plain integer.
    - `versionCode` for this build = `<upstream versionCode> * 10000 + BUILD_NUMBER`
      (e.g. `76 * 10000 + 7 = 760007`).
@@ -73,7 +73,7 @@ still succeeds but the APK is **unsigned** and will not install.
 
 - **Toolchain:** JDK 21 at `/usr/lib/jvm/java-21-openjdk-amd64`; Android SDK at `~/android-sdk`;
   `compileSdk android-37`, `buildToolsVersion 37.0.0`, `targetSdk 37`, `minSdk 24`; Gradle wrapper
-  9.7.0, AGP 9.3.1.
+  9.7.0, AGP 9.4.1.
 - **No minification** — upstream ships `isMinifyEnabled = false` for release; leave it that way
   unless 白い熊 asks otherwise.
 - **Universal APK** — no ABI splits, no native libs, so no `_arm64-v8a` tail in the filename.

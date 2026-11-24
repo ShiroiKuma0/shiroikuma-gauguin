@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The Japanese translation of the fork's own strings (values/shiroikuma_strings.xml). Every key
+     there has its entry here; the role and section labels are in the generated sk_roles.xml. -->
+<resources>
+
+    <string name="gauguin_ui_title">白い熊 GNU Gauguin UI</string>
+    <string name="gauguin_ui_summary">色、フォント、大きさ、枠など、見た目のすべてを見本で確かめながら設定します。</string>
+
+    <!-- global -->
+    <string name="gauguin_ui_enabled">白い熊 GNU Gauguin UI を使う</string>
+    <string name="gauguin_ui_border_width">枠の太さ（dp）</string>
+    <string name="gauguin_ui_corner">角の丸み（dp）</string>
+    <string name="gauguin_ui_font_family">フォント</string>
+    <string name="gauguin_ui_font_weight">文字の太さ（0 = フォント本来の太さ）</string>
+    <string name="gauguin_ui_font_size">文字の大きさ（%）</string>
+    <string name="gauguin_ui_font_italic">斜体</string>
+
+    <!-- grid -->
+    <string name="gauguin_ui_grid_corner">盤面の角の丸み（dp）</string>
+    <string name="gauguin_ui_cage_border_width">ブロックの線の太さ（dp）</string>
+    <string name="gauguin_ui_cell_border_width">マスの線の太さ（dp）</string>
+    <string name="gauguin_ui_value_size">数字の大きさ（%）</string>
+    <string name="gauguin_ui_value_font">数字のフォント</string>
+    <string name="gauguin_ui_value_weight">数字の太さ</string>
+    <string name="gauguin_ui_cage_text_size">ブロックの計算結果の大きさ（%）</string>
+    <string name="gauguin_ui_cage_text_font">ブロックの計算結果のフォント</string>
+    <string name="gauguin_ui_possibles_size">候補の数字の大きさ（%）</string>
+    <string name="gauguin_ui_possibles_font">候補の数字のフォント</string>
+
+    <!-- keypad -->
+    <string name="gauguin_ui_key_text_size">キーの文字の大きさ（%）</string>
+    <string name="gauguin_ui_key_font">キーのフォント</string>
+    <string name="gauguin_ui_key_weight">キーの文字の太さ</string>
+    <string name="gauguin_ui_key_border_width">キーの枠の太さ（dp）</string>
+    <string name="gauguin_ui_key_corner">キーの角の丸み（dp）</string>
+
+    <!-- top panel -->
+    <string name="gauguin_ui_top_text_size">パネルの文字の大きさ（%）</string>
+    <string name="gauguin_ui_top_font">パネルのフォント</string>
+    <string name="gauguin_ui_top_show_logo">白い熊の印を表示</string>
+
+    <!-- drawer -->
+    <string name="gauguin_ui_drawer_text_size">ドロワーの文字の大きさ（%）</string>
+    <string name="gauguin_ui_drawer_font">ドロワーのフォント</string>
+    <string name="gauguin_ui_drawer_icon_size">ドロワーのアイコンの大きさ（dp）</string>
+    <string name="gauguin_ui_drawer_show_header">ドロワーの上部を表示</string>
+
+    <!-- dialogs -->
+    <string name="gauguin_ui_dialog_border_width">ダイアログの枠の太さ（dp）</string>
+    <string name="gauguin_ui_dialog_corner">ダイアログの角の丸み（dp）</string>
+
+    <!-- lists -->
+    <string name="gauguin_ui_list_text_size">行の文字の大きさ（%）</string>
+    <string name="gauguin_ui_list_font">行のフォント</string>
+    <string name="gauguin_ui_list_divider_width">区切り線の太さ（dp）</string>
+    <string name="gauguin_ui_list_row_padding">行の余白（dp）</string>
+
+    <!-- fonts -->
+    <string name="gauguin_ui_font_system">システムの標準</string>
+    <string name="gauguin_ui_font_sans">ゴシック体</string>
+    <string name="gauguin_ui_font_serif">明朝体</string>
+    <string name="gauguin_ui_font_monospace">等幅</string>
+    <string name="gauguin_ui_font_import">フォントを取り込む…</string>
+    <string name="gauguin_ui_font_imported">%1$s を取り込みました</string>
+    <string name="gauguin_ui_font_import_failed">このフォントは取り込めませんでした。.ttf または .otf のファイルを選んでください。</string>
+
+    <!-- reset -->
+    <string name="gauguin_ui_reset">この見出しの設定を元に戻す</string>
+    <string name="gauguin_ui_reset_summary">この見出しの色と設定を、すべて既定値に戻します。</string>
+    <string name="gauguin_ui_reset_confirm">「%1$s」を既定値に戻しますか？</string>
+    <string name="gauguin_ui_reset_button">元に戻す</string>
+    <string name="gauguin_ui_reset_done">既定値に戻しました。</string>
+
+    <!-- export / import -->
+    <string name="gauguin_ui_export_entry">書き出し・読み込み…</string>
+    <string name="gauguin_ui_export_entry_summary">このアプリのすべての設定を保存し、あとで元に戻せます。</string>
+    <string name="gauguin_ui_export_dir_row">保存先のディレクトリ</string>
+    <string name="export_import_title">書き出し・読み込み</string>
+    <string name="export_import_intro">このアプリで設定できるものをすべて保存し、あとで元に戻せます。バックアップは、日時の付いた一つの .zip ファイルとして下のディレクトリに書き出されます。</string>
+    <string name="export_import_dir_label">保存先のディレクトリ</string>
+    <string name="export_import_dir_unset">未設定 — 書き出す前にディレクトリを選んでください</string>
+    <string name="export_import_dir_dialog_title">保存先のディレクトリ</string>
+    <string name="export_import_dir_dialog_message">バックアップを書き出し、読み込むディレクトリの絶対パスです。</string>
+    <string name="export_import_dir_hint">/storage/emulated/0/…</string>
+    <string name="export_import_browse">参照…</string>
+    <string name="export_import_pick_here">このディレクトリを使う</string>
+    <string name="export_import_save">保存</string>
+    <string name="export_import_cancel">キャンセル</string>
+    <string name="export_import_import">読み込み</string>
+    <string name="export_import_export">書き出し</string>
+    <string name="export_import_select_all">すべて選択</string>
+    <string name="export_import_last">最後のバックアップ：%1$s</string>
+    <string name="export_import_last_none">このディレクトリには、まだバックアップがありません。</string>
+    <string name="export_import_last_nodir">保存先のディレクトリが設定されていません。</string>
+    <string name="export_import_need_access">お好みのディレクトリに書き出すには、「すべてのファイルへのアクセス」の許可が必要です。</string>
+    <string name="export_import_grant_access">すべてのファイルへのアクセスを許可</string>
+    <string name="export_import_none_selected">項目が選ばれていません。</string>
+    <string name="export_import_exporting">書き出し中…</string>
+    <string name="export_import_importing">読み込み中…</string>
+    <string name="export_import_export_done_title">書き出しが終わりました</string>
+    <string name="export_import_export_ok">%1$s を書き出しました\n\n%2$s</string>
+    <string name="export_import_export_failed">書き出しに失敗しました：%1$s</string>
+    <string name="export_import_no_backups">そのディレクトリにバックアップは見つかりませんでした。</string>
+    <string name="export_import_pick_backup">元に戻すバックアップを選んでください</string>
+    <string name="export_import_import_done_title">読み込みが終わりました</string>
+    <string name="export_import_import_failed">読み込みに失敗しました：%1$s</string>
+    <string name="export_import_restart_hint">すべてを反映するには、アプリを再起動してください。</string>
+    <string name="export_import_restart_now">今すぐ再起動</string>
+    <string name="export_import_restart_later">あとで</string>
+
+    <!-- backup categories -->
+    <string name="backup_cat_ui">白い熊 UI の見た目</string>
+    <string name="backup_cat_fonts">取り込んだフォント</string>
+    <string name="backup_cat_settings">ゲームの設定</string>
+    <string name="backup_cat_statistics">統計</string>
+    <string name="backup_cat_savedgames">保存したゲーム</string>
+
+    <!-- automation (the 保存復元 contract, v2) -->
+    <string name="gauguin_ui_automation_switch">自動書き出し</string>
+    <string name="gauguin_ui_automation_switch_summary">姉妹アプリから、このアプリの書き出しとデータのバックアップを行えるようにします。初めはオンです。オフにすると、このアプリは外から一切操作できなくなります。</string>
+    <string name="gauguin_ui_automation_require_token">認証トークンを使いますか？</string>
+    <string name="gauguin_ui_automation_require_token_summary">オフ：どの姉妹アプリからでも自動操作ができます。オン：呼び出す側は下のトークンも示す必要があります。どちらの場合も、データの受け渡しでは呼び出し元のパッケージ名と署名証明書を確かめます。</string>
+    <string name="gauguin_ui_automation_data_channel">自動操作のデータ</string>
+    <string name="gauguin_ui_automation_data_exporting">白い熊 GNU Gauguin のデータをバックアップ中…</string>
+    <string name="gauguin_ui_automation_data_importing">白い熊 GNU Gauguin のデータを復元中…</string>
+    <string name="gauguin_ui_automation_token">自動操作のトークン</string>
+    <string name="gauguin_ui_automation_token_copied">トークンをクリップボードにコピーしました。</string>
+    <string name="gauguin_ui_automation_regenerate">作り直す</string>
+    <string name="gauguin_ui_automation_regenerate_summary">新しいトークンを作ります。古いトークンはすぐに使えなくなります。</string>
+    <string name="gauguin_ui_automation_regenerate_warning">新しいトークンを作りました。ほかの場所に貼り付けた控えは、書き換えが必要です。</string>
+    <string name="gauguin_ui_automation_notification">白い熊 GNU Gauguin を書き出し中…</string>
+    <string name="gauguin_ui_automation_channel">自動書き出し</string>
+
+    <!-- the page itself -->
+    <string name="sk_default">既定値</string>
+    <string name="sk_app_settings">アプリの設定</string>
+    <string name="sk_app_settings_summary">ゲーム自体の設定（表示、見やすさ、補助）です。</string>
+    <string name="sk_reset_section_order">見出しの並び順を元に戻す</string>
+    <string name="sk_reset_section_order_summary">このページの見出しを、最初の並び順に戻します。</string>
+    <string name="sk_reset_all_colours">すべての色を元に戻す</string>
+    <string name="sk_reset_all_colours_summary">すべての見出しのすべての色を、既定値に戻します。</string>
+    <string name="sk_reset_all_colours_confirm">すべての色を既定値に戻しますか？</string>
+
+    <!-- UI → Diagnostics -->
+    <string name="sk_main_menu">メニュー</string>
+    <string name="diag_directory">診断の保存先</string>
+    <string name="diag_group_interface">画面の操作</string>
+    <string name="diag_touch">メニューボタンのタッチ</string>
+    <string name="diag_touch_descr">左上のメニューボタンへのタッチと、このページが開くまでを記録します。指が触れた時刻、アプリが受け取った時刻、長押しが働いた時刻、ページの準備ができた時刻です。</string>
+    <string name="diag_group_data">記録したデータ</string>
+    <string name="diag_stored">保存済み</string>
+    <string name="diag_counting">集計中…</string>
+    <string name="diag_stored_none">記録はありません。</string>
+    <string name="diag_stored_value">%1$d 件、%2$s、%3$s – %4$s</string>
+    <string name="diag_keep">保存する日数</string>
+    <string name="diag_keep_descr">0 ならすべて残します。古い日の記録は、このページを離れるときとアプリの起動時に削除します。</string>
+    <string name="diag_export">書き出す…</string>
+    <string name="diag_export_descr">毎回選ぶディレクトリの中に日時の付いたサブディレクトリを作り、すべてのファイルを写します。</string>
+    <string name="diag_exported">%1$s に書き出しました</string>
+    <string name="diag_export_failed">書き出せませんでした。</string>
+    <string name="diag_share">共有…</string>
+    <string name="diag_share_descr">記録したファイルをすべて他のアプリへ送ります。</string>
+    <string name="diag_purge">記録をすべて削除…</string>
+    <string name="diag_purge_descr">消えるものを示し、確かめてから削除します。</string>
+    <string name="diag_purge_title">記録をすべて削除しますか？</string>
+    <string name="diag_purge_message">%1$d 件、%2$s を完全に削除します。元には戻せません。\n\n%3$s</string>
+    <string name="diag_purge_kind">%1$s：%2$d 件、%3$s、%4$s – %5$s</string>
+    <string name="diag_purge_day">%1$s：%2$s – %3$s</string>
+    <string name="diag_delete_forever">完全に削除</string>
+    <string name="diag_purged">%1$d 件を削除しました。</string>
+    <string name="diag_channel">診断</string>
+    <string name="diag_recording">診断を記録中</string>
+    <string name="diag_mark">印を付ける</string>
+    <string name="diag_all_off">すべて切る</string>
+    <string name="diag_mark_toast">印 #%1$d</string>
+</resources>

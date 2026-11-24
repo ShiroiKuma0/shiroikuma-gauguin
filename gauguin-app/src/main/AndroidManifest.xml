@@ -106,6 +106,22 @@
              so 応用管理 can answer "can this app be backed up" for an app 白い熊 has frozen — a
              frozen app cannot be asked anything, which is why this is meta-data and not a query
              intent. An app without these entries is simply never offered for data backup. -->
+        <!-- 白い熊 fork: UI → Diagnostics. The receiver takes the two buttons of the recording
+             notification; the provider shares the recorded files. Neither is exported. -->
+        <receiver
+            android:name=".ui.customui.GauguinDiagReceiver"
+            android:exported="false" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.diag"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/diag_paths" />
+        </provider>
+
         <meta-data android:name="shiroikuma.automation.contract" android:value="2" />
         <meta-data android:name="shiroikuma.automation.format" android:value="1" />
         <meta-data android:name="shiroikuma.automation.min_format" android:value="1" />

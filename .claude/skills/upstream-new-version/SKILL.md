@@ -99,6 +99,9 @@ Upstream's own default branch is `main`; our mirror branch is deliberately named
    | Signing | `keystore.properties` at the repo root (gitignored) → `~/.android-keystores/shiroikuma-gauguin.jks`, alias `gauguin` | upstream's own `keystoreExists` block |
    | Black-yellow icon | yellow `#FFFF00` traced line-art, black `ic_launcher_background` | `drawable/ic_launcher_foreground.xml`, `drawable/ic_launcher_monochrome.xml`, `values/ic_launcher_background.xml`, `mipmap-*/ic_launcher*.png`, `src/main/ic_launcher-playstore.webp` |
    | De-branding | no upstream app name / GitHub / issue / donate links left in user-visible text | About + Help screens, `values*/strings.xml`, `res/xml/*` |
+   | Black-yellow theme | upstream's layouts carry none of our colour edits; `python3 tools/shiroikuma/gen_roles.py` runs clean; a theme attribute upstream ADDED is mapped to a role in its `ATTRS` table | `tools/shiroikuma/gen_roles.py`, `ui/customui/chrome/`, `res/values/sk_*.xml` |
+   | Menu row copies | still match AppCompat's `abc_popup_menu_item_layout.xml` / `abc_cascading_menu_item_layout.xml` apart from the root view | `res/layout/abc_*_menu_item_layout.xml` |
+   | Japanese | every key of `values/*.xml` exists in `values-ja/*.xml` — translate the strings upstream added | `res/values-ja/strings.xml` |
    | Committed agent files | `CLAUDE.md`, `.claude/` un-ignored; signing material ignored | `.gitignore` |
 
    Conflict-prone files: `gauguin-app/build.gradle.kts`, `gradle.properties`, `values/strings.xml`,

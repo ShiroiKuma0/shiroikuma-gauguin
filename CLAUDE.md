@@ -41,11 +41,11 @@ on every push to `main`. The global `/git-versioning` skill therefore does **not
 ### Versioning & APK naming
 - **The upstream base lives in the manifest**, not in a gradle property:
   `gauguin-app/src/main/AndroidManifest.xml` → `android:versionCode` / `android:versionName`
-  (currently `76` / `0.52.0`). Our fork block **reads it from there**, so on every upstream rebase the
+  (currently `81` / `0.53.4`). Our fork block **reads it from there**, so on every upstream rebase the
   new base flows in automatically and is never edited by hand.
 - `BUILD_NUMBER` (in `gradle.properties`) is our per-build `N`:
-  `versionName = "<base>+<N zero-padded to 3>"` (e.g. `0.52.0+001`),
-  `versionCode = <baseCode> * 10000 + N` (plain integer — the padding is text only, e.g. `760001`).
+  `versionName = "<base>+<N zero-padded to 3>"` (e.g. `0.53.4+001`),
+  `versionCode = <baseCode> * 10000 + N` (plain integer — the padding is text only, e.g. `810001`).
   The `buildFork` task bumps `BUILD_NUMBER` after every successful build; the upstream-sync skill
   resets it to `1`.
 - APK: `shiroikuma-gauguin_<versionName>.apk`, copied to `~/tmp/`. **No ABI suffix** — the app has no
@@ -63,7 +63,7 @@ JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 ./gradlew :gauguin-app:assembleRele
 - JDK **21** at `/usr/lib/jvm/java-21-openjdk-amd64` (the host default `java` is older; AGP 9.x
   aborts on it — always set `JAVA_HOME`).
 - Android SDK at `~/android-sdk`; `compileSdk android-37`, `buildToolsVersion 37.0.0`,
-  `targetSdk 37`, `minSdk 24`. Gradle wrapper 9.7.0, AGP 9.3.1.
+  `targetSdk 37`, `minSdk 24`. Gradle wrapper 9.7.0, AGP 9.4.1.
 - Release is **not** minified upstream (`isMinifyEnabled = false`) — leave it that way unless asked.
 
 ## Architecture (upstream Gauguin)
@@ -84,6 +84,49 @@ App entry points: `MainApplication` (Koin start), `ui/main/MainActivity`, plus `
 
 Upstream's CI machinery — `sonarqube`, Roborazzi screenshot tests, fastlane / Play publishing, the
 `micro-benchmark` module — is upstream's; we neither ship nor run it as part of a build.
+
+## The black-yellow theme (the MIXED way)
+
+白い熊 chose the **mixed way** for this fork on 2026-11-23, because it is rebased onto every upstream
+release: **upstream's layouts and themes are never edited for colour.**
+
+- **The role table is generated.** `tools/shiroikuma/gen_roles.py` holds the one table — sections,
+  roles, defaults, English and Japanese labels, and the theme-attribute map. Run it from the repo root
+  after any change; it writes `ui/customui/chrome/SkRoleTable.kt`, `res/values/sk_roles.xml`,
+  `res/values-ja/sk_roles.xml` and `res/values/sk_theme.xml`. **Never edit those four by hand.**
+- **How a colour reaches upstream's XML:** `ThemeOverlay.Shiroikuma` (`sk_theme.xml`) points every
+  colour attribute at a role colour `@color/sk_role_…`; `chrome/SkPalette` lays the stored values over
+  those resources with a `ResourcesLoader` (Android 11+; older systems show each role's computed
+  default), built through `java/com/google/android/material/color/SkColorLoaderBridge.java`.
+  `chrome/SkTheme.install` puts both on an activity, from `ActivityUtils.configureTheme`.
+- **Role colour resources live in the default `values/` only.** A qualified copy (`values-night/`,
+  `values-v30/`) is more specific than the loader's table and beats the run-time value.
+- **Widgets are drawn as they are inflated** by `chrome/SkViewInflater` (the overlay's
+  `viewInflaterClass`): buttons → pills, number-pad keys → the Keypad section's knobs, checkable
+  buttons → segments, switches, marks, cards, floating buttons, and every dialog (`chrome/SkDialogs`).
+- **Popup menu rows** are `chrome/PillMenuItemView`, swapped in through the app's copies of
+  AppCompat's `abc_popup_menu_item_layout.xml` and `abc_cascading_menu_item_layout.xml`. When AppCompat
+  is upgraded, diff those two against the library's.
+- **The store** is the one preferences file `gauguin_ui` (`chrome/SkRoles`, `GauguinUiConfig`): roles,
+  sliders, fonts, and the UI page's section order and fold state — so all of it travels in the export.
+- **The UI page** is `ui/customui/GauguinUiPreferenceFragment.kt`: settings pill, draggable chip
+  index, folding sections (`chrome/SkPage.kt`, `chrome/SectionIndex.kt`), rows styled by
+  `chrome/SkPreferences.styleRow`.
+- **The “Use 白い熊 GNU Gauguin UI” switch stays** (白い熊, 2026-11-23): off, the app shows upstream's
+  Material themes; the UI page itself always wears the look.
+- **Japanese:** upstream has no Japanese translation; the fork carries a full one —
+  `res/values-ja/strings.xml` (upstream's strings), `values-ja/shiroikuma_strings.xml` (the fork's)
+  and the generated `values-ja/sk_roles.xml`. After every upstream sync, translate upstream's new
+  strings and compare the key sets before the build is called done.
+
+## Diagnostics
+
+Every diagnostic line the fork writes goes through `ui/customui/GauguinDiag.kt` and sits behind its
+own switch in the UI page's **Diagnostics** section, all off by default (global skill
+`diagnostics-ui-settings`). Files: `Android/data/shiroikuma.gauguin/files/diag/gauguin-<kind>_<day>.txt`
+— never `.log`. A new diagnostic is a new `GauguinDiag.Kind` (title and description in both string
+files) and `GauguinDiag.log(Kind.X) { … }` at the place it measures; never an always-on file.
+Kinds so far: `touch` (the menu button's touches and the UI page opening).
 
 ## Hard rules
 - **Always run `adb` with `dangerouslyDisableSandbox: true`** (the sandbox blocks adb's server
@@ -107,6 +150,18 @@ Upstream's CI machinery — `sonarqube`, Roborazzi screenshot tests, fastlane / 
 **Fork bootstrapped** (2026-08-02): forked from `meikpiep/gauguin` at `v0.52.0` (versionCode 76),
 `master`/`custom` branch model, own keystore, fork versioning + signing, the `buildFork` task, the
 black-yellow traced icon, de-branding, and the two repo skills.
+
+**Upstream 0.53.4 and the full black-yellow theme** (2026-11-23): rebased from `v0.52.1` onto
+`v0.53.4` (versionCode 81); the theme rebuilt the mixed way with a generated role table, the UI page
+as a folding accordion with a chip index, pills, outlined switches and pill menus, and a full Japanese
+translation. First build `0.53.4+001`.
+
+**Through `0.53.4+010`** (2026-11-24): the UI page's preview removed; a Diagnostics section
+(`GauguinDiag`); every settings row its own icon; the drawer's size sliders wired; on a large upright
+screen the number pad is rewired under the grid in code (`GauguinChrome.keypadToBottom`) and the
+cell-size cap lifted once to 240 dp; the menu button moved from the bottom bar into the top panel
+(`GauguinChrome.addMenuButton`), because the system's home-gesture window over the bottom 98 px holds
+every touch there for some 320–360 ms — a long-press on it opens the UI page.
 
 ## Commit convention — no Claude attribution
 Do **not** add any `Co-Authored-By: Claude …` trailer, nor a "🤖 Generated with Claude Code" /

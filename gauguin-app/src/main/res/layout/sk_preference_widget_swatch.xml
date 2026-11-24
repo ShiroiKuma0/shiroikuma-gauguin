@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fork: the colour swatch at the right of a role row; drawn in code -->
+<View xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sk_swatch"
+    android:layout_width="44dp"
+    android:layout_height="26dp" />

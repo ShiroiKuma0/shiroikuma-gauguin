@@ -18,7 +18,7 @@ import java.util.zip.ZipOutputStream
 
 /**
  * The category ZIP backup, in the family format: a `manifest.json` plus one `<id>.json` (or, for
- * file corpora, one `<id>/` folder) per selected category.
+ * file corpora, one `<id>/` directory) per selected category.
  *
  * The export core is deliberately headless — [export] takes categories, an [OutputStream] and a
  * progress callback, so the Export/Import panel, the automation receiver and its foreground service
@@ -177,7 +177,7 @@ object GauguinBackup {
         }
 
         if (!sawManifest) errors += "no manifest.json — is this a 白い熊 GNU Gauguin backup?"
-        // File corpora are summarised after the walk, so a folder shows one line, not one per file.
+        // File corpora are summarised after the walk, so a directory shows one line, not one per file.
         listOf(Cat.FONTS, Cat.SAVED_GAMES).filter { it in categories }.forEach { category ->
             val label = context.getString(category.labelRes)
             if (lines.none { it.startsWith(label) }) lines += "$label: ok"

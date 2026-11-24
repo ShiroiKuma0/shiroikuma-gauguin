@@ -10,14 +10,17 @@ import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import org.piepmeyer.gauguin.R
+import org.piepmeyer.gauguin.ui.customui.chrome.SkDialogs
+import org.piepmeyer.gauguin.ui.customui.chrome.SkRole
+import org.piepmeyer.gauguin.ui.customui.chrome.SkRoles
 
 /**
  * The house colour picker: a row of one-click swatches prefilled with previously chosen colours, a
  * live preview showing the ARGB hex, and four A/R/G/B sliders.
  *
  * Every change applies LIVE through [onColor] so the page's preview updates as the slider moves;
- * Cancel puts back the colour the dialog opened with, OK keeps it and remembers it as a swatch.
+ * Cancel puts back the colour the dialog opened with, OK keeps it and remembers it as a swatch,
+ * and Default — offered for a colour role — puts the role's own default back.
  */
 object ColorPickerDialog {
     private const val PREFS = "gauguin_color_picker"
@@ -28,10 +31,13 @@ object ColorPickerDialog {
         context: Context,
         titleRes: Int,
         initial: Int,
+        onDefault: (() -> Unit)? = null,
+        onDone: () -> Unit = {},
         onColor: (Int) -> Unit,
     ) {
         val density = context.resources.displayMetrics.density
-        val accent = GauguinUiConfig(context).accentColor
+        val accent = SkRoles[SkRole.DIALOG_FRAME]
+        val ink = SkRoles[SkRole.DIALOG_TEXT]
 
         var a = Color.alpha(initial)
         var r = Color.red(initial)
@@ -44,6 +50,8 @@ object ColorPickerDialog {
                 gravity = Gravity.CENTER
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
                 minHeight = (56 * density).toInt()
+                // it shows the colour being picked, in an ink chosen against it: not the dialog's
+                SkDialogs.keep(this)
             }
 
         fun current() = Color.argb(a, r, g, b)
@@ -89,7 +97,7 @@ object ColorPickerDialog {
             row.addView(
                 TextView(context).apply {
                     text = label
-                    setTextColor(accent)
+                    setTextColor(ink)
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
                     width = (24 * density).toInt()
                 },
@@ -104,7 +112,7 @@ object ColorPickerDialog {
             row.addView(seek)
             val readout =
                 TextView(context).apply {
-                    setTextColor(accent)
+                    setTextColor(ink)
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
                     minWidth = (36 * density).toInt()
                     gravity = Gravity.END
@@ -184,20 +192,30 @@ object ColorPickerDialog {
             }
         refresh(apply = false)
 
-        val dialog =
+        val builder =
             AlertDialog
-                .Builder(context, R.style.Theme_Gauguin_ShiroikumaDialog)
+                .Builder(context)
                 .setTitle(titleRes)
                 .setView(layout)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
                     val color = current()
                     onColor(color)
                     remember(context, color)
-                }.setNegativeButton(android.R.string.cancel) { _, _ -> onColor(initial) }
-                .setOnCancelListener { onColor(initial) }
-                .create()
-        GauguinDialogs.style(dialog)
-        dialog.show()
+                    onDone()
+                }.setNegativeButton(android.R.string.cancel) { _, _ ->
+                    onColor(initial)
+                    onDone()
+                }.setOnCancelListener {
+                    onColor(initial)
+                    onDone()
+                }
+        if (onDefault != null) {
+            builder.setNeutralButton(org.piepmeyer.gauguin.R.string.sk_default) { _, _ ->
+                onDefault()
+                onDone()
+            }
+        }
+        builder.show()
     }
 
     private fun recent(context: Context): List<Int> {
@@ -210,12 +228,13 @@ object ColorPickerDialog {
                 ?: emptyList()
         val seeds =
             listOf(
-                GauguinUiConfig.BLACK,
-                GauguinUiConfig.YELLOW,
-                0xFFCCCC66.toInt(),
-                0xFFFFFFFF.toInt(),
-                0xFFFF5555.toInt(),
-                0x00000000,
+                // the foundation colours as they stand, then two presets that are not roles
+                SkRoles[SkRole.BACKGROUND],
+                SkRoles[SkRole.ACCENT],
+                SkRoles[SkRole.NOTE],
+                SkRoles[SkRole.DELETE],
+                Color.WHITE,
+                Color.TRANSPARENT,
             )
         return (stored + seeds).distinct().take(MAX_RECENT)
     }

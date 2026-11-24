@@ -57,11 +57,16 @@ class MainActivity : AppCompatActivity() {
 
         activityUtils.configureTheme(this)
 
+        // 白い熊 fork: the grid is as large as the screen allows, before the grid view reads its cap.
+        org.piepmeyer.gauguin.ui.customui.GauguinChrome.growGridOnce(this)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         configureActivity()
 
         setContentView(binding.root)
+        // 白い熊 fork: on a large upright screen the number pad goes under the grid.
+        org.piepmeyer.gauguin.ui.customui.GauguinChrome.keypadToBottom(binding.root)
         activityUtils.configureRootView(binding.root)
 
         PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)

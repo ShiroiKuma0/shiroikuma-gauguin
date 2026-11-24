@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fork: the outlined switch of an upstream CheckBoxPreference. Upstream's settings are on/off
+     settings, not entries chosen from a list, so they wear the switch; the id is the one
+     CheckBoxPreference binds. -->
+<org.piepmeyer.gauguin.ui.customui.chrome.SkSwitch xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/checkbox"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@null"
+    android:clickable="false"
+    android:focusable="false" />

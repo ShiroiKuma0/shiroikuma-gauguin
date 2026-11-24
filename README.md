@@ -40,7 +40,7 @@ Upstream's settings tree is re-laid out in the same rows as the fork's own page,
 
 ## 💾 Export / Import
 
-The first section of the UI page. Pick a backup folder — the row stays **red until one is set** — then export any subset of categories as one timestamped ZIP, `shiroikuma-gauguin_<yyyy-MM-dd_HH-mm-ss>.zip`, written atomically through a `.part` file so a half-written backup can never be mistaken for a good one.
+The first section of the UI page. Pick a backup directory — the row stays **red until one is set** — then export any subset of categories as one timestamped ZIP, `shiroikuma-gauguin_<yyyy-MM-dd_HH-mm-ss>.zip`, written atomically through a `.part` file so a half-written backup can never be mistaken for a good one.
 
 Import merges a backup back in key by key, skipping anything it does not recognise, and offers to restart the app so the restored look takes effect at once.
 
