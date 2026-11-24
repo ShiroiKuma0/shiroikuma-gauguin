@@ -8,6 +8,94 @@ at 1 on every new upstream release.
 
 ---
 
+## 白い熊 GNU Gauguin 0.53.4+015 — 2026-11-24
+
+Built on upstream **0.53.4** (versionCode 81); fork versionCode `810015`. The first release on the
+0.53 line: the black-yellow look rebuilt so that it survives every upstream release, a full Japanese
+translation, an app-language section, a Diagnostics section, and a menu button that answers at once.
+
+### Upstream 0.52.1 → 0.53.4
+
+* The new-game screen is redesigned: one vertical scroll area, the options grouped in cards.
+* Main-screen layout corrections for edge-to-edge, including the missing insets below the app bar
+  that made three-button navigation unusable.
+* Fixes: the undo button missing on the game after a solved one; an occasional crash on opening the
+  new-game screen; the preview grid not following a changed grid size.
+* Upstream's unfinished statistics screen is hidden in release builds.
+
+### The black-yellow theme, rebuilt the mixed way
+
+* **Upstream's layouts and themes are no longer edited for colour.** A theme overlay points every
+  colour attribute upstream uses at a role colour, and a resources loader lays the stored colours
+  over those resources at run time (Android 11 and later; older systems show each role's default).
+  A rebase onto a new upstream release no longer conflicts over colours.
+* **101 colour roles in 19 sections**, each settable on the UI page, each with a reset, and all of
+  them resettable at once. The table is generated from one script, `tools/shiroikuma/gen_roles.py`.
+* **Widgets are drawn as they are inflated**: buttons as outlined pills (the main action 3 dp and
+  bold, the others 1.25 dp), number-pad keys from the Keypad section's knobs, checkable buttons as
+  segments, switches as outlined pills with a dot, check boxes and radio buttons, cards, floating
+  buttons, and every dialog.
+* **Popup menu rows are full-width outlined pills** with their icon inside, toggles as outlined
+  switches.
+* **The UI page is a folding accordion with a chip index**: a thick pill to the app's own settings,
+  one chip per section with its icon in the section's colour, drag a chip to reorder the sections,
+  every section folded by default, fold state and order remembered and exported.
+* **Every row has an icon**, coloured by what the row does; each of upstream's fourteen settings rows
+  has an icon of its own.
+* The page's old preview at the top is removed; it did nothing.
+* The “Use 白い熊 GNU Gauguin UI” switch stays: off, the app shows upstream's Material themes.
+
+### Japanese
+
+* **A full Japanese translation**, which upstream does not have: upstream's 194 strings, the fork's
+  143 and the 120 role and section labels.
+
+### App language
+
+* **A new first section of the UI page, “App language”**, with one pill, “Language: ‹current›”.
+* It opens a list of the 24 languages the app ships, “System default” first: each language in its
+  own language with its region beneath, its tag at the right, and only the current one in a pill.
+* The choice applies at once, for this app only. It is kept in the fork's own preferences, travels
+  in the export, and is put back when the app starts, because the phone's system does not keep a
+  per-app language across an update installed from a file.
+* The diagnostics notification and the labels answered to the backup automation follow the choice.
+
+### The menu button
+
+* **The menu button is lifted out of the bottom bar and sits right above its left end.** The bar and
+  its other buttons stay where they were.
+* **A long-press on it opens the UI page.**
+* Why it moved: raw touch recordings on the phone showed that the system's gesture window covers the
+  bottom 40 dp of the screen, and that a touch landing inside it reaches the app about 300 ms late,
+  while one landing just above it arrives within 10–27 ms. The bar is 48 dp tall at the very bottom.
+* The long-press keeps its own clock of 200 ms, counted from the moment the finger landed and not
+  from the touch's late arrival, and the UI page opens without a window animation.
+
+### Diagnostics
+
+* **A new Diagnostics section on the UI page.** Every diagnostic sits behind its own switch, off by
+  default; so far one, the menu button's touches and the UI page opening.
+* Files go to the app's own `files/diag` directory, one per kind per day, never named `.log`.
+* Stored size and day span, keep for N days, export to a chosen directory, share, and purge behind a
+  warning that says what will be deleted.
+* While a switch is on, a notification says so, with Mark and Turn all off.
+
+### Main screen
+
+* **On a large upright screen the number pad sits below the grid** instead of beside it, so the grid
+  takes the full width.
+* **The cell-size cap is lifted**: the setting's slider now reaches 240 dp instead of 96, and the
+  stored value is raised to it once.
+* The navigation drawer's text-size and icon-size sliders now take effect.
+
+### Packaging
+
+* Fork version `0.53.4+015`, versionCode `810015`. Toolchain: JDK 21, Android SDK 37, Gradle 9.7.0,
+  AGP 9.4.1.
+* One universal APK: `shiroikuma-gauguin_0.53.4+015.apk`.
+
+---
+
 ## 白い熊 GNU Gauguin 0.52.1+006 — 2026-09-05
 
 Built on upstream **0.52.1** (versionCode 77); fork versionCode `770006`. A crash fix for the

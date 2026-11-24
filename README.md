@@ -6,11 +6,11 @@
 
 **A KenKen-style calculation puzzle, rebuilt in pure black and pure yellow.**
 
-A fork of [Gauguin](https://github.com/meikpiep/gauguin) with **major additions**: a settings page that puts some sixty colour, font, size and border knobs under a live preview, a black-and-yellow house look painted onto every surface of the app, a category backup written as one timestamped ZIP, and an automation contract that lets a sister app export the state without touching the screen — and back the app's data up and put it back on a wiped phone.
+A fork of [Gauguin](https://github.com/meikpiep/gauguin) with **major additions**: a black-and-yellow look with a hundred settable colour roles that survives every upstream release, a full Japanese translation with an in-app language choice, a menu button that answers at once, a Diagnostics section, a category backup written as one timestamped ZIP, and an automation contract that lets a sister app export the state without touching the screen — and back the app's data up and put it back on a wiped phone.
 
 Installs **side-by-side** with upstream Gauguin (app id `shiroikuma.gauguin`).
 
-**📥 Latest release: [`0.52.1+006`](https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases/latest)** — [all releases & APK downloads »](https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases)
+**📥 Latest release: [`0.53.4+015`](https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases/latest)** — [all releases & APK downloads »](https://github.com/ShiroiKuma0/shiroikuma-gauguin/releases)
 
 </div>
 
@@ -18,29 +18,55 @@ Installs **side-by-side** with upstream Gauguin (app id `shiroikuma.gauguin`).
 
 ## 🎛 The 白い熊 GNU Gauguin UI page
 
-One page owns the entire look of the app: some sixty knobs over Global, Grid, Keypad, Top panel, Drawer, Dialogs and Lists — every colour, every font, every size, every border thickness and corner radius.
+One page owns the entire look of the app. It opens with a thick pill to the app's own settings and a **chip index**: one chip per section, each with its icon in the section's colour. Tap a chip to jump, drag it to reorder the sections. Every section folds, and the fold state and the order are remembered and travel in the export.
 
-A **live preview is pinned at the top** and redraws on every change: a miniature board with cages, cell lines, a filled number, a cage clue, pencil marks and a selected cell, plus a keypad row and a sample line of text. You see the change before you leave the row.
+Inside are **101 colour roles in 19 sections** — every kind of text, frame, ground, icon, divider and control state has a role of its own, with a reset per role and one for all — plus the fonts, sizes, border thicknesses and corner radii. Colour rows open a picker with A/R/G/B sliders, a live hex readout and swatches of the colours you have already chosen. Font rows list the built-in families plus every `.ttf`/`.otf` you import, **each row rendered in its own glyphs**.
 
-Colour rows open a picker with A/R/G/B sliders, a live hex readout and one-click swatches prefilled with the colours you have already chosen. Font rows list the built-in families plus every `.ttf`/`.otf` you import — **each row rendered in its own glyphs** — with an import button. Every thickness and radius bottoms out at zero, so a border can go away entirely.
-
-The whole page is generated from one declaration list, which the backup and "reset to defaults" walk as well: a knob is added in exactly one place.
+A long-press on the main screen's menu button opens the page directly.
 
 ---
 
-## 🟡 Black and yellow, everywhere
+## 🟡 Black and yellow, everywhere — and rebase-proof
 
-Not a theme overlay — the look is painted onto the real views, so it reaches the corners a Material theme cannot.
+Black surfaces, `#FFFF00` text and frames, never Material's amber: the **board**, the **keypad**, the **top panel**, the **navigation drawer**, the **bottom bar**, every **menu**, every **dialog** and the **settings**.
 
-The **board** draws its cages, cell lines, numbers, clues and pencil marks from the config. The **keypad**, the **top panel**, the **navigation drawer**, the **bottom bar**, the **overflow menu**, every **dialog**, the **settings page** and the **hint flash** follow: black surfaces, `#FFFF00` text and borders — never Material's amber. Tick boxes carry nothing but their own yellow mark; the floating action button is black with a yellow border that follows its own shape.
+Buttons are outlined pills, never filled; switches are outlined pills with a dot; popup menu rows are full-width pills with their icon inside; every settings row carries an icon coloured by what the row does.
 
-Upstream's settings tree is re-laid out in the same rows as the fork's own page, so the two read as one: a big bold yellow heading with a word-width underline over each group, tight yellow rows underneath.
+Upstream's layouts are not edited for any of it. A theme overlay points upstream's colour attributes at role colours, a resources loader feeds the stored values in at run time, and the widgets are drawn as they are inflated — so a new upstream release rebases without colour conflicts. One switch turns the look off and shows upstream's Material themes.
+
+---
+
+## 🌐 Japanese, and a language of the app's own
+
+Upstream has no Japanese translation; this fork carries a **full one** — the game, the settings, and every string the fork adds.
+
+The UI page's first section is **App language**: the 24 languages the app ships, each written in its own language with its region and tag, the current one in a pill. The choice applies at once, to this app only, travels in the export, and is put back at every start.
+
+---
+
+## 👆 A menu button that answers at once
+
+On a phone with gesture navigation the system keeps the bottom strip of the screen for itself, and a touch landing there reaches an app about 300 ms late — measured on the phone, with raw touch recordings. Gauguin's bottom bar lies inside that strip.
+
+So the menu button is lifted out of the bar and sits right above its left end; the bar and its other buttons stay. A tap opens the drawer, a long-press opens the UI page, and the long-press is timed from the moment the finger landed.
+
+---
+
+## 🩺 Diagnostics
+
+A section of the UI page where every diagnostic has its own switch, all off by default. Files go to the app's own directory, one per kind per day; the section shows what is stored, keeps it for as many days as you choose, exports it to a directory you pick, shares it, or purges it behind a warning. While anything records, a notification says so.
+
+---
+
+## 🔲 A grid as large as the screen
+
+On a large upright screen the number pad sits below the grid rather than beside it, and the cell-size cap is lifted to 240 dp, so the board fills an unfolded screen.
 
 ---
 
 ## 💾 Export / Import
 
-The first section of the UI page. Pick a backup directory — the row stays **red until one is set** — then export any subset of categories as one timestamped ZIP, `shiroikuma-gauguin_<yyyy-MM-dd_HH-mm-ss>.zip`, written atomically through a `.part` file so a half-written backup can never be mistaken for a good one.
+A section of the UI page. Pick a backup directory — the row stays **red until one is set** — then export any subset of categories as one timestamped ZIP, `shiroikuma-gauguin_<yyyy-MM-dd_HH-mm-ss>.zip`, written atomically through a `.part` file so a half-written backup can never be mistaken for a good one.
 
 Import merges a backup back in key by key, skipping anything it does not recognise, and offers to restart the app so the restored look takes effect at once.
 
@@ -60,7 +86,7 @@ The receiver itself only gates and hands off: the export runs in a foreground se
 
 ## 📦 Side-by-side, and honest version numbers
 
-The app id is `shiroikuma.gauguin`, so it installs alongside official Gauguin without touching it. Versions read `<upstream version>+<NNN>` — `0.52.1+001` is the first fork build on top of upstream's 0.52.1 — and the upstream base is read straight out of upstream's manifest, so it can never drift from what the fork is actually built on. The counter is zero-padded, so release lists and file managers sort in build order.
+The app id is `shiroikuma.gauguin`, so it installs alongside official Gauguin without touching it. Versions read `<upstream version>+<NNN>` — `0.53.4+001` is the first fork build on top of upstream's 0.53.4 — and the upstream base is read straight out of upstream's manifest, so it can never drift from what the fork is actually built on. The counter is zero-padded, so release lists and file managers sort in build order.
 
 The launcher mark is black-and-yellow line art, and the app's name, links and issue tracker point at this fork rather than upstream.
 
@@ -85,7 +111,7 @@ JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 ./gradlew :gauguin-app:assembleRele
 JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 ./gradlew buildFork
 ```
 
-JDK 21, Android SDK 37, Gradle 9.7.0, AGP 9.3.1. No native code, so the APK is universal.
+JDK 21, Android SDK 37, Gradle 9.7.0, AGP 9.4.1. No native code, so the APK is universal.
 
 ## Art & font licences
 
