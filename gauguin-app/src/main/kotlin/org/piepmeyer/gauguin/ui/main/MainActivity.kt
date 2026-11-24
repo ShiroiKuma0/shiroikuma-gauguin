@@ -256,7 +256,32 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // diagnostics only: every touch that reaches this window, so a press that never arrives
+    // can be told from one that missed the menu button
+    override fun dispatchTouchEvent(event: android.view.MotionEvent): Boolean {
+        when (event.actionMasked) {
+            android.view.MotionEvent.ACTION_DOWN ->
+                org.piepmeyer.gauguin.ui.customui.GauguinDiag.log(org.piepmeyer.gauguin.ui.customui.GauguinDiag.Kind.TOUCH) {
+                    "window: touch arrived ${android.os.SystemClock.uptimeMillis() - event.downTime} ms late, " +
+                        "raw ${event.rawX.toInt()},${event.rawY.toInt()}"
+                }
+
+            android.view.MotionEvent.ACTION_UP, android.view.MotionEvent.ACTION_CANCEL ->
+                org.piepmeyer.gauguin.ui.customui.GauguinDiag.log(org.piepmeyer.gauguin.ui.customui.GauguinDiag.Kind.TOUCH) {
+                    "window: touch ended, action ${event.actionMasked}, held ${event.eventTime - event.downTime} ms, " +
+                        "raw ${event.rawX.toInt()},${event.rawY.toInt()}"
+                }
+        }
+        return super.dispatchTouchEvent(event)
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        org.piepmeyer.gauguin.ui.customui.GauguinDiag.log(org.piepmeyer.gauguin.ui.customui.GauguinDiag.Kind.TOUCH, if (hasFocus) "main: window in front" else "main: window no longer in front")
+    }
+
     public override fun onPause() {
+        org.piepmeyer.gauguin.ui.customui.GauguinDiag.log(org.piepmeyer.gauguin.ui.customui.GauguinDiag.Kind.TOUCH, "main: pausing")
         logger.debug { "Pausing main activity..." }
         gameLifecycle.pauseGame()
 
@@ -273,6 +298,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     public override fun onResume() {
+        org.piepmeyer.gauguin.ui.customui.GauguinDiag.log(org.piepmeyer.gauguin.ui.customui.GauguinDiag.Kind.TOUCH, "main: resumed")
         configureActivity()
 
         binding.konfettiView.reset()

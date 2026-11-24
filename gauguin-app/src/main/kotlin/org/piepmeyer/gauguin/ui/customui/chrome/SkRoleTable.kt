@@ -16,6 +16,7 @@ enum class SkSection(
     val icon: SkIcons.Icon,
     private val colorRole: String,
 ) {
+    LANGUAGE("language", R.string.sk_section_language, SkIcons.Icon.GLOBE, "SECTION_WORDS"),
     EXIMPORT("eximport", R.string.sk_section_eximport, SkIcons.Icon.EXPORT, "SECTION_REACH"),
     FOUNDATION("foundation", R.string.sk_section_foundation, SkIcons.Icon.PALETTE, "SECTION_BASE"),
     TEXT("text", R.string.sk_section_text, SkIcons.Icon.TEXT, "SECTION_WORDS"),

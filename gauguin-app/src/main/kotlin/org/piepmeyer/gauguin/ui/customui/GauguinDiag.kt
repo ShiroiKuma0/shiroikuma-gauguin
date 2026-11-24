@@ -290,7 +290,8 @@ object GauguinDiag {
 
     /** While any switch is on, an ongoing notification says so, with Mark and Turn all off. */
     fun updateNotification(context: Context) {
-        val c = context.applicationContext
+        // the texts in the app's chosen language, which the application context does not carry
+        val c = GauguinLanguage.localized(context.applicationContext)
         try {
             val manager = NotificationManagerCompat.from(c)
             if (!anyOn) {
@@ -352,7 +353,7 @@ class GauguinDiagReceiver : BroadcastReceiver() {
         when (intent.action) {
             GauguinDiag.ACTION_MARK -> {
                 val number = GauguinDiag.mark("the notification")
-                if (number > 0) SkToast.show(context, context.getString(R.string.diag_mark_toast, number))
+                if (number > 0) SkToast.show(context, GauguinLanguage.localized(context).getString(R.string.diag_mark_toast, number))
             }
 
             GauguinDiag.ACTION_ALL_OFF -> GauguinDiag.allOff(context)

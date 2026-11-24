@@ -142,11 +142,10 @@
     <string name="sk_reset_all_colours_confirm">すべての色を既定値に戻しますか？</string>
 
     <!-- UI → Diagnostics -->
-    <string name="sk_main_menu">メニュー</string>
     <string name="diag_directory">診断の保存先</string>
     <string name="diag_group_interface">画面の操作</string>
     <string name="diag_touch">メニューボタンのタッチ</string>
-    <string name="diag_touch_descr">左上のメニューボタンへのタッチと、このページが開くまでを記録します。指が触れた時刻、アプリが受け取った時刻、長押しが働いた時刻、ページの準備ができた時刻です。</string>
+    <string name="diag_touch_descr">左下のメニューボタンへのタッチと、このページが開くまでを記録します。タッチがボタンに届くまでの遅れ、長押しが働いた時刻、ページが描かれた時刻です。</string>
     <string name="diag_group_data">記録したデータ</string>
     <string name="diag_stored">保存済み</string>
     <string name="diag_counting">集計中…</string>
@@ -173,4 +172,6 @@
     <string name="diag_mark">印を付ける</string>
     <string name="diag_all_off">すべて切る</string>
     <string name="diag_mark_toast">印 #%1$d</string>
+    <string name="sk_set_lang_row">言語: %1$s</string>
+    <string name="sk_set_lang_system">システムの既定</string>
 </resources>

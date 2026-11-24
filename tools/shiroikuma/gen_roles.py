@@ -23,6 +23,7 @@ so colours 白い熊 already set keep their meaning.
 # key, label, Japanese label, icon, the role that colours its icon (one of the seven SECTION_*).
 # The order is the default order of the page: no two neighbours share a colour.
 SECTIONS = [
+    ("language", "App language", "アプリの言語", "GLOBE", "SECTION_WORDS"),
     ("eximport", "Export / Import", "書き出し・読み込み", "EXPORT", "SECTION_REACH"),
     ("foundation", "Foundation", "基本", "PALETTE", "SECTION_BASE"),
     ("text", "Text", "テキスト", "TEXT", "SECTION_WORDS"),

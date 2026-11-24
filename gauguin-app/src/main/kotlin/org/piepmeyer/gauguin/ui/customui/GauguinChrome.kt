@@ -49,8 +49,6 @@ object GauguinChrome {
      * pass deliberately steps over this subtree.
      */
     fun applyToTopPanel(root: View) {
-        // before the look is decided: the button is there with the house look on or off
-        addMenuButton(root)
         val config = GauguinUiConfig(root.context)
         if (!config.customUiActive) return
 
@@ -221,112 +219,144 @@ object GauguinChrome {
     }
 
     /**
-     * The menu button lives at the top left, at the start of the top panel (白い熊, 2026-11-24).
+     * A long-press on the bottom bar's menu button opens the 白い熊 GNU Gauguin UI page, promptly.
+     * The button is the toolbar's own child, without an id: the one image button outside the
+     * action menu.
      *
-     * Upstream has it in the bottom bar. On 白い熊's phone the system keeps a window of its own over
-     * the bottom 98 px for the home gesture, and every touch there goes to the system first: a tap
-     * is passed on whole at release, a hold only after some 320–360 ms. A long-press on a button
-     * in the bottom bar is therefore slow whatever the app does (measured with UI → Diagnostics →
-     * "Menu button touches"), and an app cannot take itself out of the home gesture's strip.
+     * The same fix as 白い熊 地図's drawer button (`DrawerMenuButton.java` there, commits f6bf273d,
+     * e022a7f6, 04ef6bf5), for the same trouble:
+     *  - the button keeps its own clock and opens the page while the finger is still down, instead
+     *    of the view's long-click;
+     *  - **the clock runs from the touch itself**, [LONG_PRESS_MS] after `downTime`. On 白い熊's
+     *    phone a held touch at the bottom of the screen reaches the app some 320–360 ms late; a
+     *    wait started only on arrival is added to that. Counted from the touch, the page opens the
+     *    moment the late touch arrives;
+     *  - the rest of the gesture is swallowed, so no drawer opens as well;
+     *  - the page comes without a window animation, as 地図's page does, being a fragment there.
      *
-     * So the bottom bar loses its navigation icon here, and [addMenuButton] puts the button into
-     * the top panel: a tap opens the drawer, a long-press the 白い熊 GNU Gauguin UI page.
+     * The button also claims its touch on the way down: it sits where the drawer layout watches
+     * for an edge touch. Every step goes to the "touch" diagnostic when its switch is on.
+     *
+     * **The button is lifted out of the bar and sits right above it** (白い熊, 2026-11-24; the bar
+     * and its other buttons stay where they are). Measured on 白い熊's phone that day: the
+     * system's `GestureNavBottom` window covers the bottom 40 dp of the screen, and a touch landing
+     * inside it is held some 300 ms before the app is told, while one landing just above it
+     * arrives within 10–27 ms. The bar is 48 dp tall at the very bottom, so its menu button lay
+     * almost wholly inside that strip. The phone reports no bottom gesture area to apps.
      */
-    fun moveMenuButtonAway(bar: BottomAppBar) {
+    @android.annotation.SuppressLint("ClickableViewAccessibility")
+    fun liftMenuButton(
+        bar: BottomAppBar,
+        onClick: () -> Unit,
+    ) {
         GauguinDiag.init(bar.context)
-        bar.navigationIcon = null
+        val slop = android.view.ViewConfiguration.get(bar.context).scaledTouchSlop
+        val lifted = liftedMenuButton(bar, onClick) ?: return
+
+        fun hook() {
+            run {
+                val button = lifted
+                var opened = false
+                var downTime = 0L
+                var downX = 0f
+                var downY = 0f
+                val open =
+                    Runnable {
+                        opened = true
+                        GauguinDiag.log(GauguinDiag.Kind.TOUCH) {
+                            "fire: long-press ${android.os.SystemClock.uptimeMillis() - downTime} ms after the touch"
+                        }
+                        button.cancelLongPress()
+                        button.isPressed = false
+                        button.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS)
+                        GauguinUiActivity.openInstantly(button.context, downTime)
+                    }
+                button.setOnLongClickListener(null)
+                button.setOnTouchListener { view, event ->
+                    when (event.actionMasked) {
+                        android.view.MotionEvent.ACTION_DOWN -> {
+                            view.parent?.requestDisallowInterceptTouchEvent(true)
+                            opened = false
+                            downTime = event.downTime
+                            downX = event.x
+                            downY = event.y
+                            // timed from the touch itself, not from its late arrival
+                            val late = android.os.SystemClock.uptimeMillis() - downTime
+                            GauguinDiag.log(GauguinDiag.Kind.TOUCH) {
+                                "down: reached the button $late ms late, raw ${event.rawX.toInt()},${event.rawY.toInt()}"
+                            }
+                            view.removeCallbacks(open)
+                            view.postDelayed(open, maxOf(0L, LONG_PRESS_MS - late))
+                            false
+                        }
+
+                        android.view.MotionEvent.ACTION_MOVE -> {
+                            if (kotlin.math.abs(event.x - downX) > slop || kotlin.math.abs(event.y - downY) > slop) {
+                                if (!opened) GauguinDiag.log(GauguinDiag.Kind.TOUCH, "move: left the spot, long-press called off")
+                                view.removeCallbacks(open)
+                            }
+                            opened
+                        }
+
+                        else -> {
+                            GauguinDiag.log(GauguinDiag.Kind.TOUCH) {
+                                "end: action ${event.actionMasked}, held ${event.eventTime - event.downTime} ms, opened $opened"
+                            }
+                            view.removeCallbacks(open)
+                            // once the page is opening, the lift must not also count as a tap
+                            opened
+                        }
+                    }
+                }
+            }
+        }
+        hook()
     }
 
-    /** The menu button at the start of the top panel; the logo and the name move along. */
-    private fun addMenuButton(root: View) {
-        val card = root.findViewById<View>(R.id.mainTopArea) ?: return
-        val logo = card.findViewById<View>(R.id.appicon) ?: return
-        val row = logo.parent as? ConstraintLayout ?: return
-        if (row.findViewById<View>(R.id.sk_main_menu) != null) return
+    /** The menu button as a view of its own, above the bar's start; made once per bar */
+    private fun liftedMenuButton(
+        bar: BottomAppBar,
+        onClick: () -> Unit,
+    ): android.widget.ImageButton? {
+        val parent = bar.parent as? androidx.coordinatorlayout.widget.CoordinatorLayout ?: return null
+        parent.findViewById<android.widget.ImageButton>(R.id.sk_main_menu)?.let { return it }
+        val icon = bar.navigationIcon ?: return null
+        val description = bar.navigationContentDescription
+        bar.navigationIcon = null
 
-        val context = row.context
-        val density = context.resources.displayMetrics.density
-        val side = (40 * density).toInt()
+        val size = (48 * bar.resources.displayMetrics.density).toInt()
         val button =
-            android.widget.ImageButton(context).apply {
+            androidx.appcompat.widget.AppCompatImageButton(bar.context).apply {
                 id = R.id.sk_main_menu
-                setImageResource(R.drawable.outline_menu_24)
-                contentDescription = context.getString(R.string.sk_main_menu)
+                setImageDrawable(icon)
+                scaleType = ImageView.ScaleType.CENTER
+                contentDescription = description
                 val ripple = TypedValue()
                 context.theme.resolveAttribute(android.R.attr.selectableItemBackgroundBorderless, ripple, true)
                 setBackgroundResource(ripple.resourceId)
-                setOnClickListener { view ->
-                    var host: Context? = view.context
-                    while (host is android.content.ContextWrapper && host !is android.app.Activity) host = host.baseContext
-                    (host as? android.app.Activity)?.findViewById<androidx.drawerlayout.widget.DrawerLayout>(R.id.container)?.open()
-                }
+                setOnClickListener { onClick() }
             }
-        row.addView(button, ConstraintLayout.LayoutParams(side, side))
-        ConstraintSet().apply {
-            clone(row)
-            connect(R.id.sk_main_menu, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, (4 * density).toInt())
-            connect(R.id.sk_main_menu, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
-            connect(R.id.sk_main_menu, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
-            connect(R.id.appicon, ConstraintSet.START, R.id.sk_main_menu, ConstraintSet.END, (4 * density).toInt())
-            applyTo(row)
-        }
-        openUiPageOnLongPress(button)
-    }
-
-    /**
-     * A long-press on [button] opens the 白い熊 GNU Gauguin UI page, after a third of the system's
-     * long-press time (白い熊, 2026-11-24) — so the button keeps its own clock instead of the view's
-     * long-click. Every step is written to the "touch" diagnostic when its switch is on.
-     */
-    @android.annotation.SuppressLint("ClickableViewAccessibility")
-    private fun openUiPageOnLongPress(button: View) {
-        val wait = android.view.ViewConfiguration.getLongPressTimeout() / 3L
-        val slop = android.view.ViewConfiguration.get(button.context).scaledTouchSlop
-        var opened = false
-        var downX = 0f
-        var downY = 0f
-        val open =
-            Runnable {
-                opened = true
-                GauguinDiag.log(GauguinDiag.Kind.TOUCH, "fire: opening the UI page")
-                button.cancelLongPress()
-                button.isPressed = false
-                button.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS)
-                button.context.startActivity(android.content.Intent(button.context, GauguinUiActivity::class.java))
+        val params =
+            androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams(size, size).apply {
+                gravity = android.view.Gravity.BOTTOM or android.view.Gravity.START
             }
-        button.setOnTouchListener { view, event ->
-            when (event.actionMasked) {
-                android.view.MotionEvent.ACTION_DOWN -> {
-                    GauguinDiag.log(GauguinDiag.Kind.TOUCH) {
-                        "down: touched at ${event.downTime}, arrived ${android.os.SystemClock.uptimeMillis() - event.downTime} ms later, " +
-                            "raw ${event.rawX.toInt()},${event.rawY.toInt()}, wait $wait ms"
-                    }
-                    opened = false
-                    downX = event.x
-                    downY = event.y
-                    view.removeCallbacks(open)
-                    view.postDelayed(open, wait)
-                    false
-                }
+        parent.addView(button, params)
 
-                android.view.MotionEvent.ACTION_MOVE -> {
-                    if (kotlin.math.abs(event.x - downX) > slop || kotlin.math.abs(event.y - downY) > slop) {
-                        if (!opened) GauguinDiag.log(GauguinDiag.Kind.TOUCH, "move: left the spot, long-press called off")
-                        view.removeCallbacks(open)
-                    }
-                    opened
-                }
-
-                else -> {
-                    GauguinDiag.log(GauguinDiag.Kind.TOUCH) {
-                        "end: action ${event.actionMasked}, held ${event.eventTime - event.downTime} ms, opened $opened"
-                    }
-                    view.removeCallbacks(open)
-                    // once the page is opening, the lift must not also count as a tap
-                    opened
-                }
+        // right above the bar, at the bar's own start, wherever the layout and the insets put it
+        fun place() {
+            if (parent.height == 0) return
+            val bottom = parent.height - bar.top
+            val start = if (bar.layoutDirection == View.LAYOUT_DIRECTION_RTL) parent.width - bar.right else bar.left
+            val current = button.layoutParams as androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams
+            if (current.bottomMargin != bottom || current.marginStart != start) {
+                current.bottomMargin = bottom
+                current.marginStart = start
+                button.layoutParams = current
             }
         }
+        bar.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> bar.post { place() } }
+        bar.post { place() }
+        return button
     }
 
     /**
@@ -419,6 +449,10 @@ object GauguinChrome {
 
         bar.backgroundTint = ColorStateList.valueOf(SkRoles[SkRole.BOTTOM_BAR_GROUND])
         bar.navigationIcon = bar.navigationIcon?.mutate()?.apply { setTint(accent) }
+        // the menu button, once it is lifted out of the bar
+        (bar.parent as? View)?.findViewById<ImageView>(R.id.sk_main_menu)?.let { lifted ->
+            lifted.setImageDrawable(lifted.drawable?.mutate()?.apply { setTint(accent) })
+        }
         bar.overflowIcon = bar.overflowIcon?.mutate()?.apply { setTint(accent) }
         bar.menu.iterator().forEach { item ->
             item.icon = item.icon?.mutate()?.apply { setTint(accent) }
@@ -451,6 +485,9 @@ object GauguinChrome {
     }
 
     private const val DRAWER_ICON_DEFAULT_DP = 24
+
+    /** The long-press of the menu button, counted from the touch: as 白い熊 地図 has it */
+    private const val LONG_PRESS_MS = 200L
     private const val GRID_GROWN = "gauguin_ui_grid_grown"
 
     private val SCALED_TAG = "gauguin-chrome-scaled".hashCode()

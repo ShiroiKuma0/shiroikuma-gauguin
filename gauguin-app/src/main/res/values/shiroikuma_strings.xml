@@ -146,11 +146,10 @@
     <string name="sk_reset_all_colours_confirm">Reset all colours to their defaults?</string>
 
     <!-- UI → Diagnostics -->
-    <string name="sk_main_menu">Menu</string>
     <string name="diag_directory">Diagnostics directory</string>
     <string name="diag_group_interface">Interface</string>
     <string name="diag_touch">Menu button touches</string>
-    <string name="diag_touch_descr">Records every touch on the menu button at the top left and the opening of this page: when the finger landed, when the app received it, when the long-press fired, and when the page was ready.</string>
+    <string name="diag_touch_descr">Records every touch on the menu button at the bottom left and the opening of this page: how late the touch reached the button, when the long-press fired, and when the page was drawn.</string>
     <string name="diag_group_data">Recorded data</string>
     <string name="diag_stored">Stored</string>
     <string name="diag_counting">Counting…</string>
@@ -177,4 +176,6 @@
     <string name="diag_mark">Mark</string>
     <string name="diag_all_off">Turn all off</string>
     <string name="diag_mark_toast">Mark #%1$d</string>
+    <string name="sk_set_lang_row">Language: %1$s</string>
+    <string name="sk_set_lang_system">System default</string>
 </resources>

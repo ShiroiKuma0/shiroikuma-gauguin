@@ -93,11 +93,13 @@ class StateExportReceiver : BroadcastReceiver() {
     }
 
     /** `OK:` + one `id<TAB>label` line per category. Everything here is authored, so all default on. */
-    private fun categoryLines(context: Context): String =
-        "OK:" +
+    private fun categoryLines(plain: Context): String {
+        val context = GauguinLanguage.localized(plain)
+        return "OK:" +
             GauguinBackup.Cat.entries.joinToString("\n") { category ->
                 "${category.id}\t${context.getString(category.labelRes)}"
             }
+    }
 
     companion object {
         /**

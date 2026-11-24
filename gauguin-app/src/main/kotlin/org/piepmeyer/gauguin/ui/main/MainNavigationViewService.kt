@@ -196,8 +196,8 @@ class MainNavigationViewService(
             BottomAppBarItemClickListener(binding.mainBottomAppBar.context, viewModel),
         )
         binding.mainBottomAppBar.setNavigationOnClickListener { binding.container.open() }
-        // 白い熊 fork: the menu button lives in the top panel, out of the system's bottom gesture strip.
-        GauguinChrome.moveMenuButtonAway(binding.mainBottomAppBar)
+        // 白い熊 fork: the menu button sits above the bar, and its long-press opens the UI page.
+        GauguinChrome.liftMenuButton(binding.mainBottomAppBar) { binding.container.open() }
 
         binding.mainNavigationView.findViewById<Button>(R.id.navigation_drawer_choose_theme).setOnClickListener {
             binding.container.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)

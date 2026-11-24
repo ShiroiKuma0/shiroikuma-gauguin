@@ -83,6 +83,7 @@ class GauguinUiPreferenceFragment : PreferenceFragmentCompat() {
         savedInstanceState: Bundle?,
         rootKey: String?,
     ) {
+        GauguinDiag.log(GauguinDiag.Kind.TOUCH, "page: rows being built")
         config = GauguinUiConfig(requireContext())
         val context = preferenceManager.context
         val screen: PreferenceScreen = preferenceManager.createPreferenceScreen(context)
@@ -140,6 +141,7 @@ class GauguinUiPreferenceFragment : PreferenceFragmentCompat() {
         applySectionOrder()
         sections.forEach(::applyFold)
         SkPreferences.decorate(screen)
+        GauguinDiag.log(GauguinDiag.Kind.TOUCH, "page: rows built")
     }
 
     override fun onViewCreated(
@@ -176,6 +178,7 @@ class GauguinUiPreferenceFragment : PreferenceFragmentCompat() {
         if (!builtSections.add(category.sectionKey)) return
         val section = category.section
         when (section) {
+            SkSection.LANGUAGE -> buildLanguageRows(category)
             SkSection.EXIMPORT -> buildExportRows(category)
             SkSection.MAINTENANCE -> buildMaintenanceRows(category)
             SkSection.DIAGNOSTICS -> buildDiagnosticsRows(category)
@@ -194,6 +197,25 @@ class GauguinUiPreferenceFragment : PreferenceFragmentCompat() {
             }
         }
         SkPreferences.decorate(category)
+    }
+
+    // ---- app language ---------------------------------------------------------------------------
+
+    /** UI → App language: one pill, "Language: ‹current›", that opens the list of shipped languages */
+    private fun buildLanguageRows(category: SkSectionCategory) {
+        val row =
+            actionRow("gauguin_ui_language", R.string.sk_set_lang_row, null, main = true, opens = true) { showLanguageDialog() }
+        row.title = getString(R.string.sk_set_lang_row, languageName(GauguinLanguage.tag(requireContext())))
+        category.addPreference(row)
+    }
+
+    private fun languageName(tag: String): String =
+        if (tag.isEmpty()) getString(R.string.sk_set_lang_system) else GauguinLanguage.displayName(tag)
+
+    private fun showLanguageDialog() {
+        val context = requireContext()
+        // applied at once, for this app only; the activities are made anew by AppCompat
+        LanguagePickerDialog.show(context) { tag -> GauguinLanguage.set(context, tag) }
     }
 
     private fun buildExportRows(category: SkSectionCategory) {

@@ -9,7 +9,8 @@
     <item name="tag_sk_list" type="id" />
     <item name="sk_preference_action" type="id" />
     <!-- a drawer row's own text size and height, kept so that a size knob is applied once -->
-    <item name="sk_main_menu" type="id" />
     <item name="sk_tag_base_text" type="id" />
     <item name="sk_tag_base_height" type="id" />
+    <!-- the main screen's menu button, lifted out of the bottom bar -->
+    <item name="sk_main_menu" type="id" />
 </resources>

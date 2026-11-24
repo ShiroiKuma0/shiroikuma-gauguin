@@ -105,6 +105,7 @@
     <color name="sk_role_hint_ground">#FF000000</color>
     <color name="sk_role_hint_text">#FFFFFF00</color>
     <color name="sk_role_hint_error">#FFFF0000</color>
+    <string name="sk_section_language">App language</string>
     <string name="sk_section_eximport">Export / Import</string>
     <string name="sk_section_foundation">Foundation</string>
     <string name="sk_section_text">Text</string>

@@ -33,6 +33,9 @@ class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        // 白い熊 fork: the chosen app language, put back before any activity is made
+        org.piepmeyer.gauguin.ui.customui.GauguinLanguage.reassert(this)
+
         logger.info { "Starting application Gauguin..." }
 
         val applicationPreferences = ApplicationPreferencesImpl(this)

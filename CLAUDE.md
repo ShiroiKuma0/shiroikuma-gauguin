@@ -159,9 +159,23 @@ translation. First build `0.53.4+001`.
 **Through `0.53.4+010`** (2026-11-24): the UI page's preview removed; a Diagnostics section
 (`GauguinDiag`); every settings row its own icon; the drawer's size sliders wired; on a large upright
 screen the number pad is rewired under the grid in code (`GauguinChrome.keypadToBottom`) and the
-cell-size cap lifted once to 240 dp; the menu button moved from the bottom bar into the top panel
-(`GauguinChrome.addMenuButton`), because the system's home-gesture window over the bottom 98 px holds
-every touch there for some 320–360 ms — a long-press on it opens the UI page.
+cell-size cap lifted once to 240 dp.
+
+**The menu button's long-press** (`0.53.4+011`, 2026-11-24): a long-press on the bottom bar's menu
+button opens the UI page, with 白い熊 地図's fix (`GauguinChrome.openUiPageOnLongPress`): an own clock
+of 200 ms **counted from the touch's `downTime`**, because a held touch at the bottom of the screen
+reaches the app some 320–360 ms late on 白い熊's phone, and the page shown with no window animation.
+Build `+010` had moved the button into the top panel instead; that was wrong and is reverted.
+
+**The menu button above the bar, and the App language section** (`0.53.4+014`, 2026-11-24): measured
+with raw touch recordings in Gauguin and 地図: the system's `GestureNavBottom` window covers the bottom
+40 dp (y 2134–2232 of 2232), a touch landing inside it reaches the app about 300 ms late, one landing
+just above it within 10–27 ms. So the menu button is lifted out of the bottom bar into a view of its
+own right above it (`GauguinChrome.liftMenuButton`, id `sk_main_menu`); the bar and its other buttons
+stay. The UI page gained its first section, **App language** (`GauguinLanguage.kt`): the tag is kept
+in `gauguin_ui` (`app_language`), re-asserted in `MainApplication.onCreate`, the list read from the
+build's generated locale configuration, and strings that leave the app go through
+`GauguinLanguage.localized`.
 
 ## Commit convention — no Claude attribution
 Do **not** add any `Co-Authored-By: Claude …` trailer, nor a "🤖 Generated with Claude Code" /

@@ -22,11 +22,15 @@ import org.piepmeyer.gauguin.ui.customui.chrome.SkTheme
 class GauguinUiActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         GauguinDiag.init(this)
-        GauguinDiag.log(GauguinDiag.Kind.TOUCH, "page: onCreate begins")
+        touch = intent?.getLongExtra(EXTRA_TOUCH, 0L) ?: 0L
+        if (touch > 0) noWindowAnimation()
+        mark("page: onCreate begins")
         setTheme(R.style.Theme_Gauguin_ShiroikumaUi)
         SkTheme.install(this, always = true)
         super.onCreate(savedInstanceState)
+        mark("page: super.onCreate done")
         setContentView(R.layout.activity_gauguin_ui)
+        mark("page: layout inflated")
 
         // The layout holds no colour: the page's own few views take their roles here. The window
         // was drawn black by the platform before this ran; now it follows the background role.
@@ -42,13 +46,46 @@ class GauguinUiActivity : AppCompatActivity() {
                 .replace(R.id.gauguinUiContainer, GauguinUiPreferenceFragment())
                 .commit()
         }
-        GauguinDiag.log(GauguinDiag.Kind.TOUCH, "page: onCreate ends")
-        window.decorView.post { GauguinDiag.log(GauguinDiag.Kind.TOUCH, "page: first pass after layout") }
+        mark("page: onCreate ends")
+        // The marks that tell where the time goes between the long-press and the page being seen:
+        // the first pass that draws, the frame the system took, the window in front, the entry over.
+        val observer = window.decorView.viewTreeObserver
+        observer.addOnPreDrawListener(
+            object : android.view.ViewTreeObserver.OnPreDrawListener {
+                override fun onPreDraw(): Boolean {
+                    window.decorView.viewTreeObserver.removeOnPreDrawListener(this)
+                    mark("page: first draw pass begins")
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                        window.decorView.viewTreeObserver.registerFrameCommitCallback { mark("page: first frame handed to the system") }
+                    }
+                    return true
+                }
+            },
+        )
+    }
+
+    private var touch = 0L
+
+    /** One line of the "touch" diagnostic, with the time since the long-press's touch */
+    private fun mark(text: String) {
+        GauguinDiag.log(GauguinDiag.Kind.TOUCH) {
+            text + if (touch > 0) ", ${android.os.SystemClock.uptimeMillis() - touch} ms after the touch" else ""
+        }
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) mark("page: window in front")
+    }
+
+    override fun onEnterAnimationComplete() {
+        super.onEnterAnimationComplete()
+        mark("page: entry animation over")
     }
 
     override fun onResume() {
         super.onResume()
-        GauguinDiag.log(GauguinDiag.Kind.TOUCH, "page: resumed")
+        mark("page: resumed")
     }
 
     fun openExportPanel() {
@@ -74,7 +111,32 @@ class GauguinUiActivity : AppCompatActivity() {
         finish()
     }
 
+    /** Opened by the long-press: the page is simply there, with no slide or fade of the window */
+    @Suppress("DEPRECATION")
+    private fun noWindowAnimation() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, 0, 0)
+        } else {
+            overridePendingTransition(0, 0)
+        }
+    }
+
     companion object {
+        private const val EXTRA_TOUCH = "gauguin_ui_touch_uptime"
+
+        /** The page from the menu button's long-press: no window animation, and [touch] for the diagnostic */
+        fun openInstantly(
+            context: android.content.Context,
+            touch: Long,
+        ) {
+            val intent =
+                android.content
+                    .Intent(context, GauguinUiActivity::class.java)
+                    .putExtra(EXTRA_TOUCH, touch)
+                    .addFlags(android.content.Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            context.startActivity(intent, android.app.ActivityOptions.makeCustomAnimation(context, 0, 0).toBundle())
+        }
+
         private const val EXPORT_PANEL = "gauguin-export-panel"
     }
 }
